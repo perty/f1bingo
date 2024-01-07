@@ -3,21 +3,17 @@ package se.artcomputer.f1.bingo.domain;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.artcomputer.f1.bingo.entity.*;
-import se.artcomputer.f1.bingo.repository.BingoCardRepository;
 import se.artcomputer.f1.bingo.repository.StatementRepository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class BingoCardService {
 
-    private final BingoCardRepository bingoCardRepository;
     private final StatementRepository statementRepository;
 
-    public BingoCardService(BingoCardRepository bingoCardRepository, StatementRepository statementRepository) {
-        this.bingoCardRepository = bingoCardRepository;
+    public BingoCardService(StatementRepository statementRepository) {
         this.statementRepository = statementRepository;
     }
 
@@ -41,6 +37,14 @@ public class BingoCardService {
         qualificationCard.setSession(session);
         addStatementsToCard(qualificationCard);
         return qualificationCard;
+    }
+
+    private List<BingoCard> createBingoCardsSprint(WeekendPalette weekendPalette) {
+        BingoCard qualificationCard = createBingoCard(weekendPalette, Session.QUALIFYING);
+        BingoCard raceCard = createBingoCard(weekendPalette, Session.RACE);
+        BingoCard shootOutCard = createBingoCard(weekendPalette, Session.SPRINT_SHOOTOUT);
+        BingoCard sprintRaceCard = createBingoCard(weekendPalette, Session.SPRINT_RACE);
+        return List.of(qualificationCard, shootOutCard, sprintRaceCard, raceCard);
     }
 
     private void addStatementsToCard(BingoCard bingoCard) {
@@ -67,9 +71,5 @@ public class BingoCardService {
             case SPRINT_RACE -> statementRepository.findBySprintRace(true).findFirst();
             case SPRINT_SHOOTOUT -> statementRepository.findBySprintShootout(true).findFirst();
         };
-    }
-
-    private List<BingoCard> createBingoCardsSprint(WeekendPalette weekendPalette) {
-        return Collections.emptyList();
     }
 }
