@@ -10,6 +10,8 @@ import se.artcomputer.f1.bingo.repository.FanRepository;
 import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
 import se.artcomputer.f1.bingo.repository.WeekendPaletteRepository;
 
+import java.util.Optional;
+
 @Service
 public class WeekendPaletteService {
 
@@ -28,7 +30,11 @@ public class WeekendPaletteService {
     public WeekendPalette getWeekendPalette(Long weekendId, Long fanId) {
         RaceWeekend raceWeekend = raceWeekendRepository.findById(weekendId).orElseThrow(() -> new NotFoundException("Weekend"));
         Fan fan = fanRepository.findById(fanId).orElseThrow(() -> new NotFoundException("Fan"));
-        return weekendPaletteRepository.findByRaceWeekendAndFan(raceWeekend, fan).orElse(generateWeekendPalette(raceWeekend, fan));
+        Optional<WeekendPalette> byRaceWeekendAndFan = weekendPaletteRepository.findByRaceWeekendAndFan(raceWeekend, fan);
+        if(byRaceWeekendAndFan.isPresent()) {
+            return byRaceWeekendAndFan.get();
+        }
+        return generateWeekendPalette(raceWeekend, fan);
     }
 
     private WeekendPalette generateWeekendPalette(RaceWeekend raceWeekend, Fan fan) {
