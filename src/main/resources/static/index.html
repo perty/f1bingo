@@ -19,8 +19,11 @@
 <body>
 <h1>Välj helg och fan</h1>
 <form id="weekendPaletteForm">
-    <label for="weekend">Välj helg:</label>
-    <input type="number" id="weekend" name="weekend" required><br><br>
+    <label for="weekend">Välj Racehelg:</label>
+    <select id="weekend" name="weekend" required>
+        <option value="">Välj en helg...</option>
+    </select><br><br>
+
 
     <label for="fan">Välj fan:</label>
     <input type="number" id="fan" name="fan" required><br><br>
@@ -37,6 +40,29 @@ Helg:
 <div id="raceWeekendName"></div>
 </div>
 <div id="bingoCardsContainer"></div>
+<script>
+    function fetchRaceWeekends() {
+        fetch('/weekend')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                const select = document.getElementById('weekend');
+                data.forEach(function(weekend) {
+                    const option = document.createElement('option');
+                    option.value = weekend.id;
+                    option.textContent = weekend.name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+    }
+
+    // Kalla på funktionen när sidan laddas
+    fetchRaceWeekends();
+</script>
 
 <script>
     document.getElementById('weekendPaletteForm').onsubmit = function (event) {
