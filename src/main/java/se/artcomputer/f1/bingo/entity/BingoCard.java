@@ -42,11 +42,11 @@ public class BingoCard {
         this.session = session;
     }
 
-    public Set<BingoCardStatement> getStatements() {
+    public Set<BingoCardStatement> getBingoCardStatements() {
         return statements;
     }
 
-    public void setStatements(Set<BingoCardStatement> statements) {
+    public void setBingoCardStatements(Set<BingoCardStatement> statements) {
         this.statements = statements;
     }
 

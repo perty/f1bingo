@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.artcomputer.f1.bingo.entity.*;
 import se.artcomputer.f1.bingo.repository.StatementRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,36 +49,44 @@ public class BingoCardService {
     }
 
     private void addStatementsToCard(BingoCard bingoCard) {
-        for(int row = 0; row < BingoCard.ROWS; row++) {
-            for(int column = 0; column < BingoCard.COLS; column++) {
-                bingoCard.getStatements().add(findStatement(bingoCard.getSession(), bingoCard, row, column));
+        List<Statement> takenStatements = new ArrayList<>();
+        for (int row = 0; row < BingoCard.ROWS; row++) {
+            for (int column = 0; column < BingoCard.COLS; column++) {
+                BingoCardStatement bingoCardStatement = findStatement(bingoCard.getSession(), bingoCard, row, column, takenStatements);
+                bingoCard.getBingoCardStatements().add(bingoCardStatement);
+                takenStatements.add(bingoCardStatement.getStatement());
             }
         }
     }
 
-    private BingoCardStatement findStatement(Session session, BingoCard bingoCard, int row, int column) {
+    private BingoCardStatement findStatement(Session session, BingoCard bingoCard, int row, int column, List<Statement> takenStatements) {
         BingoCardStatement bingoCardStatement = new BingoCardStatement();
         bingoCardStatement.setBingoCard(bingoCard);
         bingoCardStatement.setRow(row);
         bingoCardStatement.setColumn(column);
-        bingoCardStatement.setStatement(findStatementForSession(session).orElseThrow());
+        bingoCardStatement.setStatement(findStatementForSession(session, takenStatements).orElseThrow());
         return bingoCardStatement;
     }
 
-    private Optional<Statement> findStatementForSession(Session session) {
+    private Optional<Statement> findStatementForSession(Session session, List<Statement> takenStatements) {
         return switch (session) {
-            case QUALIFYING -> selectRandom(statementRepository.findByQualifying(true).toList());
-            case RACE -> selectRandom(statementRepository.findByRace(true).toList());
-            case SPRINT_RACE -> selectRandom(statementRepository.findBySprintRace(true).toList());
-            case SPRINT_SHOOTOUT -> selectRandom(statementRepository.findBySprintShootout(true).toList());
+            case QUALIFYING -> selectRandom(statementRepository.findByQualifying(true).toList(), takenStatements);
+            case RACE -> selectRandom(statementRepository.findByRace(true).toList(), takenStatements);
+            case SPRINT_RACE -> selectRandom(statementRepository.findBySprintRace(true).toList(), takenStatements);
+            case SPRINT_SHOOTOUT ->
+                    selectRandom(statementRepository.findBySprintShootout(true).toList(), takenStatements);
         };
     }
 
-    private Optional<Statement> selectRandom(List<Statement> list) {
-        if(list.isEmpty()) {
+    private Optional<Statement> selectRandom(List<Statement> allStatements, List<Statement> takenStatements) {
+        if (allStatements.isEmpty()) {
             return Optional.empty();
         }
-        int index = (int) (Math.random() * list.size());
-        return Optional.of(list.get(index));
+        int index = (int) (Math.random() * allStatements.size());
+        Statement selectedStatement = allStatements.get(index);
+        if (takenStatements.contains(selectedStatement)) {
+            return selectRandom(allStatements, takenStatements);
+        }
+        return Optional.of(selectedStatement);
     }
 }

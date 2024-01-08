@@ -35,7 +35,7 @@ public class WeekendPaletteController {
     private BingoCardDto toDto(BingoCard bingoCard) {
         return new BingoCardDto(
                 bingoCard.getSession().name(),
-                bingoCard.getStatements().stream().map(this::toDto).toList()
+                bingoCard.getBingoCardStatements().stream().map(this::toDto).toList()
         );
     }
 
