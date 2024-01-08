@@ -31,20 +31,20 @@ public class BingoCardService {
         return List.of(qualificationCard, raceCard);
     }
 
-    private BingoCard createBingoCard(WeekendPalette weekendPalette, Session session) {
-        BingoCard qualificationCard = new BingoCard();
-        qualificationCard.setWeekendPalette(weekendPalette);
-        qualificationCard.setSession(session);
-        addStatementsToCard(qualificationCard);
-        return qualificationCard;
-    }
-
     private List<BingoCard> createBingoCardsSprint(WeekendPalette weekendPalette) {
         BingoCard qualificationCard = createBingoCard(weekendPalette, Session.QUALIFYING);
         BingoCard raceCard = createBingoCard(weekendPalette, Session.RACE);
         BingoCard shootOutCard = createBingoCard(weekendPalette, Session.SPRINT_SHOOTOUT);
         BingoCard sprintRaceCard = createBingoCard(weekendPalette, Session.SPRINT_RACE);
         return List.of(qualificationCard, shootOutCard, sprintRaceCard, raceCard);
+    }
+
+    private BingoCard createBingoCard(WeekendPalette weekendPalette, Session session) {
+        BingoCard bingoCard = new BingoCard();
+        bingoCard.setWeekendPalette(weekendPalette);
+        bingoCard.setSession(session);
+        addStatementsToCard(bingoCard);
+        return bingoCard;
     }
 
     private void addStatementsToCard(BingoCard bingoCard) {
@@ -66,10 +66,18 @@ public class BingoCardService {
 
     private Optional<Statement> findStatementForSession(Session session) {
         return switch (session) {
-            case QUALIFYING -> statementRepository.findByQualifying(true).findFirst();
-            case RACE -> statementRepository.findByRace(true).findFirst();
-            case SPRINT_RACE -> statementRepository.findBySprintRace(true).findFirst();
-            case SPRINT_SHOOTOUT -> statementRepository.findBySprintShootout(true).findFirst();
+            case QUALIFYING -> selectRandom(statementRepository.findByQualifying(true).toList());
+            case RACE -> selectRandom(statementRepository.findByRace(true).toList());
+            case SPRINT_RACE -> selectRandom(statementRepository.findBySprintRace(true).toList());
+            case SPRINT_SHOOTOUT -> selectRandom(statementRepository.findBySprintShootout(true).toList());
         };
+    }
+
+    private Optional<Statement> selectRandom(List<Statement> list) {
+        if(list.isEmpty()) {
+            return Optional.empty();
+        }
+        int index = (int) (Math.random() * list.size());
+        return Optional.of(list.get(index));
     }
 }
