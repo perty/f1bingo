@@ -17,16 +17,18 @@
     </style>
 </head>
 <body>
-<h1>Välj helg och fan</h1>
+<h1>Välj GP och bingoist</h1>
 <form id="weekendPaletteForm">
-    <label for="weekend">Välj Racehelg:</label>
+    <label for="weekend">Välj GP:</label>
     <select id="weekend" name="weekend" required>
-        <option value="">Välj en helg...</option>
+        <option value="">Välj ett GP...</option>
     </select><br><br>
 
 
-    <label for="fan">Välj fan:</label>
-    <input type="number" id="fan" name="fan" required><br><br>
+    <label for="fan">Välj bingoist:</label>
+    <select id="fan" name="fan" required>
+        <option value="">Välj en bingoist...</option>
+    </select><br><br>
 
     <input type="submit" value="Visa">
 </form>
@@ -63,7 +65,29 @@ Helg:
     // Kalla på funktionen när sidan laddas
     fetchRaceWeekends();
 </script>
+<script>
+    function fetchFans() {
+        fetch('/fan')
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                const select = document.getElementById('fan');
+                data.forEach(function(fan) {
+                    const option = document.createElement('option');
+                    option.value = fan.id;
+                    option.textContent = fan.name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+            });
+    }
 
+    // Kalla på funktionen när sidan laddas
+    fetchFans();
+</script>
 <script>
     document.getElementById('weekendPaletteForm').onsubmit = function (event) {
         event.preventDefault();
