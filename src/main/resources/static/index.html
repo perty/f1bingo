@@ -4,51 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Start</title>
-    <style>
-        table {
-            width: 50%;
-            border-collapse: collapse;
-        }
-        td {
-            border: 1px solid black;
-            height: 50px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-<h1>Välj GP och bingoist</h1>
-<form id="weekendPaletteForm">
-    <label for="weekend">Välj GP:</label>
-    <select id="weekend" name="weekend" required>
-        <option value="">Välj ett GP...</option>
-    </select><br><br>
-
-
-    <label for="fan">Välj bingoist:</label>
-    <select id="fan" name="fan" required>
-        <option value="">Välj en bingoist...</option>
-    </select><br><br>
-
-    <input type="submit" value="Visa">
-</form>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <img src="images/logo.png" alt="logo" id="logo">
+        </div>
+        <div class="title shadow">
+            <p>Bingo 2024</p>
+        </div>
+    </div>
+    <div>
+        <form id="weekendPaletteForm">
+            <div class="weekend-form-card shadow">
+                <p>Välj race för att fylla bingobrickorna med påståenden. Välj också vilken F1-nörd du är.
+                </p>
+                <div class="form-field">
+                    <label for="weekend">GP:</label>
+                    <select id="weekend" name="weekend" required>
+                        <option value="">Välj ett GP...</option>
+                    </select><br><br>
+                </div>
+                <div class="form-field">
+                    <label for="fan">F1-nörd:</label>
+                    <select id="fan" name="fan" required>
+                        <option value="">Välj en F1-nörd...</option>
+                    </select><br><br>
+                </div>
+            </div>
+            <div class="submitButtonRow">
+                <button type="submit">Visa</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
     function fetchRaceWeekends() {
         fetch('/weekend')
-            .then(function(response) {
+            .then(function (response) {
                 return response.json();
             })
-            .then(function(data) {
+            .then(function (data) {
                 const select = document.getElementById('weekend');
-                data.forEach(function(weekend) {
+                data.forEach(function (weekend) {
                     const option = document.createElement('option');
                     option.value = weekend.id;
                     option.textContent = weekend.name;
                     select.appendChild(option);
                 });
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error('Error:', error);
             });
     }
@@ -59,19 +68,19 @@
 <script>
     function fetchFans() {
         fetch('/fan')
-            .then(function(response) {
+            .then(function (response) {
                 return response.json();
             })
-            .then(function(data) {
+            .then(function (data) {
                 const select = document.getElementById('fan');
-                data.forEach(function(fan) {
+                data.forEach(function (fan) {
                     const option = document.createElement('option');
                     option.value = fan.id;
                     option.textContent = fan.name;
                     select.appendChild(option);
                 });
             })
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error('Error:', error);
             });
     }
