@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Visa WeekendPalette</title>
+    <title>Start</title>
     <style>
         table {
             width: 50%;
@@ -33,15 +33,6 @@
     <input type="submit" value="Visa">
 </form>
 
-<div>
-Bingobrickor för:
-    <div id="fanName"></div>
-</div>
-<div>
-Helg:
-<div id="raceWeekendName"></div>
-</div>
-<div id="bingoCardsContainer"></div>
 <script>
     function fetchRaceWeekends() {
         fetch('/weekend')
@@ -93,52 +84,9 @@ Helg:
         event.preventDefault();
         const weekend = document.getElementById('weekend').value;
         const fan = document.getElementById('fan').value;
-
-        fetch('/palette/weekend/' + encodeURIComponent(weekend) + '/fan/' + encodeURIComponent(fan))
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                displayBingoCards(data);
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-            });
+        window.location.href = '/weekend.html?weekend=' + encodeURIComponent(weekend) + '&fan=' + encodeURIComponent(fan);
     };
 </script>
-<script>
-    function displayBingoCards(data) {
-        document.getElementById('fanName').textContent = data.fanName;
-        document.getElementById('raceWeekendName').textContent = data.raceWeekendName;
 
-        const container = document.getElementById('bingoCardsContainer');
-        container.innerHTML = ''; // Rensa tidigare bingobrickor
-
-        data.bingoCards.forEach(function(card) {
-            const cardDiv = document.createElement('div');
-            cardDiv.appendChild(document.createTextNode('Session: ' + card.session));
-            cardDiv.appendChild(createBingoCard(card));
-            container.appendChild(cardDiv);
-        });
-    }
-
-    function createBingoCard(bingoCardData) {
-        const table = document.createElement('table');
-        for (let i = 0; i < 4; i++) { // 4 rader
-            const tr = document.createElement('tr');
-            for (let j = 0; j < 3; j++) { // 3 kolumner
-                const td = document.createElement('td');
-                const cell = bingoCardData.list.find(item => item.row === i && item.column === j);
-                if (cell) {
-                    td.textContent = cell.text;
-                }
-                tr.appendChild(td);
-            }
-            table.appendChild(tr);
-        }
-        return table;
-    }
-
-</script>
 </body>
 </html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Visa WeekendPalette</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid black;
+            height: 50px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div>
+    Bingobrickor för:
+    <span id="fanName"></span>
+</div>
+<div>
+    Helg:
+    <span id="raceWeekendName"></span>
+</div>
+<div id="bingoCardsContainer"></div>
+<script>
+    function fetchBingoCards() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const weekendId = urlParams.get('weekend');
+        const fanId = urlParams.get('fan');
+
+        fetch('/palette/weekend/' + encodeURIComponent(weekendId) + '/fan/' + encodeURIComponent(fanId))
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                displayBingoCards(data);
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    }
+    function displayBingoCards(data) {
+        document.getElementById('fanName').textContent = data.fanName;
+        document.getElementById('raceWeekendName').textContent = data.raceWeekendName;
+
+        const container = document.getElementById('bingoCardsContainer');
+        container.innerHTML = '';
+
+        data.bingoCards.forEach(function(card) {
+            const cardDiv = document.createElement('div');
+            cardDiv.appendChild(document.createTextNode('Session: ' + card.session));
+            cardDiv.appendChild(createBingoCard(card));
+            container.appendChild(cardDiv);
+        });
+    }
+
+    function createBingoCard(bingoCardData) {
+        const table = document.createElement('table');
+        for (let i = 0; i < 4; i++) { // 4 rader
+            const tr = document.createElement('tr');
+            for (let j = 0; j < 3; j++) { // 3 kolumner
+                const td = document.createElement('td');
+                const cell = bingoCardData.list.find(item => item.row === i && item.column === j);
+                if (cell) {
+                    td.textContent = cell.text;
+                }
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        return table;
+    }
+
+    // Kalla på funktionen när sidan laddas
+    fetchBingoCards();
+</script>
+</body>
