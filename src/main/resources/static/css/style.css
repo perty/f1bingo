@@ -86,6 +86,17 @@ body {
     border: 1px solid #ccc;
 }
 
+.midsection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px;
+    background-image: url("/images/f1-bg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+}
+
 .footer {
     display: flex;
     justify-content: center;
