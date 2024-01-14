@@ -6,18 +6,18 @@
     margin-bottom: 5px;
     margin-left: 2px;
     border-radius: 5px;
-    background-color: black;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
 }
 
 .session {
     font-size: 18px;
     text-align: center;
     padding: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--shade-color);
     border-radius: 5px;
-    background-color: black;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
 }
 
 .bingo-card {
@@ -35,16 +35,16 @@
 }
 
 .grid-item {
-    border: 1px solid #000;
+    border: 1px solid var(--shade-color);
     position: relative; /* För att positionera innehållet */
 }
 
 .grid-item-even {
-    background-color: #f0f0f0;
+    background-color: var(--gray-background-color);
 }
 
 .grid-item-odd {
-    background-color: white;
+    background-color: var(--secondary-color);
 }
 
 .grid-item::before {

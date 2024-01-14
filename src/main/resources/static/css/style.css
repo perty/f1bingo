@@ -1,4 +1,14 @@
+:root {
+    --primary-color: black;
+    --secondary-color: white;
+    --red-background-color: #f11010;
+    --gray-background-color: #f0f0f0;
+    --shade-color: rgba(0, 0, 0, 0.3);
+}
+
 body {
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
     font-family: 'Roboto', sans-serif;
 }
 
@@ -27,7 +37,7 @@ body {
 }
 
 .shadow {
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3),
+    box-shadow: 3px 3px 5px var(--shade-color),
     -1px -1px 2px rgba(255, 255, 255, 0.7);
 }
 
@@ -46,9 +56,9 @@ body {
     font-size: 20px;
     margin: 10px;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--shade-color);
     border-radius: 5px;
-    background-color: #f11010;
+    background-color: var(--red-background-color);
 }
 
 .form-field {
@@ -81,9 +91,9 @@ body {
 .submitButtonRow button {
     font-size: 28px;
     font-style: italic;
-    background-color: #f11010;
+    background-color: var(--red-background-color);
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--shade-color);
 }
 
 .midsection {
@@ -123,8 +133,8 @@ body {
 .footer button {
     font-size: 28px;
     font-style: italic;
-    background-color: #f11010;
+    background-color: var(--red-background-color);
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--shade-color);
     margin: 10px;
 }
