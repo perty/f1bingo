@@ -28,6 +28,11 @@
     padding-top: 10px;
 }
 
+.weekend-header-item-content img {
+    height: 100px;
+    width: auto;
+}
+
 .flag {
     display: flex;
     justify-content: right;
