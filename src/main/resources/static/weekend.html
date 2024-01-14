@@ -17,15 +17,16 @@
         <div class="weekend-header-item">
             <div class="small-logo">
                 <a href="/" title="Gå till första sidan"><img src="images/logo.png" alt="logotype"></a>
-                <h2>Bingo</h2>
+                <div class="flag">
+                    <img src="images/flag/track1.png" alt="country flag" id="flagImage">
+                </div>
             </div>
             <div id="fanName"></div>
         </div>
         <div class="weekend-header-item">
-            <div class="flag">&#127937</div>
-        </div>
-        <div class="weekend-header-item">
-            <img src="images/track/track1.png" alt="track layout">
+            <div class="weekend-header-item-content">
+                <img src="images/track/track1.png" alt="track layout" id="trackImage">
+            </div>
         </div>
     </div>
 
@@ -52,6 +53,8 @@
     function displayBingoCards(data) {
         document.getElementById('fanName').textContent = data.fanName;
         document.getElementById('raceWeekendName').textContent = data.raceWeekendName;
+        document.getElementById('flagImage').src = 'images/flag/' + data.country + '.png';
+        document.getElementById('trackImage').src = 'images/track/' + data.track + '.png';
 
         const container = document.getElementById('bingoCardsContainer');
         container.innerHTML = '';
@@ -110,7 +113,7 @@
                         '/fan/' + encodeURIComponent(fanId) +
                         '/click', {
                         method: 'POST',
-                        body: JSON.stringify({ cellId: cellData.id }),
+                        body: JSON.stringify({cellId: cellData.id}),
                         headers: {
                             'Content-Type': 'application/json'
                         }

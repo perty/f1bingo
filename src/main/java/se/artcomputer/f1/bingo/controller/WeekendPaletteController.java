@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import se.artcomputer.f1.bingo.domain.WeekendPaletteService;
 import se.artcomputer.f1.bingo.entity.BingoCard;
 import se.artcomputer.f1.bingo.entity.BingoCardStatement;
+import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import se.artcomputer.f1.bingo.entity.WeekendPalette;
 
 @RequestMapping("palette")
@@ -28,11 +29,16 @@ public class WeekendPaletteController {
     }
 
     private WeekendPaletteDto toDto(WeekendPalette weekendPalette) {
+        RaceWeekend raceWeekend = weekendPalette.getRaceWeekend();
         return new WeekendPaletteDto(
                 weekendPalette.getFan().getId(),
                 weekendPalette.getFan().getName(),
-                weekendPalette.getRaceWeekend().getId(),
-                weekendPalette.getRaceWeekend().getName(),
+                raceWeekend.getId(),
+                raceWeekend.getName(),
+                raceWeekend.getStartDate(),
+                raceWeekend.getEndDate(),
+                raceWeekend.getCountry(),
+                raceWeekend.getTrack(),
                 weekendPalette.getBingoCards().stream().map(this::toDto).toList()
         );
     }
