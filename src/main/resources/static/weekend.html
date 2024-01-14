@@ -4,29 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Visa WeekendPalette</title>
-    <style>
-        table {
-            width: 50%;
-            border-collapse: collapse;
-        }
-
-        td {
-            border: 1px solid black;
-            height: 50px;
-            text-align: center;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bingo.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-<div>
-    Bingobrickor för:
-    <span id="fanName"></span>
+<div class="container">
+    <div>
+        Bingobrickor för:
+        <span id="fanName"></span>
+    </div>
+    <div>
+        Helg:
+        <span id="raceWeekendName"></span>
+    </div>
+    <div id="bingoCardsContainer"></div>
 </div>
-<div>
-    Helg:
-    <span id="raceWeekendName"></span>
-</div>
-<div id="bingoCardsContainer"></div>
 <script>
     function fetchBingoCards() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -44,6 +37,7 @@
                 console.error('Error:', error);
             });
     }
+
     function displayBingoCards(data) {
         document.getElementById('fanName').textContent = data.fanName;
         document.getElementById('raceWeekendName').textContent = data.raceWeekendName;
@@ -51,8 +45,9 @@
         const container = document.getElementById('bingoCardsContainer');
         container.innerHTML = '';
 
-        data.bingoCards.forEach(function(card) {
+        data.bingoCards.forEach(function (card) {
             const cardDiv = document.createElement('div');
+            cardDiv.classList.add('bingo-card');
             cardDiv.appendChild(document.createTextNode('Session: ' + card.session));
             cardDiv.appendChild(createBingoCard(card));
             container.appendChild(cardDiv);
@@ -60,20 +55,28 @@
     }
 
     function createBingoCard(bingoCardData) {
-        const table = document.createElement('table');
-        for (let i = 0; i < 4; i++) { // 4 rader
-            const tr = document.createElement('tr');
-            for (let j = 0; j < 3; j++) { // 3 kolumner
-                const td = document.createElement('td');
-                const cell = bingoCardData.list.find(item => item.row === i && item.column === j);
-                if (cell) {
-                    td.textContent = cell.text;
+        const grid = document.createElement('div');
+        grid.classList.add('grid');
+        for (let row = 0; row < 4; row++) {
+            for (let col = 0; col < 4; col++) {
+                const bingoCell = document.createElement('div');
+                bingoCell.classList.add('grid-item');
+                if (row % 2 === 0) {
+                    bingoCell.classList.add('grid-item-even');
+                } else {
+                    bingoCell.classList.add('grid-item-odd');
                 }
-                tr.appendChild(td);
+                const cellData = bingoCardData.list.find(item => item.row === row && item.column === col);
+                if (cellData) {
+                    const cellContent = document.createElement('div');
+                    cellContent.classList.add('grid-item-content');
+                    cellContent.appendChild(document.createTextNode(cellData.text));
+                    bingoCell.appendChild(cellContent);
+                }
+                grid.appendChild(bingoCell);
             }
-            table.appendChild(tr);
         }
-        return table;
+        return grid;
     }
 
     // Kalla på funktionen när sidan laddas

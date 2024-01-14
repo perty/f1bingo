@@ -1,0 +1,42 @@
+.bingo-card {
+    margin-bottom: 20px;
+}
+
+.bingo-card h2 {
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Skapar 4 kolumner */
+    grid-gap: 0; /* Mellanrum mellan rutorna */
+}
+
+.grid-item {
+    border: 1px solid #000;
+    position: relative; /* För att positionera innehållet */
+}
+
+.grid-item-even {
+    background-color: #f0f0f0;
+}
+
+.grid-item-odd {
+    background-color: white;
+}
+
+.grid-item::before {
+    content: '';
+    display: block;
+    padding-top: 100%; /* Nyckeln till att skapa kvadrater */
+}
+
+.grid-item-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 5px;
+
+}
