@@ -10,18 +10,56 @@
     color: var(--secondary-color);
 }
 
+.weekend-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 0;
+    border-radius: 5px;
+    background-color: var(--red-background-color);
+}
+
+.weekend-header-item {
+    position: relative;
+}
+
+.small-logo {
+    display: flex;
+    flex-direction: row;
+}
+
+.small-logo img {
+    height: 60px;
+    margin: 5px;
+}
+
+.small-logo h2 {
+    margin-left: 10px;
+}
+
+#fanName {
+    text-align: center;
+    font-size: 18px;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
 .session {
     font-size: 18px;
     text-align: center;
     padding: 5px;
     border: 1px solid var(--shade-color);
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
     background-color: var(--primary-color);
     color: var(--secondary-color);
 }
 
 .bingo-card {
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .bingo-card h2 {
