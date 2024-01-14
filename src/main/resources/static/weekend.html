@@ -100,6 +100,7 @@
                 if (cellData) {
                     const cellContent = document.createElement('div');
                     cellContent.classList.add('grid-item-content');
+                    cellContent.classList.add(classDependingOnChecked(cellData.checked));
                     cellContent.appendChild(document.createTextNode(cellData.text));
                     bingoCell.appendChild(cellContent);
                 }
@@ -107,6 +108,19 @@
             }
         }
         return grid;
+    }
+
+    function classDependingOnChecked(checked) {
+        console.log(checked);
+        switch (checked) {
+            case 'POSSIBLE':
+                return "neutral";
+            case 'IMPOSSIBLE':
+                return "red";
+            case 'HAPPENED':
+                return "green";
+        }
+        return "xxx";
     }
 
     // Kalla på funktionen när sidan laddas

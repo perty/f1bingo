@@ -1,6 +1,7 @@
 package se.artcomputer.f1.bingo.entity;
 
 import jakarta.persistence.*;
+import se.artcomputer.f1.bingo.domain.CheckState;
 
 @Entity
 @Table(name = "bingo_card_statement")
@@ -22,6 +23,10 @@ public class BingoCardStatement {
 
     @Column(name = "col")
     private int col;
+
+    @Column(name = "checked")
+    @Enumerated(EnumType.STRING)
+    private CheckState checked;
 
     public Long getId() {
         return id;
@@ -61,6 +66,14 @@ public class BingoCardStatement {
 
     public void setColumn(int column) {
         this.col = column;
+    }
+
+    public CheckState getChecked() {
+        return checked;
+    }
+
+    public void setChecked(CheckState checked) {
+        this.checked = checked;
     }
 }
 

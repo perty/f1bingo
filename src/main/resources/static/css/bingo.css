@@ -105,5 +105,16 @@
     bottom: 0;
     right: 0;
     padding: 5px;
+}
 
+.grid-item-content.neutral {
+    border: 5px;
+}
+
+.grid-item-content.red {
+    border: solid 5px var(--red-background-color);
+}
+
+.grid-item-content.green {
+    border: solid 5px var(--green-background-color);
 }
