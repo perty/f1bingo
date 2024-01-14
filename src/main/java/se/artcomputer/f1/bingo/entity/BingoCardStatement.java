@@ -26,7 +26,7 @@ public class BingoCardStatement {
 
     @Column(name = "checked")
     @Enumerated(EnumType.STRING)
-    private CheckState checked;
+    private CheckState checked = CheckState.POSSIBLE;
 
     public Long getId() {
         return id;
