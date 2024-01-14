@@ -10,14 +10,14 @@
 </head>
 <body>
 <div class="container">
+    <div class="weekend-title">
+        <span id="raceWeekendName"></span>
+    </div>
     <div>
         Bingobrickor för:
         <span id="fanName"></span>
     </div>
-    <div>
-        Helg:
-        <span id="raceWeekendName"></span>
-    </div>
+
     <div id="bingoCardsContainer"></div>
 </div>
 <script>
@@ -48,10 +48,29 @@
         data.bingoCards.forEach(function (card) {
             const cardDiv = document.createElement('div');
             cardDiv.classList.add('bingo-card');
-            cardDiv.appendChild(document.createTextNode('Session: ' + card.session));
+            const session = document.createElement('div');
+            session.classList.add('session');
+            session.appendChild(document.createTextNode(sessionName(card.session)));
+            cardDiv.appendChild(session);
             cardDiv.appendChild(createBingoCard(card));
             container.appendChild(cardDiv);
         });
+    }
+
+    function sessionName(sessionType) {
+        // Translate session type to Swedish
+        switch (sessionType) {
+            case 'QUALIFYING':
+                return 'Kval';
+            case 'RACE':
+                return 'Race';
+            case 'SPRINT_RACE':
+                return 'Sprint';
+            case 'SPRINT_SHOOTOUT':
+                return 'Sprintkval';
+            default:
+                return sessionType;
+        }
     }
 
     function createBingoCard(bingoCardData) {
