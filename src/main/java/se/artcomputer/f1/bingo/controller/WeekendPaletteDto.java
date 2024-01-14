@@ -1,11 +1,11 @@
 package se.artcomputer.f1.bingo.controller;
 
-import se.artcomputer.f1.bingo.entity.BingoCard;
-
 import java.util.List;
 
 public record WeekendPaletteDto(
+        Long fanId,
         String fanName,
+        Long weekendId,
         String raceWeekendName,
         List<BingoCardDto> bingoCards
 ) {

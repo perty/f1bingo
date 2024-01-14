@@ -3,6 +3,7 @@ package se.artcomputer.f1.bingo.domain;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.artcomputer.f1.bingo.entity.*;
+import se.artcomputer.f1.bingo.repository.BingoCardStatementRepository;
 import se.artcomputer.f1.bingo.repository.StatementRepository;
 
 import java.util.ArrayList;
@@ -13,9 +14,11 @@ import java.util.Optional;
 public class BingoCardService {
 
     private final StatementRepository statementRepository;
+    private final BingoCardStatementRepository bingoCardStatementRepository;
 
-    public BingoCardService(StatementRepository statementRepository) {
+    public BingoCardService(StatementRepository statementRepository, BingoCardStatementRepository bingoCardStatementRepository) {
         this.statementRepository = statementRepository;
+        this.bingoCardStatementRepository = bingoCardStatementRepository;
     }
 
     @Transactional
@@ -24,6 +27,16 @@ public class BingoCardService {
             case CLASSIC -> createBingoCardsClassic(weekendPalette);
             case SPRINT -> createBingoCardsSprint(weekendPalette);
         };
+    }
+
+    public void click(long cellId) {
+        BingoCardStatement bingoCardStatement = bingoCardStatementRepository.findById(cellId).orElseThrow();
+        bingoCardStatement.setChecked(switch (bingoCardStatement.getChecked()) {
+            case POSSIBLE -> CheckState.HAPPENED;
+            case HAPPENED -> CheckState.IMPOSSIBLE;
+            case IMPOSSIBLE -> CheckState.POSSIBLE;
+        });
+        bingoCardStatementRepository.save(bingoCardStatement);
     }
 
     private List<BingoCard> createBingoCardsClassic(WeekendPalette weekendPalette) {

@@ -1,7 +1,6 @@
 package se.artcomputer.f1.bingo.domain;
 
 import org.springframework.stereotype.Service;
-import se.artcomputer.f1.bingo.controller.WeekendPaletteDto;
 import se.artcomputer.f1.bingo.entity.Fan;
 import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import se.artcomputer.f1.bingo.entity.WeekendPalette;
@@ -31,10 +30,7 @@ public class WeekendPaletteService {
         RaceWeekend raceWeekend = raceWeekendRepository.findById(weekendId).orElseThrow(() -> new NotFoundException("Weekend"));
         Fan fan = fanRepository.findById(fanId).orElseThrow(() -> new NotFoundException("Fan"));
         Optional<WeekendPalette> byRaceWeekendAndFan = weekendPaletteRepository.findByRaceWeekendAndFan(raceWeekend, fan);
-        if(byRaceWeekendAndFan.isPresent()) {
-            return byRaceWeekendAndFan.get();
-        }
-        return generateWeekendPalette(raceWeekend, fan);
+        return byRaceWeekendAndFan.orElseGet(() -> generateWeekendPalette(raceWeekend, fan));
     }
 
     private WeekendPalette generateWeekendPalette(RaceWeekend raceWeekend, Fan fan) {
@@ -43,5 +39,9 @@ public class WeekendPaletteService {
         weekendPalette.setFan(fan);
         weekendPalette.setBingoCards(bingoCardService.createBingoCards(weekendPalette, raceWeekend));
         return weekendPaletteRepository.save(weekendPalette);
+    }
+
+    public void click(int cellId) {
+        bingoCardService.click(cellId);
     }
 }

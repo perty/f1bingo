@@ -1,9 +1,6 @@
 package se.artcomputer.f1.bingo.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.artcomputer.f1.bingo.domain.WeekendPaletteService;
 import se.artcomputer.f1.bingo.entity.BingoCard;
 import se.artcomputer.f1.bingo.entity.BingoCardStatement;
@@ -23,10 +20,18 @@ public class WeekendPaletteController {
     public WeekendPaletteDto getWeekendPalette(@PathVariable Long weekendId, @PathVariable Long fanId) {
         return toDto(weekendPaletteService.getWeekendPalette(weekendId, fanId));
     }
+    @PostMapping("/weekend/{weekendId}/fan/{fanId}/click")
+    public WeekendPaletteDto postClick(@PathVariable Long weekendId, @PathVariable Long fanId,
+                                       @RequestBody ClickRequest clickRequest) {
+        weekendPaletteService.click(clickRequest.cellId());
+        return toDto(weekendPaletteService.getWeekendPalette(weekendId, fanId));
+    }
 
     private WeekendPaletteDto toDto(WeekendPalette weekendPalette) {
         return new WeekendPaletteDto(
+                weekendPalette.getFan().getId(),
                 weekendPalette.getFan().getName(),
+                weekendPalette.getRaceWeekend().getId(),
                 weekendPalette.getRaceWeekend().getName(),
                 weekendPalette.getBingoCards().stream().map(this::toDto).toList()
         );
@@ -41,6 +46,7 @@ public class WeekendPaletteController {
 
     private BingoCardStatementDto toDto(BingoCardStatement bingoCardStatement) {
         return new BingoCardStatementDto(
+                bingoCardStatement.getId(),
                 bingoCardStatement.getRow(),
                 bingoCardStatement.getColumn(),
                 bingoCardStatement.getStatement().getText(),

@@ -63,7 +63,7 @@
             session.classList.add('session');
             session.appendChild(document.createTextNode(sessionName(card.session)));
             cardDiv.appendChild(session);
-            cardDiv.appendChild(createBingoCard(card));
+            cardDiv.appendChild(createBingoCard(card, data.weekendId, data.fanId));
             container.appendChild(cardDiv);
         });
     }
@@ -84,7 +84,7 @@
         }
     }
 
-    function createBingoCard(bingoCardData) {
+    function createBingoCard(bingoCardData, weekendId, fanId) {
         const grid = document.createElement('div');
         grid.classList.add('grid');
         for (let row = 0; row < 4; row++) {
@@ -105,13 +105,29 @@
                     bingoCell.appendChild(cellContent);
                 }
                 grid.appendChild(bingoCell);
+                bingoCell.addEventListener('click', function () {
+                    fetch('/palette/weekend/' + encodeURIComponent(weekendId) +
+                        '/fan/' + encodeURIComponent(fanId) +
+                        '/click', {
+                        method: 'POST',
+                        body: JSON.stringify({ cellId: cellData.id }),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(function (response) {
+                        return response.json();
+                    }).then(function (data) {
+                        displayBingoCards(data);
+                    }).catch(function (error) {
+                        console.error('Error:', error);
+                    });
+                });
             }
         }
         return grid;
     }
 
     function classDependingOnChecked(checked) {
-        console.log(checked);
         switch (checked) {
             case 'POSSIBLE':
                 return "neutral";
