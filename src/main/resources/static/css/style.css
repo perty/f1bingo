@@ -14,8 +14,9 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 600px;
     margin: 0 auto;
+    font-size: 14px;
 }
 
 .header {
@@ -25,10 +26,8 @@ body {
     padding: 10px;
 }
 
-.logo, .title {
+.logo {
     flex: 1; /* Ger lika mycket utrymme till logotypen och titeln */
-    align-items: center;
-    justify-content: center;
 }
 
 /* Ytterligare styling kan läggas till här för att anpassa utseendet */
@@ -43,9 +42,13 @@ body {
 }
 
 .title {
+    display: flex;
+    flex: 1; /* Ger lika mycket utrymme till logotypen och titeln */
+    align-items: center;
+    justify-content: center;
     text-align: center;
     font-size: 28px;
-    font-style: italic;
+    font-style: normal;
     padding: 10px;
     margin-bottom: 5px;
     margin-left: 2px;
