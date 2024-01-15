@@ -52,4 +52,28 @@ public class Statement {
     public void setText(String text) {
         this.text = text;
     }
+
+    public StatementCategory getCategory() {
+        return category;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public boolean isRace() {
+        return race;
+    }
+
+    public boolean isQualifying() {
+        return qualifying;
+    }
+
+    public boolean isSprintShootout() {
+        return sprintShootout;
+    }
+
+    public boolean isSprintRace() {
+        return sprintRace;
+    }
 }
