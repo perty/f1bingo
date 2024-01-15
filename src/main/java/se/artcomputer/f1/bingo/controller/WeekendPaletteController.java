@@ -56,7 +56,8 @@ public class WeekendPaletteController {
                 bingoCardStatement.getRow(),
                 bingoCardStatement.getColumn(),
                 bingoCardStatement.getStatement().getText(),
-                bingoCardStatement.getChecked()
+                bingoCardStatement.getChecked(),
+                bingoCardStatement.bingo
         );
     }
 }

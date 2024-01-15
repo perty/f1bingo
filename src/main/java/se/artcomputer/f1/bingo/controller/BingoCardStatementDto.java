@@ -6,4 +6,5 @@ public record BingoCardStatementDto(long id,
                                     int row,
                                     int column,
                                     String text,
-                                    CheckState checked) {}
+                                    CheckState checked,
+                                    boolean bingo) {}

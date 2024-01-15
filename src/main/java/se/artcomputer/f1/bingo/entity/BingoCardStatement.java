@@ -28,6 +28,8 @@ public class BingoCardStatement {
     @Enumerated(EnumType.STRING)
     private CheckState checked = CheckState.POSSIBLE;
 
+    public transient boolean bingo = false;
+
     public Long getId() {
         return id;
     }

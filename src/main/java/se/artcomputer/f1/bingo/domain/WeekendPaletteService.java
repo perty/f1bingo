@@ -30,7 +30,13 @@ public class WeekendPaletteService {
         RaceWeekend raceWeekend = raceWeekendRepository.findById(weekendId).orElseThrow(() -> new NotFoundException("Weekend"));
         Fan fan = fanRepository.findById(fanId).orElseThrow(() -> new NotFoundException("Fan"));
         Optional<WeekendPalette> byRaceWeekendAndFan = weekendPaletteRepository.findByRaceWeekendAndFan(raceWeekend, fan);
-        return byRaceWeekendAndFan.orElseGet(() -> generateWeekendPalette(raceWeekend, fan));
+        WeekendPalette weekendPalette = byRaceWeekendAndFan.orElseGet(() -> generateWeekendPalette(raceWeekend, fan));
+        checkBingo(weekendPalette);
+        return weekendPalette;
+    }
+
+    private void checkBingo(WeekendPalette weekendPalette) {
+        bingoCardService.checkBingo(weekendPalette.getBingoCards());
     }
 
     private WeekendPalette generateWeekendPalette(RaceWeekend raceWeekend, Fan fan) {

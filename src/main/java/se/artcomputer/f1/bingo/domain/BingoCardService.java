@@ -9,6 +9,7 @@ import se.artcomputer.f1.bingo.repository.StatementRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class BingoCardService {
@@ -101,5 +102,47 @@ public class BingoCardService {
             return selectRandom(allStatements, takenStatements);
         }
         return Optional.of(selectedStatement);
+    }
+
+    public void checkBingo(List<BingoCard> bingoCards) {
+        for (BingoCard bingoCard : bingoCards) {
+            checkBingo(bingoCard);
+        }
+    }
+
+    private void checkBingo(BingoCard bingoCard) {
+        Set<BingoCardStatement> bingoCardStatements = bingoCard.getBingoCardStatements();
+        for (int row = 0; row < BingoCard.ROWS; row++) {
+            int finalRow = row;
+            List<BingoCardStatement> list = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() == finalRow).toList();
+            if (checkRow(list)) {
+                setBingo(list);
+            }
+        }
+        for (int column = 0; column < BingoCard.COLS; column++) {
+            int finalColumn = column;
+            List<BingoCardStatement> list = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getColumn() == finalColumn).toList();
+            if (checkRow(list)) {
+                setBingo(list);
+            }
+        }
+        List<BingoCardStatement> diagDownRight = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() == bingoCardStatement.getColumn()).toList();
+        if (checkRow(diagDownRight)) {
+            setBingo(diagDownRight);
+        }
+        List<BingoCardStatement> diagUpLeft = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() + bingoCardStatement.getColumn() == BingoCard.COLS - 1).toList();
+        if (checkRow(diagUpLeft)) {
+            setBingo(diagUpLeft);
+        }
+    }
+
+    private boolean checkRow(List<BingoCardStatement> list) {
+        return list.stream().allMatch(bingoCardStatement -> bingoCardStatement.getChecked() == CheckState.HAPPENED);
+    }
+
+    private void setBingo(List<BingoCardStatement> list) {
+        for (BingoCardStatement bingoCardStatement : list) {
+            bingoCardStatement.bingo = true;
+        }
     }
 }

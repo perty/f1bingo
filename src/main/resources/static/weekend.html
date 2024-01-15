@@ -101,6 +101,9 @@
                 }
                 const cellData = bingoCardData.list.find(item => item.row === row && item.column === col);
                 if (cellData) {
+                    if(cellData.bingo) {
+                        bingoCell.classList.add('bingo');
+                    }
                     const cellContent = document.createElement('div');
                     cellContent.classList.add('grid-item-content');
                     cellContent.classList.add(classDependingOnChecked(cellData.checked));
