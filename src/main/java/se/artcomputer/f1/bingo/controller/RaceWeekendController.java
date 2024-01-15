@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import se.artcomputer.f1.bingo.domain.RaceService;
 import se.artcomputer.f1.bingo.entity.RaceWeekend;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @RestController
@@ -16,12 +18,12 @@ import java.util.List;
 public class RaceWeekendController {
 
     private final RaceService raceService;
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM");
 
     public RaceWeekendController(RaceService raceService) {
         this.raceService = raceService;
     }
 
-    // Get list of race weekends.
     @GetMapping
     public List<RaceWeekendDto> races() {
         List<RaceWeekend> races = raceService.getRaceWeekends();
@@ -29,6 +31,9 @@ public class RaceWeekendController {
     }
 
     private RaceWeekendDto toDto(RaceWeekend raceWeekend) {
-        return new RaceWeekendDto(raceWeekend.getId(), raceWeekend.getName());
+        return new RaceWeekendDto(raceWeekend.getId(), "%s %s - %s".formatted(
+                raceWeekend.getName(),
+                formatter.format(raceWeekend.getStartDate()),
+                formatter.format(raceWeekend.getEndDate())));
     }
 }

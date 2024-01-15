@@ -1,5 +1,6 @@
 package se.artcomputer.f1.bingo.domain;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
@@ -15,6 +16,6 @@ public class RaceService {
     }
 
     public List<RaceWeekend> getRaceWeekends() {
-        return raceWeekendRepository.findAll();
+        return raceWeekendRepository.findAll(Sort.by("startDate"));
     }
 }
