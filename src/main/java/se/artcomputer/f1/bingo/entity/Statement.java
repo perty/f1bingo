@@ -1,6 +1,7 @@
 package se.artcomputer.f1.bingo.entity;
 
 import jakarta.persistence.*;
+import se.artcomputer.f1.bingo.domain.StatementCategory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,13 @@ public class Statement {
 
     @OneToMany(mappedBy = "statement", cascade = CascadeType.ALL)
     private Set<BingoCardStatement> bingoCards = new HashSet<>();
+
+    @Column(name = "category")
+    @Enumerated(EnumType.STRING)
+    private StatementCategory category;
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @Column(name = "race")
     private boolean race;
