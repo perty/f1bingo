@@ -3,11 +3,14 @@ package se.artcomputer.f1.bingo.entity;
 import jakarta.persistence.*;
 import se.artcomputer.f1.bingo.domain.RaceWeekendType;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
 @Table(name = "race_weekend")
 public class RaceWeekend {
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -85,5 +88,12 @@ public class RaceWeekend {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String nameWithDates() {
+        return "%s %s - %s".formatted(
+                getName(),
+                formatter.format(getStartDate()),
+                formatter.format(getEndDate()));
     }
 }

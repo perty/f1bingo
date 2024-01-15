@@ -34,7 +34,7 @@ public class WeekendPaletteController {
                 weekendPalette.getFan().getId(),
                 weekendPalette.getFan().getName(),
                 raceWeekend.getId(),
-                raceWeekend.getName(),
+                raceWeekend.nameWithDates(),
                 raceWeekend.getStartDate(),
                 raceWeekend.getEndDate(),
                 raceWeekend.getCountry(),
