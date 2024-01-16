@@ -116,6 +116,9 @@
 }
 
 .grid-item-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
     position: absolute;
     top: 0;
     left: 0;
