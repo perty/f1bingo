@@ -5,8 +5,11 @@ import se.artcomputer.f1.bingo.entity.Fan;
 import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import se.artcomputer.f1.bingo.entity.WeekendPalette;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface WeekendPaletteRepository extends JpaRepository<WeekendPalette, Long>  {
     Optional<WeekendPalette> findByRaceWeekendAndFan(RaceWeekend weekendId, Fan fan);
+
+    List<WeekendPalette> findByRaceWeekend(RaceWeekend raceWeekend);
 }

@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.artcomputer.f1.bingo.entity.*;
 import se.artcomputer.f1.bingo.repository.BingoCardStatementRepository;
+import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
 import se.artcomputer.f1.bingo.repository.StatementRepository;
+import se.artcomputer.f1.bingo.repository.WeekendPaletteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +18,17 @@ public class BingoCardService {
 
     private final StatementRepository statementRepository;
     private final BingoCardStatementRepository bingoCardStatementRepository;
+    private final RaceWeekendRepository raceWeekendRepository;
+    private final WeekendPaletteRepository weekendPaletteRepository;
 
-    public BingoCardService(StatementRepository statementRepository, BingoCardStatementRepository bingoCardStatementRepository) {
+    public BingoCardService(StatementRepository statementRepository,
+                            BingoCardStatementRepository bingoCardStatementRepository,
+                            RaceWeekendRepository raceWeekendRepository,
+                            WeekendPaletteRepository weekendPaletteRepository) {
         this.statementRepository = statementRepository;
         this.bingoCardStatementRepository = bingoCardStatementRepository;
+        this.raceWeekendRepository = raceWeekendRepository;
+        this.weekendPaletteRepository = weekendPaletteRepository;
     }
 
     @Transactional
@@ -108,6 +117,15 @@ public class BingoCardService {
         for (BingoCard bingoCard : bingoCards) {
             checkBingo(bingoCard);
         }
+    }
+
+    public List<BingoCardStatement> getStatementsForWeekend(Long weekendId, Session session) {
+        RaceWeekend raceWeekend = raceWeekendRepository.findById(weekendId).orElseThrow();
+        return weekendPaletteRepository.findByRaceWeekend(raceWeekend).stream()
+                .flatMap(wc -> wc.getBingoCards().stream()
+                        .filter(bingoCard -> bingoCard.getSession() == session))
+                .flatMap(bingoCard -> bingoCard.getBingoCardStatements().stream()
+                        .filter(bcs -> bcs.getChecked() == CheckState.HAPPENED)).toList();
     }
 
     private void checkBingo(BingoCard bingoCard) {

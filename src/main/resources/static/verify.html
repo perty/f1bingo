@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Rätta</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/verify.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <p>Rätta</p>
+        </div>
+    </div>
+    <div class="verify-form-card shadow">
+        <form id="select-gp-form">
+            <div class="form-field">
+                <label for="weekend">GP:</label>
+                <select id="weekend" name="weekend" required>
+                    <option value="">Välj ett GP...</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label for="session">Session:</label>
+                <select id="session">
+                    <option value="">Välj en session...</option>
+                    <option value="QUALIFYING">Kval</option>
+                    <option value="RACE">Race</option>
+                    <option value="SPRINT_RACE">Sprintrace</option>
+                    <option value="SPRINT_SHOOTOUT">Sprintkval</option>
+                </select>
+            </div>
+            <div class="submitButtonRow">
+                <button class="small-button" type="submit">Rätta</button>
+            </div>
+        </form>
+    </div>
+    <div id="close-session" style="display: none">
+        <form class="verify-form-card">
+            <table>
+                <thead>
+                <tr>
+                    <th>Påstående som någon anser inträffat</th>
+                    <th>Domarens bedömning</th>
+                </tr>
+                </thead>
+                <tbody id="statements-table">
+
+                </tbody>
+            </table>
+            <div class="submitButtonRow" >
+                <button class="small-button" type="submit">Stäng sessionen</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function fetchRaceWeekends() {
+        fetch('/weekend')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                const select = document.getElementById('weekend');
+                data.forEach(function (weekend) {
+                    const option = document.createElement('option');
+                    option.value = weekend.id;
+                    option.textContent = weekend.name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    }
+
+    fetchRaceWeekends();
+</script>
+<script>
+    document.getElementById('select-gp-form').onsubmit = function (event) {
+        event.preventDefault();
+        const weekendId = document.getElementById('weekend').value;
+        const session = document.getElementById('session').value;
+        const url = '/verify/weekend/' + encodeURIComponent(weekendId) + '/session/' + encodeURIComponent(session);
+        fetch(url)
+            .then(response => response.json())
+            .then(statements => {
+                document.getElementById('close-session').style.display = 'flex';
+                const tableBody = document.getElementById('statements-table');
+                tableBody.innerHTML = ''; // Rensa befintliga element
+                statements.forEach(statement => {
+                        const row = document.createElement('tr');
+                        const statementCell = document.createElement('td');
+                        statementCell.textContent = statement.text;
+                        row.appendChild(statementCell);
+                        const verdictCell = document.createElement('td');
+                        const check = document.createElement('input');
+                        check.type = 'checkbox';
+                        check.checked = true;
+                        verdictCell.appendChild(check)
+                        row.appendChild(verdictCell);
+                        tableBody.appendChild(row);
+                    }
+                );
+            })
+            .catch(error => console.error('Error:', error));
+    };
+</script>
+</body>
+</html>
