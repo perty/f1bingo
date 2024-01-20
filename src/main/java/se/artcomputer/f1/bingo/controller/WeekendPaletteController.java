@@ -1,20 +1,22 @@
 package se.artcomputer.f1.bingo.controller;
 
 import org.springframework.web.bind.annotation.*;
+import se.artcomputer.f1.bingo.domain.VerifyService;
 import se.artcomputer.f1.bingo.domain.WeekendPaletteService;
-import se.artcomputer.f1.bingo.entity.BingoCard;
-import se.artcomputer.f1.bingo.entity.BingoCardStatement;
-import se.artcomputer.f1.bingo.entity.RaceWeekend;
-import se.artcomputer.f1.bingo.entity.WeekendPalette;
+import se.artcomputer.f1.bingo.entity.*;
+
+import java.util.Optional;
 
 @RequestMapping("palette")
 @RestController
 public class WeekendPaletteController {
 
     private final WeekendPaletteService weekendPaletteService;
+    private final VerifyService verifyService;
 
-    public WeekendPaletteController(WeekendPaletteService weekendPaletteService) {
+    public WeekendPaletteController(WeekendPaletteService weekendPaletteService, VerifyService verifyService) {
         this.weekendPaletteService = weekendPaletteService;
+        this.verifyService = verifyService;
     }
 
     @GetMapping("/weekend/{weekendId}/fan/{fanId}")
@@ -39,13 +41,15 @@ public class WeekendPaletteController {
                 raceWeekend.getEndDate(),
                 raceWeekend.getCountry(),
                 raceWeekend.getTrack(),
-                weekendPalette.getBingoCards().stream().map(this::toDto).toList()
+                weekendPalette.getBingoCards().stream().map(bingoCard -> toDto(bingoCard, raceWeekend)).toList()
         );
     }
 
-    private BingoCardDto toDto(BingoCard bingoCard) {
+    private BingoCardDto toDto(BingoCard bingoCard, RaceWeekend weekend) {
+        Optional<VerifiedSession> verifiedSession = verifyService.getVerifiedSession(weekend.getId(), bingoCard.getSession().name());
         return new BingoCardDto(
                 bingoCard.getSession().name(),
+                verifiedSession.map(VerifiedSession::getCreated),
                 bingoCard.getBingoCardStatements().stream().map(this::toDto).toList()
         );
     }
