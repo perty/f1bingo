@@ -54,7 +54,7 @@ public class VerifyController {
                 .toList();
         verifyService.closeSession(list, weekendId, session);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(new URI("/verify.html?weekendId=" + weekendId + "&session=" + session.name()));
+        httpHeaders.setLocation(new URI("/verify.html?weekend=" + weekendId + "&session=" + session.name()));
         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
     }
 

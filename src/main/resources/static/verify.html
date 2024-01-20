@@ -63,34 +63,7 @@
     </div>
 </div>
 <script>
-    function fetchRaceWeekends() {
-        fetch('/weekend')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                const select = document.getElementById('weekend');
-                data.forEach(function (weekend) {
-                    const option = document.createElement('option');
-                    option.value = weekend.id;
-                    option.textContent = weekend.name;
-                    select.appendChild(option);
-                });
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-            });
-    }
-
-    fetchRaceWeekends();
-</script>
-<script>
-    document.getElementById('select-gp-form').onsubmit = function (event) {
-        event.preventDefault();
-        const weekendId = document.getElementById('weekend').value;
-        const session = document.getElementById('session').value;
-        document.getElementById('hiddenWeekendId').value = weekendId;
-        document.getElementById('hiddenSessionId').value = session;
+    function fetchStatements(weekendId, session) {
         const url = '/verify/weekend/' + encodeURIComponent(weekendId) + '/session/' + encodeURIComponent(session);
         fetch(url)
             .then(response => response.json())
@@ -116,6 +89,50 @@
                 );
             })
             .catch(error => console.error('Error:', error));
+    }
+</script>
+<script>
+    function fetchRaceWeekends() {
+        fetch('/weekend')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const select = document.getElementById('weekend');
+                data.forEach(function (weekend) {
+                    const option = document.createElement('option');
+                    option.value = weekend.id;
+                    option.textContent = weekend.name;
+                    select.appendChild(option);
+                });
+                const weekendQuery = urlParams.get('weekend');
+                if(weekendQuery) {
+                    select.value = weekendQuery;
+                }
+                const session = document.getElementById('session');
+                const sessionQuery = urlParams.get('session');
+                if(sessionQuery) {
+                    session.value = sessionQuery;
+                }
+                if(weekendQuery && sessionQuery) {
+                    fetchStatements(weekendQuery, sessionQuery);
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    }
+    fetchRaceWeekends();
+</script>
+<script>
+    document.getElementById('select-gp-form').onsubmit = function (event) {
+        event.preventDefault();
+        const weekendId = document.getElementById('weekend').value;
+        const session = document.getElementById('session').value;
+        document.getElementById('hiddenWeekendId').value = weekendId;
+        document.getElementById('hiddenSessionId').value = session;
+        fetchStatements(weekendId, session);
     };
 </script>
 </body>

@@ -20,8 +20,6 @@ public class VerifyService {
     }
 
     public void closeSession(List<VerifiedStatement> verifiedStatements, Long weekendId, Session session) {
-        // Create a new verified session object with a list of verified statements for the given weekend and session.
-        // Save the verified session object to the database.
         VerifiedSession verifiedSession = new VerifiedSession();
         verifiedSession.setWeekendId(weekendId);
         verifiedSession.setSession(session);
