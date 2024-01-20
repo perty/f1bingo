@@ -66,11 +66,12 @@
             session.classList.add('session');
             if(card.statements.length === 0) {
                 session.appendChild(document.createTextNode(sessionName(card.session) + ' avgjord.'));
+                cardDiv.appendChild(session);
             } else {
                 session.appendChild(document.createTextNode(sessionName(card.session)));
+                cardDiv.appendChild(session);
                 cardDiv.appendChild(createBingoCard(card, data.weekendId, data.fanId));
             }
-            cardDiv.appendChild(session);
             container.appendChild(cardDiv);
         });
     }
