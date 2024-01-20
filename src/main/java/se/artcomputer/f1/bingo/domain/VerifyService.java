@@ -2,13 +2,14 @@ package se.artcomputer.f1.bingo.domain;
 
 import org.springframework.stereotype.Service;
 import se.artcomputer.f1.bingo.entity.BingoCardStatement;
+import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import se.artcomputer.f1.bingo.entity.VerifiedSession;
 import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
 import se.artcomputer.f1.bingo.repository.StatementRepository;
 import se.artcomputer.f1.bingo.repository.VerifiedSessionRepository;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VerifyService {
@@ -27,8 +28,14 @@ public class VerifyService {
     }
 
     public List<BingoCardStatement> getCheckStatements(Long weekendId, String sessionName) {
-        Session session = Arrays.stream(Session.values()).filter(s -> s.name().equalsIgnoreCase(sessionName)).findFirst().orElseThrow();
+        Session session = Session.valueOf(sessionName.toUpperCase());
         return bingoCardService.getStatementsForWeekend(weekendId, session);
+    }
+
+    public Optional<VerifiedSession> getVerifiedSession(Long weekendId, String sessionName) {
+        Session session = Session.valueOf(sessionName.toUpperCase());
+        RaceWeekend raceWeekend = raceWeekendRepository.findById(weekendId).orElseThrow();
+        return verifiedSessionRepository.findByRaceWeekendAndSession(raceWeekend, session);
     }
 
     public void closeSession(List<VerifiedStatement> verifiedStatements, Long weekendId, Session session) {

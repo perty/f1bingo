@@ -10,10 +10,13 @@ import se.artcomputer.f1.bingo.domain.VerifiedStatement;
 import se.artcomputer.f1.bingo.domain.VerifyService;
 import se.artcomputer.f1.bingo.entity.BingoCardStatement;
 import se.artcomputer.f1.bingo.entity.Statement;
+import se.artcomputer.f1.bingo.entity.VerifiedSession;
+import se.artcomputer.f1.bingo.entity.VerifiedStatementEntity;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("verify")
@@ -29,9 +32,17 @@ public class VerifyController {
     }
 
     @GetMapping("/weekend/{weekendId}/session/{sessionName}")
-    public List<VerifyDto> getCheckStatements(@PathVariable("weekendId") Long weekendId,
-                                              @PathVariable("sessionName") String sessionName) {
-        return verifyService.getCheckStatements(weekendId, sessionName).stream().map(this::toDto).toList();
+    public CheckStatementsDto getCheckStatements(@PathVariable("weekendId") Long weekendId,
+                                                 @PathVariable("sessionName") String sessionName) {
+
+        Optional<VerifiedSession> verifiedSession = verifyService.getVerifiedSession(weekendId, sessionName);
+        if(verifiedSession.isPresent()) {
+            List<VerifyStatementDto> statements = verifiedSession.get().getStatements().stream().map(this::toDto).toList();
+            return new CheckStatementsDto(statements, verifiedSession.map(VerifiedSession::getCreated));
+        } else {
+            List<VerifyStatementDto> statements = verifyService.getCheckStatements(weekendId, sessionName).stream().map(this::toDto).toList();
+            return new CheckStatementsDto(statements, Optional.empty());
+        }
     }
 
     @PostMapping(path = "/close", consumes = {"application/x-www-form-urlencoded"})
@@ -61,8 +72,13 @@ public class VerifyController {
         return Long.parseLong(key.substring(STATEMENT_ID.length()));
     }
 
-    private VerifyDto toDto(BingoCardStatement bingoCardStatement) {
+    private VerifyStatementDto toDto(BingoCardStatement bingoCardStatement) {
         Statement statement = bingoCardStatement.getStatement();
-        return new VerifyDto(statement.getId(), statement.getText());
+        return new VerifyStatementDto(statement.getId(), statement.getText());
+    }
+
+    private VerifyStatementDto toDto(VerifiedStatementEntity verifiedStatementEntity) {
+        Statement statement = verifiedStatementEntity.getStatement();
+        return new VerifyStatementDto(statement.getId(), statement.getText());
     }
 }

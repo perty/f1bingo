@@ -33,4 +33,8 @@ public class VerifiedStatementEntity {
     public void setStatement(Statement statement) {
         this.statement = statement;
     }
+
+    public Statement getStatement() {
+        return statement;
+    }
 }

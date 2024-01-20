@@ -51,4 +51,12 @@ public class VerifiedSession {
         verifiedStatementEntity.setStatement(statement);
         statements.add(verifiedStatementEntity);
     }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public List<VerifiedStatementEntity> getStatements() {
+        return statements;
+    }
 }
