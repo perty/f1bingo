@@ -42,7 +42,9 @@
         </form>
     </div>
     <div id="close-session" style="display: none">
-        <form class="verify-form-card">
+        <form class="verify-form-card" action="/verify/close" method="post">
+            <input type="hidden" name="weekendId" id="hiddenWeekendId"/>
+            <input type="hidden" name="session" id="hiddenSessionId"/>
             <table>
                 <thead>
                 <tr>
@@ -87,6 +89,8 @@
         event.preventDefault();
         const weekendId = document.getElementById('weekend').value;
         const session = document.getElementById('session').value;
+        document.getElementById('hiddenWeekendId').value = weekendId;
+        document.getElementById('hiddenSessionId').value = session;
         const url = '/verify/weekend/' + encodeURIComponent(weekendId) + '/session/' + encodeURIComponent(session);
         fetch(url)
             .then(response => response.json())
@@ -103,6 +107,8 @@
                         const check = document.createElement('input');
                         check.type = 'checkbox';
                         check.checked = true;
+                        check.id = statement.id;
+                        check.name = "statementId" + statement.id;
                         verdictCell.appendChild(check)
                         row.appendChild(verdictCell);
                         tableBody.appendChild(row);

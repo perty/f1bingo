@@ -18,4 +18,17 @@ public class VerifyService {
         Session session = Arrays.stream(Session.values()).filter(s -> s.name().equalsIgnoreCase(sessionName)).findFirst().orElseThrow();
         return bingoCardService.getStatementsForWeekend(weekendId, session);
     }
+
+    public void closeSession(List<VerifiedStatement> verifiedStatements, Long weekendId, Session session) {
+        // Create a new verified session object with a list of verified statements for the given weekend and session.
+        // Save the verified session object to the database.
+        VerifiedSession verifiedSession = new VerifiedSession();
+        verifiedSession.setWeekendId(weekendId);
+        verifiedSession.setSession(session);
+        for (VerifiedStatement verifiedStatement : verifiedStatements) {
+            if (verifiedStatement.verified()) {
+                verifiedSession.add(verifiedStatement.id());
+            }
+        }
+    }
 }
