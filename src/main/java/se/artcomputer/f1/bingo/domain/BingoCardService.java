@@ -3,15 +3,9 @@ package se.artcomputer.f1.bingo.domain;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.artcomputer.f1.bingo.entity.*;
-import se.artcomputer.f1.bingo.repository.BingoCardStatementRepository;
-import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
-import se.artcomputer.f1.bingo.repository.StatementRepository;
-import se.artcomputer.f1.bingo.repository.WeekendPaletteRepository;
+import se.artcomputer.f1.bingo.repository.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BingoCardService {
@@ -20,15 +14,18 @@ public class BingoCardService {
     private final BingoCardStatementRepository bingoCardStatementRepository;
     private final RaceWeekendRepository raceWeekendRepository;
     private final WeekendPaletteRepository weekendPaletteRepository;
+    private final VerifiedSessionRepository verifiedSessionRepository;
 
     public BingoCardService(StatementRepository statementRepository,
                             BingoCardStatementRepository bingoCardStatementRepository,
                             RaceWeekendRepository raceWeekendRepository,
-                            WeekendPaletteRepository weekendPaletteRepository) {
+                            WeekendPaletteRepository weekendPaletteRepository,
+                            VerifiedSessionRepository verifiedSessionRepository) {
         this.statementRepository = statementRepository;
         this.bingoCardStatementRepository = bingoCardStatementRepository;
         this.raceWeekendRepository = raceWeekendRepository;
         this.weekendPaletteRepository = weekendPaletteRepository;
+        this.verifiedSessionRepository = verifiedSessionRepository;
     }
 
     @Transactional
@@ -64,10 +61,19 @@ public class BingoCardService {
     }
 
     private BingoCard createBingoCard(WeekendPalette weekendPalette, Session session) {
+        RaceWeekend raceWeekend = weekendPalette.getRaceWeekend();
+        List<Statement> verifiedStatements = verifiedSessionRepository.findByRaceWeekendAndSession(raceWeekend, session)
+                .map(VerifiedSession::getStatements)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(VerifiedStatementEntity::getStatement)
+                .toList();
         BingoCard bingoCard = new BingoCard();
         bingoCard.setWeekendPalette(weekendPalette);
         bingoCard.setSession(session);
-        addStatementsToCard(bingoCard);
+        if (verifiedStatements.isEmpty()) {
+            addStatementsToCard(bingoCard);
+        }
         return bingoCard;
     }
 
@@ -129,33 +135,40 @@ public class BingoCardService {
     }
 
     private void checkBingo(BingoCard bingoCard) {
+        List<Statement> verifiedSessionStatements =
+                verifiedSessionRepository.findByRaceWeekendAndSession(bingoCard.getWeekendPalette().getRaceWeekend(), bingoCard.getSession())
+                        .map(vs -> vs.getStatements().stream().map(VerifiedStatementEntity::getStatement).toList())
+                        .orElse(Collections.emptyList());
         Set<BingoCardStatement> bingoCardStatements = bingoCard.getBingoCardStatements();
         for (int row = 0; row < BingoCard.ROWS; row++) {
             int finalRow = row;
             List<BingoCardStatement> list = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() == finalRow).toList();
-            if (checkRow(list)) {
+            if (checkRow(list, verifiedSessionStatements)) {
                 setBingo(list);
             }
         }
         for (int column = 0; column < BingoCard.COLS; column++) {
             int finalColumn = column;
             List<BingoCardStatement> list = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getColumn() == finalColumn).toList();
-            if (checkRow(list)) {
+            if (checkRow(list, verifiedSessionStatements)) {
                 setBingo(list);
             }
         }
         List<BingoCardStatement> diagDownRight = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() == bingoCardStatement.getColumn()).toList();
-        if (checkRow(diagDownRight)) {
+        if (checkRow(diagDownRight, verifiedSessionStatements)) {
             setBingo(diagDownRight);
         }
         List<BingoCardStatement> diagUpLeft = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() + bingoCardStatement.getColumn() == BingoCard.COLS - 1).toList();
-        if (checkRow(diagUpLeft)) {
+        if (checkRow(diagUpLeft, verifiedSessionStatements)) {
             setBingo(diagUpLeft);
         }
     }
 
-    private boolean checkRow(List<BingoCardStatement> list) {
-        return list.stream().allMatch(bingoCardStatement -> bingoCardStatement.getChecked() == CheckState.HAPPENED);
+    private boolean checkRow(List<BingoCardStatement> list, List<Statement> verifiedSessionStatements) {
+        if(verifiedSessionStatements.isEmpty()) {
+            return list.stream().allMatch(bingoCardStatement -> bingoCardStatement.getChecked() == CheckState.HAPPENED);
+        }
+        return list.stream().allMatch(bingoCardStatement -> bingoCardStatement.getChecked() == CheckState.HAPPENED && verifiedSessionStatements.contains(bingoCardStatement.getStatement()));
     }
 
     private void setBingo(List<BingoCardStatement> list) {

@@ -53,4 +53,8 @@ public class BingoCard {
     public void setWeekendPalette(WeekendPalette weekendPalette) {
         this.weekendPalette = weekendPalette;
     }
+
+    public WeekendPalette getWeekendPalette() {
+        return weekendPalette;
+    }
 }

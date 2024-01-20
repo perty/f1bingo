@@ -64,9 +64,13 @@
             cardDiv.classList.add('bingo-card');
             const session = document.createElement('div');
             session.classList.add('session');
-            session.appendChild(document.createTextNode(sessionName(card.session)));
+            if(card.statements.length === 0) {
+                session.appendChild(document.createTextNode(sessionName(card.session) + ' avgjord.'));
+            } else {
+                session.appendChild(document.createTextNode(sessionName(card.session)));
+                cardDiv.appendChild(createBingoCard(card, data.weekendId, data.fanId));
+            }
             cardDiv.appendChild(session);
-            cardDiv.appendChild(createBingoCard(card, data.weekendId, data.fanId));
             container.appendChild(cardDiv);
         });
     }
@@ -99,7 +103,7 @@
                 } else {
                     bingoCell.classList.add('grid-item-odd');
                 }
-                const cellData = bingoCardData.list.find(item => item.row === row && item.column === col);
+                const cellData = bingoCardData.statements.find(item => item.row === row && item.column === col);
                 if (cellData) {
                     if(cellData.bingo) {
                         bingoCell.classList.add('bingo');
