@@ -87,6 +87,8 @@
                         tableBody.appendChild(row);
                     }
                 );
+                document.getElementById('hiddenWeekendId').value = weekendId;
+                document.getElementById('hiddenSessionId').value = session;
             })
             .catch(error => console.error('Error:', error));
     }

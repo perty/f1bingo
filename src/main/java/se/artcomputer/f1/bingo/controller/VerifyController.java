@@ -35,8 +35,7 @@ public class VerifyController {
     }
 
     @PostMapping(path = "/close", consumes = {"application/x-www-form-urlencoded"})
-    public ResponseEntity<String> closeSession(@CookieValue(name = "session", required = false) String sessionCookie,
-                                               @RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
+    public ResponseEntity<String> closeSession(@RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
         Long weekendId = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(WEEKEND_ID))
                 .map(e -> Long.parseLong(e.getValue().get(0)))
@@ -50,7 +49,7 @@ public class VerifyController {
                 .orElseThrow();
         List<VerifiedStatement> list = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(STATEMENT_ID))
-                .map(e -> new VerifiedStatement(parseStatementId(e.getKey()), Boolean.parseBoolean(e.getValue().get(0))))
+                .map(e -> new VerifiedStatement(parseStatementId(e.getKey()), e.getValue().get(0).equals("on")))
                 .toList();
         verifyService.closeSession(list, weekendId, session);
         HttpHeaders httpHeaders = new HttpHeaders();
