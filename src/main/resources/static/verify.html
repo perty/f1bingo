@@ -43,6 +43,7 @@
     </div>
     <div id="close-session" style="display: none">
         <form class="verify-form-card" action="/verify/close" method="post">
+            <div id="verify-weekend-name"></div>
             <input type="hidden" name="weekendId" id="hiddenWeekendId"/>
             <input type="hidden" name="session" id="hiddenSessionId"/>
             <table>
@@ -66,11 +67,32 @@
     </div>
 </div>
 <script>
+    function sessionName(sessionType) {
+        // Translate session type to Swedish
+        switch (sessionType) {
+            case 'QUALIFYING':
+                return 'Kval';
+            case 'RACE':
+                return 'Race';
+            case 'SPRINT_RACE':
+                return 'Sprint';
+            case 'SPRINT_SHOOTOUT':
+                return 'Sprintkval';
+            default:
+                return sessionType;
+        }
+    }
+
     function fetchStatements(weekendId, session) {
         const url = '/verify/weekend/' + encodeURIComponent(weekendId) + '/session/' + encodeURIComponent(session);
         fetch(url)
             .then(response => response.json())
             .then(jsonResponse => {
+                const weekendSelect = document.getElementById('weekend');
+                const weekendName = weekendSelect.options[weekendSelect.selectedIndex].text;
+                const sessionSelect = document.getElementById('session');
+                const session = sessionSelect.options[sessionSelect.selectedIndex].text;
+                document.getElementById('verify-weekend-name').textContent = weekendName + ' ' + sessionName(session);
                 document.getElementById('close-session').style.display = 'flex';
                 const tableBody = document.getElementById('statements-table');
                 tableBody.innerHTML = ''; // Rensa befintliga element
@@ -93,7 +115,7 @@
                 );
                 document.getElementById('hiddenWeekendId').value = weekendId;
                 document.getElementById('hiddenSessionId').value = session;
-                if(jsonResponse.created) {
+                if (jsonResponse.created) {
                     document.getElementById('close-session-button-row').style.display = 'none';
                     const date = new Date(jsonResponse.created);
                     document.getElementById('verify-session-created').textContent =
@@ -107,8 +129,7 @@
             })
             .catch(error => console.error('Error:', error));
     }
-</script>
-<script>
+
     function fetchRaceWeekends() {
         fetch('/weekend')
             .then(function (response) {
@@ -124,15 +145,15 @@
                     select.appendChild(option);
                 });
                 const weekendQuery = urlParams.get('weekend');
-                if(weekendQuery) {
+                if (weekendQuery) {
                     select.value = weekendQuery;
                 }
                 const session = document.getElementById('session');
                 const sessionQuery = urlParams.get('session');
-                if(sessionQuery) {
+                if (sessionQuery) {
                     session.value = sessionQuery;
                 }
-                if(weekendQuery && sessionQuery) {
+                if (weekendQuery && sessionQuery) {
                     fetchStatements(weekendQuery, sessionQuery);
                 }
             })
@@ -140,6 +161,7 @@
                 console.error('Error:', error);
             });
     }
+
     fetchRaceWeekends();
 </script>
 <script>
