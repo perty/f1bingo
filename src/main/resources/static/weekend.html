@@ -114,6 +114,9 @@
                     bingoCell.appendChild(cellContent);
                 }
                 grid.appendChild(bingoCell);
+                if(bingoCardData.verified) {
+                    continue;
+                }
                 bingoCell.addEventListener('click', function () {
                     fetch('/palette/weekend/' + encodeURIComponent(weekendId) +
                         '/fan/' + encodeURIComponent(fanId) +
