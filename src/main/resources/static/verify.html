@@ -91,8 +91,8 @@
                 const weekendSelect = document.getElementById('weekend');
                 const weekendName = weekendSelect.options[weekendSelect.selectedIndex].text;
                 const sessionSelect = document.getElementById('session');
-                const session = sessionSelect.options[sessionSelect.selectedIndex].text;
-                document.getElementById('verify-weekend-name').textContent = weekendName + ' ' + sessionName(session);
+                const sessionText = sessionSelect.options[sessionSelect.selectedIndex].text;
+                document.getElementById('verify-weekend-name').textContent = weekendName + ' ' + sessionName(sessionText);
                 document.getElementById('close-session').style.display = 'flex';
                 const tableBody = document.getElementById('statements-table');
                 tableBody.innerHTML = ''; // Rensa befintliga element
