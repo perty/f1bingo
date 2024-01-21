@@ -134,7 +134,12 @@ public class BingoCardService {
                         .filter(bcs -> bcs.getChecked() == CheckState.HAPPENED)).toList();
     }
 
-    private void checkBingo(BingoCard bingoCard) {
+    public long getPoints(BingoCard bingoCard) {
+        return checkBingo(bingoCard);
+    }
+
+    private int checkBingo(BingoCard bingoCard) {
+        int bingos = 0;
         List<Statement> verifiedSessionStatements =
                 verifiedSessionRepository.findByRaceWeekendAndSession(bingoCard.getWeekendPalette().getRaceWeekend(), bingoCard.getSession())
                         .map(vs -> vs.getStatements().stream().map(VerifiedStatementEntity::getStatement).toList())
@@ -145,6 +150,7 @@ public class BingoCardService {
             List<BingoCardStatement> list = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() == finalRow).toList();
             if (checkRow(list, verifiedSessionStatements)) {
                 setBingo(list);
+                bingos++;
             }
         }
         for (int column = 0; column < BingoCard.COLS; column++) {
@@ -152,19 +158,26 @@ public class BingoCardService {
             List<BingoCardStatement> list = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getColumn() == finalColumn).toList();
             if (checkRow(list, verifiedSessionStatements)) {
                 setBingo(list);
+                bingos++;
             }
         }
         List<BingoCardStatement> diagDownRight = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() == bingoCardStatement.getColumn()).toList();
         if (checkRow(diagDownRight, verifiedSessionStatements)) {
             setBingo(diagDownRight);
+            bingos++;
         }
         List<BingoCardStatement> diagUpLeft = bingoCardStatements.stream().filter(bingoCardStatement -> bingoCardStatement.getRow() + bingoCardStatement.getColumn() == BingoCard.COLS - 1).toList();
         if (checkRow(diagUpLeft, verifiedSessionStatements)) {
             setBingo(diagUpLeft);
+            bingos++;
         }
+        return bingos;
     }
 
     private boolean checkRow(List<BingoCardStatement> list, List<Statement> verifiedSessionStatements) {
+        if(list.isEmpty()) {
+            return false;
+        }
         if(verifiedSessionStatements.isEmpty()) {
             return list.stream().allMatch(bingoCardStatement -> bingoCardStatement.getChecked() == CheckState.HAPPENED);
         }

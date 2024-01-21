@@ -9,6 +9,7 @@ import se.artcomputer.f1.bingo.repository.FanRepository;
 import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
 import se.artcomputer.f1.bingo.repository.WeekendPaletteRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,5 +50,9 @@ public class WeekendPaletteService {
 
     public void click(int cellId) {
         bingoCardService.click(cellId);
+    }
+
+    public List<WeekendPalette> getWeekendPalettes(RaceWeekend raceWeekend) {
+        return weekendPaletteRepository.findByRaceWeekend(raceWeekend);
     }
 }

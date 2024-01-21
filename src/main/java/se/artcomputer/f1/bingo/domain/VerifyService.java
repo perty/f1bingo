@@ -49,4 +49,8 @@ public class VerifyService {
         }
         verifiedSessionRepository.save(verifiedSession);
     }
+
+    public List<VerifiedSession> getVerifiedSessions() {
+        return verifiedSessionRepository.findAll();
+    }
 }

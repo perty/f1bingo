@@ -59,4 +59,12 @@ public class VerifiedSession {
     public List<VerifiedStatementEntity> getStatements() {
         return statements;
     }
+
+    public RaceWeekend getRaceWeekend() {
+        return raceWeekend;
+    }
+
+    public Session getSession() {
+        return session;
+    }
 }
