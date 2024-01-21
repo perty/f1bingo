@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Poäng</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/points.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -17,9 +18,52 @@
             <p>Poäng</p>
         </div>
     </div>
-    <div>
-        Inte klart än...
+    <div id="standingsContainer" class="flex-grid">
     </div>
 </div>
+<script>
+    function displayStandings(data) {
+        const container = document.getElementById('standingsContainer');
+        container.innerHTML = '';
+        container.appendChild(header('Placering'));
+        container.appendChild(header('Namn'));
+        container.appendChild(header('Poäng'));
+        data.fanScores.forEach(standing => {
+            container.appendChild(textCell(standing.position));
+            container.appendChild(textCell(standing.fanName));
+            container.appendChild(textCell(standing.score));
+        });
+    }
+
+    function header(text) {
+        let header = document.createElement('div');
+        header.classList.add('grid-item');
+        header.classList.add('grid-item-header');
+        header.textContent = text;
+        return header;
+    }
+
+    function textCell(text) {
+        let row = document.createElement('div');
+        row.classList.add('grid-item');
+        row.textContent = text;
+        return row;
+    }
+
+    function fetchStandings() {
+        fetch('/points/standings')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                displayStandings(data);
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    }
+
+    fetchStandings();
+</script>
 </body>
 </html>

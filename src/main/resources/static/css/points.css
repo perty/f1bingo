@@ -1,0 +1,17 @@
+.flex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Mellanrum mellan grid-items */
+}
+
+.grid-item {
+    flex: 1 1 150px; /* Flex-grow, flex-shrink och flex-basis */
+    border: 1px solid #ddd;
+    padding: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.grid-item-header {
+    font-weight: bold;
+}
