@@ -147,7 +147,7 @@
         event.preventDefault();
         const weekendId = document.getElementById('weekend').value;
         const session = document.getElementById('session').value;
-        fetchStatements(weekendId, session);
+        window.location.href = '/verify.html?weekend=' + encodeURIComponent(weekendId) + '&session=' + encodeURIComponent(session);
     };
 </script>
 </body>
