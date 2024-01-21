@@ -49,12 +49,12 @@ public class VerifyController {
     public ResponseEntity<String> closeSession(@RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
         Long weekendId = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(WEEKEND_ID))
-                .map(e -> Long.parseLong(e.getValue().get(0)))
+                .map(e -> Long.parseLong(e.getValue().getFirst()))
                 .findFirst()
                 .orElseThrow();
         Session session = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(SESSION))
-                .map(e -> e.getValue().get(0))
+                .map(e -> e.getValue().getFirst())
                 .map(Session::valueOf)
                 .findFirst()
                 .orElseThrow();
