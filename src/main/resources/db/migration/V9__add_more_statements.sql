@@ -1,0 +1,32 @@
+
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (86,'En McLaren tar pole',false,true,true,false);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (87,'En McLaren åker ut i Q1',false,true,true,false);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (88,'En McLaren åker ut i Q2',false,true,true,false);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (89,'En Alpine går till Q3',false,true,true,false);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (90,'Båda Alpine åker ut i Q1',false,true,true,false);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (91,'Båda Ferrari åker ut i Q2',false,true,true,false);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (92,'En bil touchar eller kraschar i en vägg eller liknande',false,true,true,false);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (93,'Verstappen blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (94,'Perez blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (95,'Ricciardo blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (96,'Norris blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (97,'Piastri blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (98,'Sainz blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (99,'Leclerc blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (100,'Russel blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (101,'Alonso blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (102,'Albon blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (103,'Gasly blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (104,'Ocon blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (105,'Någon förare i en A-bil blir Driver of the Day',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (106,'Russel klagar på strategin',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (107,'Leclerc uttrycker frustration över sitt agerande',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (108,'Alonso klagar på bilen',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (109,'Verstappen får poäng för snabbaste varv',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (110,'Sainz får poäng för snabbaste varv',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (111,'Norris får poäng för snabbaste varv',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (112,'Hamilton får poäng för snabbaste varv',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (113,'Russel får poäng för snabbaste varv',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (114,'Hamilton och Russel kör in i varandra',true,false,false,true);
+INSERT INTO public.statement (id, text, race, qualifying, sprint_shootout, sprint_race) VALUES (115,'Ett stall strular med ett depåstopp',true,false,false,true);
+
