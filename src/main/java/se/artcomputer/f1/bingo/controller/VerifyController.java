@@ -19,6 +19,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
+import static se.artcomputer.f1.bingo.domain.AdminService.AUTH_COOKIE;
+
 @RestController
 @RequestMapping("verify")
 public class VerifyController {
@@ -49,7 +51,7 @@ public class VerifyController {
     }
 
     @PostMapping(path = "/close", consumes = {"application/x-www-form-urlencoded"})
-    public ResponseEntity<String> closeSession(@CookieValue("f1bingo") String cookie,
+    public ResponseEntity<String> closeSession(@CookieValue(AUTH_COOKIE) String cookie,
                                                @RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
         adminService.checkSession(cookie);
         Long weekendId = statementMap.entrySet().stream()
