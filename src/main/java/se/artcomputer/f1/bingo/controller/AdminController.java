@@ -1,9 +1,9 @@
 package se.artcomputer.f1.bingo.controller;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 import se.artcomputer.f1.bingo.domain.AdminService;
 import se.artcomputer.f1.bingo.entity.Statement;
 
@@ -22,6 +22,12 @@ public class AdminController {
     @GetMapping("/statements")
     public List<StatementDto> getStatements() {
         return adminService.getStatements().stream().map(this::toDto).toList();
+    }
+
+    @PostMapping(path = "/login", consumes = {"application/x-www-form-urlencoded"})
+    public ResponseEntity<String> login(@RequestParam MultiValueMap<String, String> loginData) {
+        System.out.println("loginData = " + loginData.getFirst("pin-code"));
+        return ResponseEntity.ok("OK");
     }
 
     private StatementDto toDto(Statement statement) {
