@@ -24,7 +24,7 @@
                 <button class="numkey" data-num="4">4</button>
                 <button class="numkey" data-num="5">5</button>
                 <button class="numkey" data-num="6">6</button>
-                <button class="functionkey yellow">CLEAR</button>
+                <button class="functionkey yellow" id="clear-btn">CLEAR</button>
             </div>
             <div class="row">
                 <button class="numkey" data-num="7">7</button>
@@ -62,6 +62,13 @@
         document.getElementById('cancel-btn').addEventListener('click', (event) => {
             event.preventDefault(); // Förhindrar formulärskickning
             window.history.back(); // Går tillbaka till föregående sida i historiken
+        });
+
+        document.getElementById('clear-btn').addEventListener('click', (event) => {
+            event.preventDefault(); // Förhindrar formulärskickning
+            const pinDisplay = document.getElementById('pin-display');
+            pinDisplay.value = ''; // Rensar värdet på PIN-displayen
+            pinCode = ''; // Rensar den faktiska PIN-koden
         });
 
     });
