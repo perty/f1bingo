@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.numpad-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 320px; /* Matcha bredden med knappsatsen */
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pin-display {
+    width: 100%;
+    height: 40px; /* Justera höjden efter behov */
+    margin-bottom: 10px; /* Utrymme mellan displayen och knappsatsen */
+    border: 6px solid #333; /* Kraftig, mörk ram */
+    background-color: #2e8b57; /* Mattgrön bakgrund, likt en gammal LCD-display */
+    font-size: 20px; /* Storlek på asteriskerna */
+    color: white; /* Färg på asteriskerna */
+    text-align: center;
+    padding: 5px;
+    border-radius: 8px; /* Rundade hörn */
+}
+
+.numpad {
+    display: flex;
+    flex-direction: column;
+    max-width: 320px; /* Justera detta för att passa den totala bredden av knappsatsen */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.numkey, .functionkey {
+    flex: 0 0 calc(25% - 10px); /* Anpassa detta för att passa 4 knappar på en rad */
+    margin: 5px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    background-color: #eee;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* För de numeriska knapparna, använd en mindre font-size om nödvändigt */
+.numkey {
+    flex: 0 0 calc(25% - 10px); /* Justera för att passa 4 knappar på en rad */
+}
+
+/* För funktionsknappar, se till att de inte är bredare än de numeriska knapparna */
+.functionkey {
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    flex: 0 0 calc(25% - 10px); /* Justera för att passa 4 knappar på en rad */
+}
+
+.red {
+    background-color: red;
+    color: black;
+}
+
+.yellow {
+    background-color: yellow;
+    color: black;
+}
+
+.green {
+    background-color: green;
+}
