@@ -18,7 +18,7 @@
                 <button class="numkey" data-num="1">1</button>
                 <button class="numkey" data-num="2">2</button>
                 <button class="numkey" data-num="3">3</button>
-                <button class="functionkey red">CANCEL</button>
+                <button class="functionkey red" id="cancel-btn">CANCEL</button>
             </div>
             <div class="row">
                 <button class="numkey" data-num="4">4</button>
@@ -57,6 +57,11 @@
                 // Uppdatera displayen med den faktiska PIN-koden (som automatiskt maskeras)
                 pinDisplay.value = pinCode;
             });
+        });
+
+        document.getElementById('cancel-btn').addEventListener('click', (event) => {
+            event.preventDefault(); // Förhindrar formulärskickning
+            window.history.back(); // Går tillbaka till föregående sida i historiken
         });
 
     });
