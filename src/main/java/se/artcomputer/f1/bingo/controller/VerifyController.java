@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import se.artcomputer.f1.bingo.domain.AdminService;
 import se.artcomputer.f1.bingo.domain.Session;
 import se.artcomputer.f1.bingo.domain.VerifiedStatement;
 import se.artcomputer.f1.bingo.domain.VerifyService;
@@ -26,9 +27,11 @@ public class VerifyController {
     public static final String WEEKEND_ID = "weekendId";
     public static final String SESSION = "session";
     private final VerifyService verifyService;
+    private final AdminService adminService;
 
-    public VerifyController(VerifyService verifyService) {
+    public VerifyController(VerifyService verifyService, AdminService adminService) {
         this.verifyService = verifyService;
+        this.adminService = adminService;
     }
 
     @GetMapping("/weekend/{weekendId}/session/{sessionName}")
@@ -36,7 +39,7 @@ public class VerifyController {
                                                  @PathVariable("sessionName") String sessionName) {
 
         Optional<VerifiedSession> verifiedSession = verifyService.getVerifiedSession(weekendId, sessionName);
-        if(verifiedSession.isPresent()) {
+        if (verifiedSession.isPresent()) {
             List<VerifyStatementDto> statements = verifiedSession.get().getStatements().stream().map(this::toDto).toList();
             return new CheckStatementsDto(statements, verifiedSession.map(VerifiedSession::getCreated));
         } else {
@@ -46,7 +49,9 @@ public class VerifyController {
     }
 
     @PostMapping(path = "/close", consumes = {"application/x-www-form-urlencoded"})
-    public ResponseEntity<String> closeSession(@RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
+    public ResponseEntity<String> closeSession(@CookieValue("f1bingo") String cookie,
+                                               @RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
+        adminService.checkSession(cookie);
         Long weekendId = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(WEEKEND_ID))
                 .map(e -> Long.parseLong(e.getValue().getFirst()))
