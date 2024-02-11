@@ -1,17 +1,26 @@
-.flex-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Mellanrum mellan grid-items */
+
+
+.table-responsive {
+    overflow-x: auto; /* Gör så att tabellen kan skrollas horisontellt på små skärmar */
 }
 
-.grid-item {
-    flex: 1 1 150px; /* Flex-grow, flex-shrink och flex-basis */
-    border: 1px solid #ddd;
-    padding: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    text-align: center;
+table {
+    width: 100%; /* Full bredd */
+    border-collapse: collapse; /* Tar bort mellanrum mellan cellerna */
+    table-layout: fixed; /* Hjälper till att undvika att tabellen blir bredare än skärmen */
 }
 
-.grid-item-header {
-    font-weight: bold;
+th, td {
+    text-align: left; /* Justerar texten till vänster */
+    padding: 8px; /* Lägger till utrymme runt innehållet i cellerna */
+    border-bottom: 1px solid #ddd; /* Lägger till en linje under varje rad */
+}
+
+th {
+    background-color: #f2f2f2; /* Lägger till en bakgrundsfärg för tabellhuvudet */
+    font-weight: bold; /* Gör texten i tabellhuvudet fet */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Lägger till en zebra-striping effekt för tabellrader */
 }

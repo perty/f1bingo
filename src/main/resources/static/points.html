@@ -18,34 +18,33 @@
             <p>Poäng</p>
         </div>
     </div>
-    <div id="standingsContainer" class="flex-grid">
-    </div>
+    <table class="table-responsive">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Namn</th>
+            <th>Poäng</th>
+        </tr>
+        </thead>
+        <tbody id="standings-table">
+        </tbody>
+    </table>
 </div>
 <script>
-    function displayStandings(data) {
-        const container = document.getElementById('standingsContainer');
-        container.innerHTML = '';
-        container.appendChild(header('Placering'));
-        container.appendChild(header('Namn'));
-        container.appendChild(header('Poäng'));
+
+    function displayStandingsTable(data) {
+        const body = document.getElementById('standings-table');
         data.fanScores.forEach(standing => {
-            container.appendChild(textCell(standing.position));
-            container.appendChild(textCell(standing.fanName));
-            container.appendChild(textCell(standing.score));
+            let rowElement = document.createElement('tr');
+            rowElement.appendChild(tableCell(standing.position));
+            rowElement.appendChild(tableCell(standing.fanName));
+            rowElement.appendChild(tableCell(standing.score));
+            body.appendChild(rowElement);
         });
     }
 
-    function header(text) {
-        let header = document.createElement('div');
-        header.classList.add('grid-item');
-        header.classList.add('grid-item-header');
-        header.textContent = text;
-        return header;
-    }
-
-    function textCell(text) {
-        let row = document.createElement('div');
-        row.classList.add('grid-item');
+    function tableCell(text) {
+        let row = document.createElement('td');
         row.textContent = text;
         return row;
     }
@@ -56,7 +55,7 @@
                 return response.json();
             })
             .then(function (data) {
-                displayStandings(data);
+                displayStandingsTable(data);
             })
             .catch(function (error) {
                 console.error('Error:', error);
