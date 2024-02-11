@@ -42,7 +42,7 @@
         </form>
     </div>
     <div id="close-session" style="display: none">
-        <form class="verify-form-card" action="/verify/close" method="post">
+        <form class="verify-form-card" action="/verify/toggle-close" method="post">
             <div id="verify-weekend-name"></div>
             <input type="hidden" name="weekendId" id="hiddenWeekendId"/>
             <input type="hidden" name="session" id="hiddenSessionId"/>
@@ -62,6 +62,7 @@
             </div>
             <div class="submitButtonRow" id="session-created-message">
                 Sessionen är stängd: <span id="verify-session-created"></span>.
+                <button class="small-button" type="submit">Öppna</button>
             </div>
         </form>
     </div>

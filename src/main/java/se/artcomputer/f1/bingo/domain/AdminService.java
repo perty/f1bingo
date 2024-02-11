@@ -15,6 +15,7 @@ public class AdminService {
     private static final Logger LOG = LoggerFactory.getLogger(AdminService.class);
     public static final String AUTH_COOKIE = "f1bingo";
     public static final String ENCRYPTED_TOKEN_VALUE = "encryptedTokenValue";
+    private static final String PIN_CODE = "202631";
 
     private final StatementRepository statementRepository;
 
@@ -26,15 +27,15 @@ public class AdminService {
         return statementRepository.findAll(Sort.by("id"));
     }
 
-    public void checkSession(String cookie) {
+    public void checkSession(String cookie, String redirectUrl) {
         LOG.info("Checking session for cookie: {}", cookie);
-        if(!cookie.startsWith(ENCRYPTED_TOKEN_VALUE)) {
-            throw new UnAuthorizedException("Unauthorized");
+        if(!cookie.equals(ENCRYPTED_TOKEN_VALUE + PIN_CODE)) {
+            throw new UnAuthorizedException(redirectUrl);
         }
     }
 
     public boolean login(String pinCode) {
-        return "1234".equals(pinCode);
+        return PIN_CODE.equals(pinCode);
     }
 
     public String getCookieValue(String pinCode) {

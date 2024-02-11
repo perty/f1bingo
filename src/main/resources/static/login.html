@@ -12,6 +12,7 @@
 
 <div class="numpad-container">
     <form id="pin-form" action="/admin/login" method="post">
+        <input type="hidden" name="redirectUrl" id="redirectUrl">
         <input type="password" id="pin-display" name="pin-code" class="pin-display" placeholder="Enter PIN">
         <div class="numpad">
             <div class="row">
@@ -71,6 +72,13 @@
             pinCode = ''; // Rensar den faktiska PIN-koden
         });
 
+        // Hämta redirectUrl från URL
+        const redirectUrl = new URLSearchParams(window.location.search).get('redirectUrl');
+
+        // Sätt värdet på det dolda fältet i formuläret om redirectUrl finns
+        if (redirectUrl) {
+            document.getElementById('redirectUrl').value = redirectUrl;
+        }
     });
 
 

@@ -1,8 +1,9 @@
 package se.artcomputer.f1.bingo.controller;
 
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import se.artcomputer.f1.bingo.entity.Statement;
 import java.util.List;
 
 import static se.artcomputer.f1.bingo.domain.AdminService.AUTH_COOKIE;
+import static se.artcomputer.f1.bingo.exception.ExceptionHandling.REDIRECT_URL;
 
 @RestController
 @RequestMapping("admin")
@@ -29,20 +31,22 @@ public class AdminController {
     }
 
     @PostMapping(path = "/login", consumes = {"application/x-www-form-urlencoded"})
-    public ResponseEntity<String> login(HttpServletResponse response, @RequestParam MultiValueMap<String, String> loginData) {
+    public ResponseEntity<String> login(@RequestParam MultiValueMap<String, String> loginData) {
         String pinCode = loginData.getFirst("pin-code");
-        if(pinCode == null || !adminService.login(pinCode)) {
+        if (pinCode == null || !adminService.login(pinCode)) {
             return ResponseEntity.status(401).body("Felaktig pinkod");
         }
-        Cookie cookie = new Cookie(AUTH_COOKIE, adminService.getCookieValue(pinCode));
-        cookie.setMaxAge(24 * 60 * 60); // Sätt giltighetstiden för cookien (t.ex. 24 timmar)
-        cookie.setHttpOnly(true); // Gör cookien säkrare genom att göra den otillgänglig för klient-sidans JavaScript
-        cookie.setPath("/"); // Gör cookien tillgänglig för hela domänen
+        ResponseCookie responseCookie = ResponseCookie.from(AUTH_COOKIE, adminService.getCookieValue(pinCode))
+                .maxAge(24 * 60 * 60)
+                .httpOnly(true)
+                .path("/")
+                .build();
 
-        // Lägg till cookien i svaret
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok("Inloggad");
+        String url = loginData.getFirst(REDIRECT_URL);
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header(HttpHeaders.LOCATION, url)
+                .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                .build();
     }
 
     private StatementDto toDto(Statement statement) {

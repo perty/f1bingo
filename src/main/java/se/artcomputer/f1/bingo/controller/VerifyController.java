@@ -16,6 +16,7 @@ import se.artcomputer.f1.bingo.entity.VerifiedStatementEntity;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,10 +51,14 @@ public class VerifyController {
         }
     }
 
-    @PostMapping(path = "/close", consumes = {"application/x-www-form-urlencoded"})
-    public ResponseEntity<String> closeSession(@CookieValue(AUTH_COOKIE) String cookie,
-                                               @RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
-        adminService.checkSession(cookie);
+    @PostMapping(path = "/toggle-close", consumes = {"application/x-www-form-urlencoded"})
+    public ResponseEntity<String> toggleCloseSession(@RequestHeader HttpHeaders headers,
+                                                     @RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
+        String cookiesHeader = headers.getFirst(HttpHeaders.COOKIE);
+        if (cookiesHeader == null) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+        String cookie = cookiesHeader.substring(AUTH_COOKIE.length() + 1);
         Long weekendId = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(WEEKEND_ID))
                 .map(e -> Long.parseLong(e.getValue().getFirst()))
@@ -65,6 +70,7 @@ public class VerifyController {
                 .map(Session::valueOf)
                 .findFirst()
                 .orElseThrow();
+        adminService.checkSession(cookie, returnUrl(weekendId, session));
         List<VerifiedStatement> list = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(STATEMENT_ID))
                 .map(e -> new VerifiedStatement(parseStatementId(e.getKey()), e.getValue().get(0).equals("on")))
@@ -73,6 +79,11 @@ public class VerifyController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI("/verify.html?weekend=" + weekendId + "&session=" + session.name()));
         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
+    }
+
+    private String returnUrl(Long weekendId, Session session) {
+        return URLEncoder.encode("/verify.html?weekend=" + weekendId + "&session=" + session.name(),
+                java.nio.charset.StandardCharsets.UTF_8);
     }
 
     private static long parseStatementId(String key) {
