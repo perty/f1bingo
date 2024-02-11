@@ -55,10 +55,7 @@ public class VerifyController {
     @PostMapping(path = "/toggle-close", consumes = {"application/x-www-form-urlencoded"})
     public ResponseEntity<String> toggleCloseSession(@RequestHeader HttpHeaders headers,
                                                      @RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
-        String cookiesHeader = headers.getFirst(HttpHeaders.COOKIE);
-        if (cookiesHeader == null) {
-            return ResponseEntity.status(401).body("Unauthorized");
-        }
+        String cookiesHeader = headers.getFirst(HttpHeaders.COOKIE) == null ? "" : headers.getFirst(HttpHeaders.COOKIE);
         String cookie = Arrays.stream(cookiesHeader.split("; ")).filter(c -> c.startsWith(AUTH_COOKIE))
                 .findFirst()
                 .map(s -> s.split("=")[1])
