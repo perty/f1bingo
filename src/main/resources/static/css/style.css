@@ -79,7 +79,7 @@ body {
 
 .form-field select {
     flex: 2;
-    font-size: large;
+    font-size: smaller;
     font-style: normal;
     margin-right: 10px;
     margin-top: 10px;
