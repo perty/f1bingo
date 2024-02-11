@@ -10,8 +10,9 @@
 
 .submitButtonRow {
     display: flex;
-    justify-content: right;
+    justify-content: space-around;
     margin-right: 10px;
+    margin-top: 10px;
 }
 
 .submitButtonRow button {
@@ -21,7 +22,6 @@
     background-color: var(--primary-color);
     border-radius: 5px;
     border: 3px solid var(--secondary-color);
-    margin-top: 10px;
 }
 
 table {

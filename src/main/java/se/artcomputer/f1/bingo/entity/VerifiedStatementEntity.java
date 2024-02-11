@@ -14,7 +14,7 @@ public class VerifiedStatementEntity {
     @JoinColumn(name = "verified_session")
     private VerifiedSession verifiedSession;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "statement")
     private Statement statement;
 

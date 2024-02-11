@@ -26,7 +26,7 @@ public class VerifiedSession {
     @Enumerated(EnumType.STRING)
     private Session session;
 
-    @OneToMany(mappedBy = "verifiedSession", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "verifiedSession", cascade = CascadeType.REMOVE)
     private List<VerifiedStatementEntity> statements = new ArrayList<>();
 
     public Long getId() {

@@ -38,16 +38,20 @@ public class VerifyService {
         return verifiedSessionRepository.findByRaceWeekendAndSession(raceWeekend, session);
     }
 
-    public void closeSession(List<VerifiedStatement> verifiedStatements, Long weekendId, Session session) {
-        VerifiedSession verifiedSession = new VerifiedSession();
-        raceWeekendRepository.findById(weekendId).ifPresent(verifiedSession::setWeekend);
-        verifiedSession.setSession(session);
-        for (VerifiedStatement verifiedStatement : verifiedStatements) {
-            if (verifiedStatement.verified()) {
-                statementRepository.findById(verifiedStatement.id()).ifPresent(verifiedSession::add);
+    public void toggleCloseSession(List<VerifiedStatement> verifiedStatements, Long weekendId, Session session) {
+        if (getVerifiedSession(weekendId, session.name()).isPresent()) {
+            verifiedSessionRepository.deleteByRaceWeekendIdAndSession(weekendId, session);
+        } else {
+            VerifiedSession verifiedSession = new VerifiedSession();
+            raceWeekendRepository.findById(weekendId).ifPresent(verifiedSession::setWeekend);
+            verifiedSession.setSession(session);
+            for (VerifiedStatement verifiedStatement : verifiedStatements) {
+                if (verifiedStatement.verified()) {
+                    statementRepository.findById(verifiedStatement.id()).ifPresent(verifiedSession::add);
+                }
             }
+            verifiedSessionRepository.save(verifiedSession);
         }
-        verifiedSessionRepository.save(verifiedSession);
     }
 
     public List<VerifiedSession> getVerifiedSessions() {

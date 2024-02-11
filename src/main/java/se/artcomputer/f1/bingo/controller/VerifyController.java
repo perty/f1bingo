@@ -17,6 +17,7 @@ import se.artcomputer.f1.bingo.entity.VerifiedStatementEntity;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,7 +59,10 @@ public class VerifyController {
         if (cookiesHeader == null) {
             return ResponseEntity.status(401).body("Unauthorized");
         }
-        String cookie = cookiesHeader.substring(AUTH_COOKIE.length() + 1);
+        String cookie = Arrays.stream(cookiesHeader.split("; ")).filter(c -> c.startsWith(AUTH_COOKIE))
+                .findFirst()
+                .map(s -> s.split("=")[1])
+                .orElse("");
         Long weekendId = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(WEEKEND_ID))
                 .map(e -> Long.parseLong(e.getValue().getFirst()))
@@ -73,9 +77,9 @@ public class VerifyController {
         adminService.checkSession(cookie, returnUrl(weekendId, session));
         List<VerifiedStatement> list = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(STATEMENT_ID))
-                .map(e -> new VerifiedStatement(parseStatementId(e.getKey()), e.getValue().get(0).equals("on")))
+                .map(e -> new VerifiedStatement(parseStatementId(e.getKey()), e.getValue().getFirst().equals("on")))
                 .toList();
-        verifyService.closeSession(list, weekendId, session);
+        verifyService.toggleCloseSession(list, weekendId, session);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI("/verify.html?weekend=" + weekendId + "&session=" + session.name()));
         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
