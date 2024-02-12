@@ -83,20 +83,31 @@ body {
     margin-right: 10px;
     margin-top: 10px;
     border-radius: 5px;
+    width: 100%;
 }
 
 .submitButtonRow {
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     margin-right: 10px;
+    padding-top: 10px;
+    align-items: center;
 }
 
 .submitButtonRow button {
-    font-size: 28px;
-    font-style: italic;
-    background-color: var(--red-background-color);
+    font-size: 20px;
+    font-style: normal;
+    color: var(--secondary-color);
+    background-color: var(--secondary-color);
     border-radius: 5px;
     border: 1px solid var(--shade-color);
+}
+
+.submitButtonRow img {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+
 }
 
 .midsection {
