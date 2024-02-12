@@ -1,0 +1,21 @@
+table {
+    width: 100%;
+    border: 1px solid var(--primary-color);
+    margin-bottom: 1em;
+}
+
+th {
+    text-align: left;
+}
+
+tr {
+    border-width: 1px;
+}
+
+td img {
+    height: 20px;
+}
+
+.yellow-cam {
+    background-color: yellow;
+}
