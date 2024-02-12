@@ -138,28 +138,26 @@ body {
 
 .footer {
     display: flex;
-    justify-content: center;
-    padding: 10px;
+    justify-content: space-between;
 }
 
 .footer button {
-    font-size: 28px;
-    font-style: italic;
+    font-size: 18px;
     background-color: var(--red-background-color);
     border-radius: 5px;
     border: 1px solid var(--shade-color);
-    margin: 10px;
+    margin: 1px;
 }
 
 .button-link {
     display: inline-block;
-    font-size: 28px;
-    font-style: italic;
+    font-size: 16px;
+    width: 70px;
     color: var(--primary-color);
     background-color: var(--red-background-color);
     border-radius: 5px;
     border: 1px solid var(--shade-color);
-    margin: 10px;
+    margin: 1px;
     padding-inline: 6px;
     text-align: center;
     text-decoration: none;
