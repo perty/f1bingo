@@ -79,42 +79,56 @@ public class BingoCardService {
 
     private void addStatementsToCard(BingoCard bingoCard) {
         List<Statement> takenStatements = new ArrayList<>();
+        Set<StatementCategory> takenCategories = new HashSet<>();
         for (int row = 0; row < BingoCard.ROWS; row++) {
             for (int column = 0; column < BingoCard.COLS; column++) {
-                BingoCardStatement bingoCardStatement = findStatement(bingoCard.getSession(), bingoCard, row, column, takenStatements);
+                BingoCardStatement bingoCardStatement = findStatement(bingoCard.getSession(),
+                        bingoCard,
+                        row,
+                        column,
+                        takenStatements,
+                        takenCategories);
                 bingoCard.getBingoCardStatements().add(bingoCardStatement);
                 takenStatements.add(bingoCardStatement.getStatement());
+                if(bingoCardStatement.getStatement().getOptionalCategory().isPresent()) {
+                    takenCategories.add(bingoCardStatement.getStatement().getCategory());
+                }
             }
         }
     }
 
-    private BingoCardStatement findStatement(Session session, BingoCard bingoCard, int row, int column, List<Statement> takenStatements) {
+    private BingoCardStatement findStatement(Session session,
+                                             BingoCard bingoCard,
+                                             int row,
+                                             int column,
+                                             List<Statement> takenStatements,
+                                             Set<StatementCategory> takenCategories) {
         BingoCardStatement bingoCardStatement = new BingoCardStatement();
         bingoCardStatement.setBingoCard(bingoCard);
         bingoCardStatement.setRow(row);
         bingoCardStatement.setColumn(column);
-        bingoCardStatement.setStatement(findStatementForSession(session, takenStatements).orElseThrow());
+        bingoCardStatement.setStatement(findStatementForSession(session, takenStatements, takenCategories).orElseThrow());
         return bingoCardStatement;
     }
 
-    private Optional<Statement> findStatementForSession(Session session, List<Statement> takenStatements) {
+    private Optional<Statement> findStatementForSession(Session session, List<Statement> takenStatements, Set<StatementCategory> takenCategories) {
         return switch (session) {
-            case QUALIFYING -> selectRandom(statementRepository.findByQualifying(true).toList(), takenStatements);
-            case RACE -> selectRandom(statementRepository.findByRace(true).toList(), takenStatements);
-            case SPRINT_RACE -> selectRandom(statementRepository.findBySprintRace(true).toList(), takenStatements);
+            case QUALIFYING -> selectRandom(statementRepository.findByQualifying(true).toList(), takenStatements, takenCategories);
+            case RACE -> selectRandom(statementRepository.findByRace(true).toList(), takenStatements, takenCategories);
+            case SPRINT_RACE -> selectRandom(statementRepository.findBySprintRace(true).toList(), takenStatements, takenCategories);
             case SPRINT_SHOOTOUT ->
-                    selectRandom(statementRepository.findBySprintShootout(true).toList(), takenStatements);
+                    selectRandom(statementRepository.findBySprintShootout(true).toList(), takenStatements, takenCategories);
         };
     }
 
-    private Optional<Statement> selectRandom(List<Statement> allStatements, List<Statement> takenStatements) {
+    private Optional<Statement> selectRandom(List<Statement> allStatements, List<Statement> takenStatements, Set<StatementCategory> takenCategories) {
         if (allStatements.isEmpty()) {
             return Optional.empty();
         }
         int index = (int) (Math.random() * allStatements.size());
         Statement selectedStatement = allStatements.get(index);
-        if (takenStatements.contains(selectedStatement)) {
-            return selectRandom(allStatements, takenStatements);
+        if (takenStatements.contains(selectedStatement) || selectedStatement.getOptionalCategory().map(takenCategories::contains).orElse(false)) {
+            return selectRandom(allStatements, takenStatements, takenCategories);
         }
         return Optional.of(selectedStatement);
     }

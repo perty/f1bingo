@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import se.artcomputer.f1.bingo.domain.StatementCategory;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -55,6 +56,9 @@ public class Statement {
 
     public StatementCategory getCategory() {
         return category;
+    }
+    public Optional<StatementCategory> getOptionalCategory() {
+        return Optional.ofNullable(category);
     }
 
     public boolean isEnabled() {
