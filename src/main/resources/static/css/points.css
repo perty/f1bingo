@@ -1,26 +1,27 @@
+.dummy {
+    background-color: var(--secondary-color);
+}
 
-
-.table-responsive {
-    overflow-x: auto; /* Gör så att tabellen kan skrollas horisontellt på små skärmar */
+.minor-title {
+    font-size: large;
+    text-align: left;
+    justify-content: left;
+    padding-left: 10px;
 }
 
 table {
-    width: 100%; /* Full bredd */
-    border-collapse: collapse; /* Tar bort mellanrum mellan cellerna */
-    table-layout: fixed; /* Hjälper till att undvika att tabellen blir bredare än skärmen */
+    border-style: solid;
+    border-width: 1px;
+    border-collapse: collapse;
+    width: 100%;
 }
 
-th, td {
-    text-align: left; /* Justerar texten till vänster */
-    padding: 8px; /* Lägger till utrymme runt innehållet i cellerna */
-    border-bottom: 1px solid #ddd; /* Lägger till en linje under varje rad */
+td {
+    text-align: center;
 }
 
-th {
-    background-color: #f2f2f2; /* Lägger till en bakgrundsfärg för tabellhuvudet */
-    font-weight: bold; /* Gör texten i tabellhuvudet fet */
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9; /* Lägger till en zebra-striping effekt för tabellrader */
+.flag {
+    height: auto;
+    width: 30px;
+    margin-right: 3px;
 }

@@ -14,55 +14,72 @@
         <div class="logo">
             <a href="/" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
         </div>
-        <div class="title shadow">
-            <p>Poäng</p>
+        <div class="title dummy">
+
         </div>
     </div>
-    <table class="table-responsive">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Namn</th>
-            <th>Poäng</th>
-        </tr>
-        </thead>
-        <tbody id="standings-table">
-        </tbody>
-    </table>
+    <div class="content">
+        <div class="title minor-title">
+            <p>Resultat från F1-bingo 2024</p>
+        </div>
+        <table>
+            <thead>
+            <tr id="table-head-row">
+                <th>Nr</th>
+                <th style="text-align: left">Land</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+
+            </tbody>
+        </table>
+    </div>
 </div>
 <script>
 
-    function displayStandingsTable(data) {
-        const body = document.getElementById('standings-table');
-        data.fanScores.forEach(standing => {
-            let rowElement = document.createElement('tr');
-            rowElement.appendChild(tableCell(standing.position));
-            rowElement.appendChild(tableCell(standing.fanName));
-            rowElement.appendChild(tableCell(standing.score));
-            body.appendChild(rowElement);
-        });
+    function displayResults(data) {
+        const tableHeadRow = document.getElementById('table-head-row');
+        const tableBody = document.getElementById('table-body');
+        for (let race = 0; race < data.races.length; race++) {
+            const tr = document.createElement('tr');
+            tr.id = 'row' + race;
+            const raceNr = document.createElement('td');
+            raceNr.textContent = "" + (race + 1);
+            tr.appendChild(raceNr);
+            const raceName = document.createElement('td');
+            raceName.textContent = data.races[race];
+            raceName.style.textAlign = 'left';
+            tr.appendChild(raceName);
+            tableBody.appendChild(tr);
+        }
+        for (let fan = 0; fan < data.fans.length; fan++) {
+            const th = document.createElement('th');
+            th.textContent = data.fans[fan].fanName;
+            tableHeadRow.appendChild(th);
+            for (let row = 0; row < data.fans[fan].fanScores.length; row++) {
+                const rowElement = document.getElementById('row' +  row);
+                const td = document.createElement('td');
+                td.textContent = data.fans[fan].fanScores[row];
+                rowElement.appendChild(td);
+            }
+        }
     }
 
-    function tableCell(text) {
-        let row = document.createElement('td');
-        row.textContent = text;
-        return row;
-    }
-
-    function fetchStandings() {
-        fetch('/points/standings')
+    function fetchResults() {
+        fetch('/points/results')
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
-                displayStandingsTable(data);
+                displayResults(data);
             })
             .catch(function (error) {
                 console.error('Error:', error);
             });
     }
 
-    fetchStandings();
+    fetchResults();
+
 </script>
 </body>
 </html>
