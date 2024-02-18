@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Kalender</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/calendar.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <p>Kalender</p>
+        </div>
+    </div>
+    <div class="content">
+        <table>
+            <thead>
+            <tr>
+                <th>Grand Prix</th>
+                <th>Typ</th>
+            </tr>
+            </thead>
+            <tbody id="calendar-body">
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function displayCalendar(data) {
+        const calendarBody = document.getElementById('calendar-body');
+        for(dataIndex = 0; dataIndex < data.length; dataIndex++) {
+            const tr = document.createElement('tr');
+            const grandPrix = document.createElement('td');
+            grandPrix.textContent = data[dataIndex].name;
+            tr.appendChild(grandPrix);
+            const type = document.createElement('td');
+            type.textContent = data[dataIndex].type;
+            tr.appendChild(type);
+            calendarBody.appendChild(tr);
+        }
+    }
+
+    fetch('/calendar')
+        .then(response => response.json())
+        .then(data => displayCalendar(data));
+
+</script>
+</body>
+</html>
