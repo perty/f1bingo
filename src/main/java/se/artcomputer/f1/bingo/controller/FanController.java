@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import se.artcomputer.f1.bingo.domain.FanService;
 import se.artcomputer.f1.bingo.entity.Fan;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -22,7 +23,7 @@ public class FanController {
      @GetMapping
      public List<FanDto> fans() {
          List<Fan> fans = fanService.getFans();
-         return fans.stream().map(this::toDto).toList();
+         return fans.stream().map(this::toDto).sorted(Comparator.comparing(FanDto::name)).toList();
      }
 
      private FanDto toDto(Fan fan) {
