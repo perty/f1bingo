@@ -47,14 +47,14 @@
             raceNr.textContent = "" + (race + 1);
             tr.appendChild(raceNr);
             const raceName = document.createElement('td');
-            raceName.textContent = data.races[race];
+            raceName.textContent = data.races[race].name;
             raceName.style.textAlign = 'left';
             tr.appendChild(raceName);
             tableBody.appendChild(tr);
         }
         for (let fan = 0; fan < data.fans.length; fan++) {
             const th = document.createElement('th');
-            th.textContent = data.fans[fan].fanName;
+            th.textContent = data.fans[fan].fanName.name;
             tableHeadRow.appendChild(th);
             for (let row = 0; row < data.fans[fan].fanScores.length; row++) {
                 const rowElement = document.getElementById('row' +  row);

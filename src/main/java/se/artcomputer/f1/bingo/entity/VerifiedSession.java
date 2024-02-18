@@ -67,4 +67,8 @@ public class VerifiedSession {
     public Session getSession() {
         return session;
     }
+
+    public Date getStartDate() {
+        return raceWeekend.getStartDate();
+    }
 }

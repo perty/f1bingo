@@ -1,6 +1,7 @@
 package se.artcomputer.f1.bingo.entity;
 
 import jakarta.persistence.*;
+import se.artcomputer.f1.bingo.domain.FanName;
 
 @Entity
 public class Fan {
@@ -21,6 +22,9 @@ public class Fan {
 
     public String getName() {
         return name;
+    }
+    public FanName getFanName() {
+        return new FanName(name);
     }
 
     public void setName(String name) {

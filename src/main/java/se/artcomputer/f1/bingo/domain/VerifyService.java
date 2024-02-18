@@ -8,6 +8,7 @@ import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
 import se.artcomputer.f1.bingo.repository.StatementRepository;
 import se.artcomputer.f1.bingo.repository.VerifiedSessionRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,6 @@ public class VerifyService {
     }
 
     public List<VerifiedSession> getVerifiedSessions() {
-        return verifiedSessionRepository.findAll();
+        return verifiedSessionRepository.findAll().stream().sorted(Comparator.comparing(VerifiedSession::getStartDate)).toList();
     }
 }

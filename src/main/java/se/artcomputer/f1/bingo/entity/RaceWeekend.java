@@ -1,6 +1,7 @@
 package se.artcomputer.f1.bingo.entity;
 
 import jakarta.persistence.*;
+import se.artcomputer.f1.bingo.domain.RaceName;
 import se.artcomputer.f1.bingo.domain.RaceWeekendType;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +45,10 @@ public class RaceWeekend {
 
     public String getName() {
         return name;
+    }
+
+    public RaceName getRaceName() {
+        return new RaceName(name);
     }
 
     public void setName(String name) {
