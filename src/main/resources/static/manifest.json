@@ -1,0 +1,21 @@
+{
+  "short_name": "F1-bingo",
+  "name": "F1-bingo",
+  "icons": [
+    {
+      "src": "ikon/ikon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "ikon/ikon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#f11010"
+}
