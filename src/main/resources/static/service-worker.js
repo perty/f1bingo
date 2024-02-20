@@ -4,6 +4,16 @@ self.addEventListener('install', event => {
             return cache.addAll([
                 '/index.html',
                 '/css/style.css',
+                '/images/car/rb.png',
+                '/images/car/haas.png',
+                '/images/car/sauber.png',
+                '/images/car/mclaren.png',
+                '/images/car/alpine.png',
+                '/images/car/mercedes.png',
+                '/images/car/aston-martin.png',
+                '/images/car/red-bull.png',
+                '/images/car/ferrari.png',
+                '/images/car/williams.png',
             ]);
         })
     );
