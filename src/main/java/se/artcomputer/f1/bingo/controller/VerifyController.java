@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import se.artcomputer.f1.bingo.controller.util.GetCookie;
 import se.artcomputer.f1.bingo.domain.AdminService;
 import se.artcomputer.f1.bingo.domain.Session;
 import se.artcomputer.f1.bingo.domain.VerifiedStatement;
@@ -17,11 +18,8 @@ import se.artcomputer.f1.bingo.entity.VerifiedStatementEntity;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static se.artcomputer.f1.bingo.domain.AdminService.AUTH_COOKIE;
 
 @RestController
 @RequestMapping("verify")
@@ -55,11 +53,6 @@ public class VerifyController {
     @PostMapping(path = "/toggle-close", consumes = {"application/x-www-form-urlencoded"})
     public ResponseEntity<String> toggleCloseSession(@RequestHeader HttpHeaders headers,
                                                      @RequestParam MultiValueMap<String, String> statementMap) throws URISyntaxException {
-        String cookiesHeader = headers.getFirst(HttpHeaders.COOKIE) == null ? "" : headers.getFirst(HttpHeaders.COOKIE);
-        String cookie = Arrays.stream(cookiesHeader.split("; ")).filter(c -> c.startsWith(AUTH_COOKIE))
-                .findFirst()
-                .map(s -> s.split("=")[1])
-                .orElse("");
         Long weekendId = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(WEEKEND_ID))
                 .map(e -> Long.parseLong(e.getValue().getFirst()))
@@ -71,7 +64,7 @@ public class VerifyController {
                 .map(Session::valueOf)
                 .findFirst()
                 .orElseThrow();
-        adminService.checkSession(cookie, returnUrl(weekendId, session));
+        adminService.checkLogin(GetCookie.getCookie(headers), returnUrl(weekendId, session));
         List<VerifiedStatement> list = statementMap.entrySet().stream()
                 .filter(e -> e.getKey().startsWith(STATEMENT_ID))
                 .map(e -> new VerifiedStatement(parseStatementId(e.getKey()), e.getValue().getFirst().equals("on")))

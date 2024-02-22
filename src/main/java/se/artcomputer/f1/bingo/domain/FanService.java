@@ -17,4 +17,10 @@ public class FanService {
     public List<Fan> getFans() {
         return fanRepository.findAll();
     }
+
+    public void addFan(String name) {
+        Fan fan = new Fan();
+        fan.setName(name);
+        fanRepository.save(fan);
+    }
 }

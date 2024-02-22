@@ -27,7 +27,7 @@ public class AdminService {
         return statementRepository.findAll(Sort.by("id"));
     }
 
-    public void checkSession(String cookie, String redirectUrl) {
+    public void checkLogin(String cookie, String redirectUrl) {
         LOG.info("Checking session for cookie: {}", cookie);
         if(!cookie.equals(ENCRYPTED_TOKEN_VALUE + PIN_CODE)) {
             throw new UnAuthorizedException(redirectUrl);

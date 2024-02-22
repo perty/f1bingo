@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/fan.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <p>F1-nördar</p>
+        </div>
+    </div>
+    <div class="content">
+        <table>
+            <thead>
+            <tr>
+                <th>Namn</th>
+            </tr>
+            </thead>
+            <tbody id="fanTable">
+            </tbody>
+        </table>
+        <form id="addFanForm" action="/fan/add" method="post">
+            <div class="form-field">
+                <label for="fanName">Lägg till F1-nörd:</label>
+                <input type="text" id="fanName" name="fanName" required>
+            </div>
+            <div class="submitButtonRow">
+                <button type="submit">Lägg till</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function fetchFans() {
+        const urlParams = new URLSearchParams(window.location.search);
+        document.getElementById('fanName').value = urlParams.get('addFan');
+        fetch('/fan')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                const fanTable = document.getElementById('fanTable');
+                data.forEach(function (fan) {
+                    const fanRow = document.createElement('tr');
+                    const fanName = document.createElement('td');
+                    fanName.textContent = fan.name;
+                    fanRow.appendChild(fanName);
+                    fanTable.appendChild(fanRow);
+                });
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    }
+
+    fetchFans();
+</script>
+<script>
+    // document.getElementById('addFanForm').onsubmit = function (event) {
+    //     event.preventDefault();
+    //     const fanName = document.getElementById('fanName').value;
+    //     window.location.href = '/fan.html?addFan=' + fanName;
+    // };
+</script>
+</body>
+</html>

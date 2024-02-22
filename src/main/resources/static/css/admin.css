@@ -21,18 +21,16 @@
 }
 
 .admin-button-link {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    font-size: 16px;
     background-color: var(--primary-color);
     color: var(--secondary-color);
     border: solid 5px var(--secondary-color);
-    margin: 10px;
-    padding-inline: 6px;
+    border-radius: 5px;
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
     cursor: pointer;
 }
 
