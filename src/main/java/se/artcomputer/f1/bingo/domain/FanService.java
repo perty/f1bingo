@@ -2,6 +2,7 @@ package se.artcomputer.f1.bingo.domain;
 
 import org.springframework.stereotype.Service;
 import se.artcomputer.f1.bingo.entity.Fan;
+import se.artcomputer.f1.bingo.exception.ConflictException;
 import se.artcomputer.f1.bingo.repository.FanRepository;
 
 import java.util.List;
@@ -19,6 +20,10 @@ public class FanService {
     }
 
     public void addFan(String name) {
+        boolean exists = getFans().stream().anyMatch(f -> f.getName().equals(name));
+        if(exists) {
+            throw new ConflictException("Fan already exists: " + name);
+        }
         Fan fan = new Fan();
         fan.setName(name);
         fanRepository.save(fan);

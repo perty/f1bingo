@@ -29,6 +29,12 @@ public class ExceptionHandling {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({ConflictException.class})
+    public ResponseEntity<String> conflict(Exception exception) {
+        LOG.info(exception.getMessage());
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler({UnAuthorizedException.class})
     public String unauthorized(Exception exception) {
         String loginUrl = UriComponentsBuilder.fromUriString("/login.html")
