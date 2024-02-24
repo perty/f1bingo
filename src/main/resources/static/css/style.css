@@ -6,11 +6,19 @@
     --gray-background-color: #f0f0f0;
     --shade-color: rgba(0, 0, 0, 0.3);
 }
+@font-face {
+    font-family: 'race_sport';
+    src: url('/font/race_sport.ttf') format('truetype')
+}
 
 body {
     color: var(--primary-color);
     background-color: var(--secondary-color);
     font-family: 'Syne', sans-serif;
+}
+
+.title p {
+    font-family: race_sport, 'Syne', sans-serif;
 }
 
 .container {
