@@ -6,6 +6,7 @@
     --gray-background-color: #f0f0f0;
     --shade-color: rgba(0, 0, 0, 0.3);
 }
+
 @font-face {
     font-family: 'race_sport';
     src: url('/font/race_sport.ttf') format('truetype')
@@ -20,6 +21,13 @@ body {
 .title p {
     font-family: race_sport, 'Syne', sans-serif;
 }
+
+@media (max-width: 600px)  {
+    .title p {
+        font-size: large;
+    }
+}
+
 
 .container {
     max-width: 600px;
