@@ -1,6 +1,8 @@
+const CACHE_NAME = 'v2';
+
 self.addEventListener('install', event => {
     event.waitUntil(
-        caches.open('v1').then(cache => {
+        caches.open(CACHE_NAME).then(cache => {
             return cache.addAll([
                 '/index.html',
                 '/css/style.css',
@@ -16,6 +18,17 @@ self.addEventListener('install', event => {
                 '/images/car/williams.png',
             ]);
         })
+    );
+});
+
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.filter(cacheName => cacheName !== CACHE_NAME)
+                    .map(cacheName => caches.delete(cacheName))
+            );
+        }).then(() => self.clients.claim())
     );
 });
 
