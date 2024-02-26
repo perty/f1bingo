@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Nollställa</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/verify.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <p>Nollställa</p>
+        </div>
+    </div>
+    <div class="verify-form-card shadow">
+        <form id="select-gp-form">
+            <div class="form-field">
+                <label for="weekend">GP:</label>
+                <select id="weekend" name="weekend" required>
+                    <option value="">Välj ett GP...</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <label for="session">Session:</label>
+                <select id="session">
+                    <option value="">Välj en session...</option>
+                    <option value="QUALIFYING">Kval</option>
+                    <option value="RACE">Race</option>
+                    <option value="SPRINT_RACE">Sprintrace</option>
+                    <option value="SPRINT_SHOOTOUT">Sprintkval</option>
+                </select>
+            </div>
+            <div class="submitButtonRow">
+                <button class="small-button" type="submit">Nollställ</button>
+            </div>
+        </form>
+    </div>
+    <div id="confirm-reset" style="display: none">
+        <form class="verify-form-card" action="/reset/confirm-reset" method="post">
+            <div id="reset-gp"></div>
+            <div id="reset-session"></div>
+            <div id="reset-cards"></div>
+            <input type="hidden" name="weekendId" id="hiddenWeekendId"/>
+            <input type="hidden" name="session" id="hiddenSessionId"/>
+
+            <div class="submitButtonRow" id="confirm-reset-button-row">
+                <button class="small-button" type="submit">Nollställ sessionen</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function sessionName(sessionType) {
+        switch (sessionType) {
+            case 'QUALIFYING':
+                return 'Kval';
+            case 'RACE':
+                return 'Race';
+            case 'SPRINT_RACE':
+                return 'Sprint';
+            case 'SPRINT_SHOOTOUT':
+                return 'Sprintkval';
+            default:
+                return sessionType;
+        }
+    }
+
+    function confirmSession(weekendId, session) {
+        const url = '/reset/weekend/' + encodeURIComponent(weekendId) + '/session/' + encodeURIComponent(session);
+        fetch(url)
+            .then(response => response.json())
+            .then(jsonResponse => {
+                document.getElementById('reset-gp').textContent = "GP: " + jsonResponse.gp;
+                document.getElementById('reset-session').textContent = "Session: " + sessionName(jsonResponse.session);
+                document.getElementById('confirm-reset').style.display = 'flex';
+                document.getElementById('hiddenWeekendId').value = weekendId;
+                document.getElementById('hiddenSessionId').value = session;
+
+                const buttonRow = document.getElementById('confirm-reset-button-row');
+                if(jsonResponse.state === 'CLOSED') {
+                    buttonRow.innerHTML = '<p>Sessionen är låst och kan inte nollställas</p>';
+                } else {
+                    document.getElementById('reset-cards').textContent = "Antal kort: " + jsonResponse.cards;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function fetchRaceWeekends() {
+        fetch('/weekend')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const select = document.getElementById('weekend');
+                data.forEach(function (weekend) {
+                    const option = document.createElement('option');
+                    option.value = weekend.id;
+                    option.textContent = weekend.name;
+                    select.appendChild(option);
+                });
+                const weekendQuery = urlParams.get('weekend');
+                if (weekendQuery) {
+                    select.value = weekendQuery;
+                }
+                const session = document.getElementById('session');
+                const sessionQuery = urlParams.get('session');
+                if (sessionQuery) {
+                    session.value = sessionQuery;
+                }
+                if (weekendQuery && sessionQuery) {
+                    confirmSession(weekendQuery, sessionQuery);
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    }
+
+    fetchRaceWeekends();
+</script>
+<script>
+    document.getElementById('select-gp-form').onsubmit = function (event) {
+        event.preventDefault();
+        const weekendId = document.getElementById('weekend').value;
+        const session = document.getElementById('session').value;
+        window.location.href = '/reset.html?weekend=' + encodeURIComponent(weekendId) + '&session=' + encodeURIComponent(session);
+    };
+</script>
+</body>
+</html>

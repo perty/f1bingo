@@ -11,6 +11,7 @@ self.addEventListener('install', event => {
                 '/login.html',
                 '/misc-info.html',
                 '/points.html',
+                '/reset.html',
                 '/verify.html',
                 '/weekend.html',
                 '/css/admin.css',

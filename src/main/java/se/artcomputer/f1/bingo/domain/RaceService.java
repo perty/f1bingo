@@ -18,4 +18,8 @@ public class RaceService {
     public List<RaceWeekend> getRaceWeekends() {
         return raceWeekendRepository.findAll(Sort.by("startDate"));
     }
+
+    public RaceWeekend getRaceWeekend(Long weekendId) {
+        return raceWeekendRepository.findById(weekendId).orElseThrow();
+    }
 }

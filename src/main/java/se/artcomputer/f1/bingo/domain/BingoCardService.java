@@ -36,6 +36,30 @@ public class BingoCardService {
         };
     }
 
+    public long countBingoCardsWithClicks(RaceWeekend raceWeekend, Session session) {
+        return weekendPaletteRepository.findByRaceWeekend(raceWeekend).stream()
+                .flatMap(wc -> wc.getBingoCards().stream())
+                .filter(bingoCard -> bingoCard.getSession().equals(session))
+                .filter(bingoCard -> bingoCardStatementRepository.findByBingoCard(bingoCard).stream()
+                        .anyMatch(bcs -> bcs.getChecked() != CheckState.POSSIBLE))
+                .count();
+    }
+
+    @Transactional
+    public void resetBingoCards(RaceWeekend raceWeekend, Session session) {
+        List<BingoCard> cards = weekendPaletteRepository.findByRaceWeekend(raceWeekend).stream()
+                .flatMap(wc -> wc.getBingoCards().stream())
+                .filter(bingoCard -> bingoCard.getSession().equals(session))
+                .toList();
+        for(BingoCard bingoCard : cards) {
+            List<BingoCardStatement> bingoCardStatements = bingoCardStatementRepository.findByBingoCard(bingoCard);
+            for(BingoCardStatement bcs : bingoCardStatements) {
+                bcs.setChecked(CheckState.POSSIBLE);
+            }
+            bingoCardStatementRepository.saveAll(bingoCardStatements);
+        }
+    }
+
     public void click(long cellId) {
         BingoCardStatement bingoCardStatement = bingoCardStatementRepository.findById(cellId).orElseThrow();
         bingoCardStatement.setChecked(switch (bingoCardStatement.getChecked()) {
