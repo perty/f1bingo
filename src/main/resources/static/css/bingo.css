@@ -125,6 +125,8 @@
     bottom: 0;
     right: 0;
     padding: 5px;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .grid-item-content.neutral {
