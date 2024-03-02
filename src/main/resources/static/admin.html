@@ -64,7 +64,7 @@
         let row = document.createElement('div');
         row.classList.add('grid-item');
         const select = document.createElement('select');
-        "INGEN,POLE_POSITION,DRIVER_OF_THE_DAY,FASTEST_LAP,RACE_WINNER".split(',').forEach(category => {
+        "INGEN,POLE_POSITION,DRIVER_OF_THE_DAY,FASTEST_LAP,RACE_WINNER,QUALIFYING_LAST".split(',').forEach(category => {
             const option = document.createElement('option');
             option.value = category;
             option.textContent = category;
