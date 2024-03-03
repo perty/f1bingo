@@ -45,11 +45,12 @@ public class VerifiedSession {
         this.session = session;
     }
 
-    public void add(Statement statement) {
+    public VerifiedStatementEntity add(Statement statement) {
         VerifiedStatementEntity verifiedStatementEntity = new VerifiedStatementEntity();
         verifiedStatementEntity.setVerifiedSession(this);
         verifiedStatementEntity.setStatement(statement);
         statements.add(verifiedStatementEntity);
+        return verifiedStatementEntity;
     }
 
     public Date getCreated() {

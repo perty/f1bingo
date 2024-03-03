@@ -1,12 +1,11 @@
 package se.artcomputer.f1.bingo.domain;
 
 import org.springframework.stereotype.Service;
-import se.artcomputer.f1.bingo.entity.BingoCardStatement;
-import se.artcomputer.f1.bingo.entity.RaceWeekend;
-import se.artcomputer.f1.bingo.entity.VerifiedSession;
+import se.artcomputer.f1.bingo.entity.*;
 import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
 import se.artcomputer.f1.bingo.repository.StatementRepository;
 import se.artcomputer.f1.bingo.repository.VerifiedSessionRepository;
+import se.artcomputer.f1.bingo.repository.VerifiedStatementRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,14 +13,18 @@ import java.util.Optional;
 
 @Service
 public class VerifyService {
+    private final VerifiedStatementRepository verifiedStatementRepository;
     private final BingoCardService bingoCardService;
     private final VerifiedSessionRepository verifiedSessionRepository;
     private final StatementRepository statementRepository;
     private final RaceWeekendRepository raceWeekendRepository;
 
-    public VerifyService(BingoCardService bingoCardService, VerifiedSessionRepository verifiedSessionRepository,
+    public VerifyService(VerifiedStatementRepository verifiedStatementRepository,
+                         BingoCardService bingoCardService,
+                         VerifiedSessionRepository verifiedSessionRepository,
                          StatementRepository statementRepository,
                          RaceWeekendRepository raceWeekendRepository) {
+        this.verifiedStatementRepository = verifiedStatementRepository;
         this.bingoCardService = bingoCardService;
         this.verifiedSessionRepository = verifiedSessionRepository;
         this.statementRepository = statementRepository;
@@ -48,11 +51,17 @@ public class VerifyService {
             verifiedSession.setSession(session);
             for (VerifiedStatement verifiedStatement : verifiedStatements) {
                 if (verifiedStatement.verified()) {
-                    statementRepository.findById(verifiedStatement.id()).ifPresent(verifiedSession::add);
+                    statementRepository.findById(verifiedStatement.id())
+                            .ifPresent(statement -> addAndSave(statement, verifiedSession));
                 }
             }
             verifiedSessionRepository.save(verifiedSession);
         }
+    }
+
+    private void addAndSave(Statement statement, VerifiedSession verifiedSession) {
+        VerifiedStatementEntity verifiedStatementEntity = verifiedSession.add(statement);
+        verifiedStatementRepository.save(verifiedStatementEntity);
     }
 
     public List<VerifiedSession> getVerifiedSessions() {
