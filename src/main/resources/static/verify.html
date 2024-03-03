@@ -109,6 +109,9 @@
                         check.checked = true;
                         check.id = statement.id;
                         check.name = "statementId" + statement.id;
+                        if(jsonResponse.created) {
+                            check.disabled = true;
+                        }
                         verdictCell.appendChild(check)
                         row.appendChild(verdictCell);
                         tableBody.appendChild(row);
