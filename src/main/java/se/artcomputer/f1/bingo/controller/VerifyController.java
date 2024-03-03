@@ -20,6 +20,8 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("verify")
@@ -42,10 +44,10 @@ public class VerifyController {
 
         Optional<VerifiedSession> verifiedSession = verifyService.getVerifiedSession(weekendId, sessionName);
         if (verifiedSession.isPresent()) {
-            List<VerifyStatementDto> statements = verifiedSession.get().getStatements().stream().map(this::toDto).toList();
+            Set<VerifyStatementDto> statements = verifiedSession.get().getStatements().stream().map(this::toDto).collect(Collectors.toSet());
             return new CheckStatementsDto(statements, verifiedSession.map(VerifiedSession::getCreated));
         } else {
-            List<VerifyStatementDto> statements = verifyService.getCheckStatements(weekendId, sessionName).stream().map(this::toDto).toList();
+            Set<VerifyStatementDto> statements = verifyService.getCheckStatements(weekendId, sessionName).stream().map(this::toDto).collect(Collectors.toSet());
             return new CheckStatementsDto(statements, Optional.empty());
         }
     }
