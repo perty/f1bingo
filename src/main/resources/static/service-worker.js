@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v6';
+const CACHE_NAME = 'v7';
 
 self.addEventListener('install', event => {
     event.waitUntil(
@@ -8,6 +8,7 @@ self.addEventListener('install', event => {
                 '/admin.html',
                 '/calendar.html',
                 '/fan.html',
+                '/help.html',
                 '/login.html',
                 '/misc-info.html',
                 '/points.html',

@@ -46,7 +46,6 @@ body {
     flex: 1; /* Ger lika mycket utrymme till logotypen och titeln */
 }
 
-/* Ytterligare styling kan läggas till här för att anpassa utseendet */
 .logo img {
     max-width: 100%; /* Säkerställer att bilden inte blir större än dess container */
     height: auto;
@@ -59,7 +58,9 @@ body {
 
 .title {
     display: flex;
-    flex: 1; /* Ger lika mycket utrymme till logotypen och titeln */
+    position: relative;
+    flex-direction: column;
+    flex: 1;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -69,6 +70,27 @@ body {
     margin-left: 2px;
     border-radius: 5px;
     background-color: #f11010;
+}
+
+.help-icon {
+    position: absolute; /* Absolut positionering relativt till .title */
+    top: 0;
+    right: 0;
+    width: auto;
+    margin-right: 10px;
+    margin-top: 10px;
+    font-size: large;
+}
+
+.help-icon div {
+    border-style: solid;
+    border-radius: 35px;
+    width: 35px;
+    font-size: large;
+}
+
+.help-icon a {
+    text-decoration: none;
 }
 
 .content{
