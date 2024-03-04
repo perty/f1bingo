@@ -6,6 +6,35 @@
     padding-left: 10px;
 }
 
+.minor-title a {
+    text-decoration: none;
+}
+
+.one-column {
+    width: 100%;
+}
+
+.one-column table {
+    border-style: solid;
+    border-width: 1px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.one-column thead {
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
+
+.one-column tr {
+    border-style: solid;
+    border-width: 1px;
+}
+
+.one-column table tr td:nth-child(2) {
+    text-align: center;
+}
+
 .two-columns {
     display: flex;
     flex-direction: row;
@@ -41,4 +70,25 @@
 .responsive-img {
     width: 100%; /* Gör bilden responsiv så att den fyller kolumnens bredd */
     height: auto; /* Behåller bildens proportioner */
+}
+
+.link-list {
+    list-style: none;
+    padding: 0;
+}
+
+.link-list li {
+    margin-bottom: 10px;
+    font-size: large;
+}
+
+.link-list a {
+    text-decoration: none;
+    color: var(--primary-color);
+    display: flex; /* Gör så att ikonen och texten kan ligga på samma rad */
+    align-items: center; /* Centrerar ikonen och texten vertikalt */
+}
+
+.icon {
+    margin-right: 10px;
 }
