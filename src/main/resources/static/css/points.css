@@ -1,13 +1,3 @@
-.dummy {
-    background-color: var(--secondary-color);
-}
-
-.minor-title {
-    font-size: large;
-    text-align: left;
-    justify-content: left;
-    padding-left: 10px;
-}
 
 table {
     border-style: solid;
