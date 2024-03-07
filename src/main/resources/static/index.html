@@ -87,6 +87,10 @@
                     option.textContent = weekend.name;
                     select.appendChild(option);
                 });
+                const selectedWeekend = localStorage.getItem('selectedWeekend');
+                if (selectedWeekend) {
+                    document.getElementById('weekend').value = selectedWeekend;
+                }
             })
             .catch(function (error) {
                 console.error('Error:', error);
@@ -110,6 +114,10 @@
                     option.textContent = fan.name;
                     select.appendChild(option);
                 });
+                const selectedFan = localStorage.getItem('selectedFan');
+                if (selectedFan) {
+                    document.getElementById('fan').value = selectedFan;
+                }
             })
             .catch(function (error) {
                 console.error('Error:', error);
@@ -137,6 +145,16 @@
             });
         });
     }
+</script>
+<script>
+    // When changing the selected fan, store the selected fan in local storage.
+    document.getElementById('fan').onchange = function () {
+        localStorage.setItem('selectedFan', this.value);
+    };
+    // When changing the selected GP, store the selected GP in local storage.
+    document.getElementById('weekend').onchange = function () {
+        localStorage.setItem('selectedWeekend', this.value);
+    };
 </script>
 </body>
 </html>
