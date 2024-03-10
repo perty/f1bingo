@@ -72,6 +72,11 @@ body {
     background-color: #f11010;
 }
 
+.title a {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
 .help-icon {
     position: absolute; /* Absolut positionering relativt till .title */
     top: 0;
@@ -85,12 +90,9 @@ body {
 .help-icon div {
     border-style: solid;
     border-radius: 35px;
+    border-color: var(--primary-color);
     width: 35px;
     font-size: large;
-}
-
-.help-icon a {
-    text-decoration: none;
 }
 
 .content{
@@ -127,6 +129,7 @@ body {
     margin-top: 10px;
     border-radius: 5px;
     width: 100%;
+    color: var(--primary-color);
 }
 
 .submitButtonRow {
