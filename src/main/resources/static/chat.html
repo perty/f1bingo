@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <title>Chat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <p>Chat</p>
+        </div>
+    </div>
+    <div class="content">
+        <div id="chat">
+            <input type="text" id="messageInput" placeholder="Skriv ett meddelande..."/>
+            <button onclick="sendMessage()">Skicka</button>
+        </div>
+        <div id="messages"></div>
+    </div>
+</div>
+<script>
+    const host = location.hostname + ":" + location.port;
+    const stompClient = new StompJs.Client({
+        brokerURL: 'wss://' + host + '/chat'
+    });
+
+    stompClient.onConnect = (frame) => {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/messages', (message) => {
+            console.log('Received message: ' + message);
+            showReceivedMessage(JSON.parse(message.body).message);
+        });
+    };
+
+    stompClient.onWebSocketError = (error) => {
+        console.error('Error with websocket', error);
+    };
+
+    stompClient.onStompError = (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
+    };
+
+    function connect() {
+        stompClient.activate();
+    }
+
+    function sendMessage() {
+        const messageContent = document.getElementById('messageInput').value;
+        if (messageContent) {
+            stompClient.publish({
+                destination: "/app/message",
+                body: JSON.stringify({'message': messageContent})
+            });
+        }
+    }
+
+    function clearInput() {
+        document.getElementById('messageInput').value = '';
+    }
+
+    function showReceivedMessage(message) {
+        const messagesDiv = document.getElementById('messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.appendChild(document.createTextNode(message));
+        messagesDiv.appendChild(messageDiv);
+        clearInput();
+    }
+
+    document.getElementById('messageInput').addEventListener('keydown', function(event) {
+        if (event.code === "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+
+    connect();
+
+</script>
+</body>
+</html>
