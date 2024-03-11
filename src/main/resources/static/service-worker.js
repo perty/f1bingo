@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v16';
+const CACHE_NAME = 'v17';
 
 self.addEventListener('install', event => {
     event.waitUntil(
@@ -26,7 +26,7 @@ self.addEventListener('install', event => {
                 '/css/style.css',
                 '/css/team.css',
                 '/css/verify.css',
-                '/images/car/chat.svg',
+                '/images/chat.svg',
                 '/images/car/rb.png',
                 '/images/car/haas.png',
                 '/images/car/sauber.png',
