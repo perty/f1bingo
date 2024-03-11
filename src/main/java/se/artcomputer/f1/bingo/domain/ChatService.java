@@ -6,6 +6,7 @@ import se.artcomputer.f1.bingo.repository.ChatRepository;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ChatService {
@@ -20,5 +21,9 @@ public class ChatService {
         message.setMessage(messageString);
         message.setTimestamp(Date.from(Instant.now()));
         return chatRepository.save(message);
+    }
+
+    public List<ChatMessageEntity> getAllMessages() {
+        return chatRepository.findAll();
     }
 }

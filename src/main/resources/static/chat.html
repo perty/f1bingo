@@ -29,7 +29,7 @@
 <script>
     const host = location.hostname + ":" + location.port;
     const stompClient = new StompJs.Client({
-        brokerURL: 'wss://' + host + '/chat'
+        brokerURL: 'wss://' + host + '/chat-ws'
     });
 
     stompClient.onConnect = (frame) => {
@@ -84,6 +84,18 @@
 
     connect();
 
+    function loadMessages() {
+        // fetch  from /chat and append to messages
+        fetch('/chat')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(message => {
+                    showReceivedMessage(message.message);
+                });
+            });
+    }
+
+    loadMessages();
 </script>
 </body>
 </html>

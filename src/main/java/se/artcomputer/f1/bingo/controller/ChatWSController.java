@@ -7,11 +7,11 @@ import se.artcomputer.f1.bingo.domain.ChatService;
 import se.artcomputer.f1.bingo.entity.ChatMessageEntity;
 
 @Controller
-public class ChatController {
+public class ChatWSController {
 
     private final ChatService chatService;
 
-    public ChatController(ChatService chatService) {
+    public ChatWSController(ChatService chatService) {
         this.chatService = chatService;
     }
 
