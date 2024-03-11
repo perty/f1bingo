@@ -20,8 +20,10 @@
     </div>
     <div class="content">
         <div id="chat">
-            <input type="text" id="messageInput" placeholder="Skriv ett meddelande..."/>
-            <button onclick="sendMessage()">Skicka</button>
+            <form id="messageForm">
+                <input type="text" id="messageInput" placeholder="Skriv ett meddelande...">
+                <button type="submit" id="sendButton">Skicka</button>
+            </form>
         </div>
         <div id="messages"></div>
     </div>
@@ -80,6 +82,11 @@
             event.preventDefault();
             sendMessage();
         }
+    });
+
+    document.getElementById('messageForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Förhindra att formuläret skickas på det traditionella sättet
+        sendMessage();
     });
 
     connect();
