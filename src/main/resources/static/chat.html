@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
 <body>
-<div class="container">
+<div id="chatContainer" class="container">
     <div class="header">
         <div class="logo">
             <a href="/" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
@@ -18,15 +19,11 @@
             <p>Chat</p>
         </div>
     </div>
-    <div class="content">
-        <div id="chat">
-            <form id="messageForm">
-                <input type="text" id="messageInput" placeholder="Skriv ett meddelande..." autocomplete="off" >
-                <button type="submit" id="sendButton">Skicka</button>
-            </form>
-        </div>
         <div id="messages"></div>
-    </div>
+        <form id="messageForm">
+            <input type="text" id="messageInput" placeholder="Skriv ett meddelande..." autocomplete="off">
+            <button type="submit" id="sendButton">Skicka</button>
+        </form>
 </div>
 <script>
     const host = location.hostname + ":" + location.port;
@@ -70,21 +67,23 @@
     }
 
     function showReceivedMessage(message) {
-        const messagesDiv = document.getElementById('messages');
-        const messageDiv = document.createElement('div');
-        messageDiv.appendChild(document.createTextNode(message));
-        messagesDiv.appendChild(messageDiv);
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message;
+        document.getElementById('messages').appendChild(messageElement);
+
+        // Skrolla till det senaste meddelandet
+        document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
         clearInput();
     }
 
-    document.getElementById('messageInput').addEventListener('keydown', function(event) {
+    document.getElementById('messageInput').addEventListener('keydown', function (event) {
         if (event.code === "Enter") {
             event.preventDefault();
             sendMessage();
         }
     });
 
-    document.getElementById('messageForm').addEventListener('submit', function(event) {
+    document.getElementById('messageForm').addEventListener('submit', function (event) {
         event.preventDefault(); // Förhindra att formuläret skickas på det traditionella sättet
         sendMessage();
     });

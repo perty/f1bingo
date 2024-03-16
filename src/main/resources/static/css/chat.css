@@ -1,0 +1,33 @@
+#chatContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Justera innehållet mot slutet av container */
+    height: 100vh; /* Använder hela skärmens höjd, justera enligt dina behov */
+    max-height: calc(100vh - 20px); /* Ser till att containern inte blir större än skärmens höjd */
+}
+
+#messages {
+    overflow-y: auto; /* Gör meddelandelistan scrollbar */
+    flex-grow: 1; /* Låter meddelandelistan expandera och ta upp allt tillgängligt utrymme */
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#messageInput {
+    flex-grow: 1; /* Får inmatningsfältet att ta upp allt tillgängligt utrymme */
+    margin-right: 10px; /* Ger lite utrymme mellan inmatningsfältet och skicka-knappen */
+}
+
+#messageForm {
+    display: flex; /* Aktiverar flexbox-layout för formuläret */
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+#sendButton {
+    width: auto; /* Gör att knappens storlek baseras på dess innehåll */
+    padding: 10px 20px; /* Exempel på padding, justera efter behov */
+    margin-right: 10px;
+}
