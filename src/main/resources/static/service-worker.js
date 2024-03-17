@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v22';
+const CACHE_NAME = 'v23';
 
 self.addEventListener('install', event => {
     event.waitUntil(
