@@ -7,9 +7,13 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bingo.css">
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
 <body>
 <div class="container">
+    <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
+        Nytt meddelande i chatten!
+    </div>
     <div class="weekend-title">
         <span id="raceWeekendName"></span>
     </div>
@@ -154,4 +158,5 @@
     // Kalla på funktionen när sidan laddas
     fetchBingoCards();
 </script>
+<script src="js/chat-notification.js"></script>
 </body>
