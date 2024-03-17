@@ -227,3 +227,22 @@ input, select, button {
     text-decoration: none;
     cursor: pointer;
 }
+
+#chatPopup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--red-background-color);
+    color: var(--secondary-color);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000; /* Se till att pop-upen ligger över andra element */
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0.5;
+    }
+}
