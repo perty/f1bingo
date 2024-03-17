@@ -13,6 +13,15 @@
     margin-right: 10px;
 }
 
+#messageInputContainer {
+    position: fixed;
+    left: 0;
+    bottom: 0; /* Placeras längst ner på skärmen */
+    width: 100%; /* Bredden sätts till att ta upp hela bredden av skärmen */
+    padding-bottom: env(safe-area-inset-bottom); /* Kompatibilitet för iPhone X och liknande enheter */
+    box-sizing: border-box; /* Ser till att padding inte läggs till utanför den angivna bredden */
+}
+
 #messageInput {
     flex-grow: 1; /* Får inmatningsfältet att ta upp allt tillgängligt utrymme */
     margin-right: 10px; /* Ger lite utrymme mellan inmatningsfältet och skicka-knappen */

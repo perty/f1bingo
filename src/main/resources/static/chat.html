@@ -19,11 +19,13 @@
             <p>Chat</p>
         </div>
     </div>
-        <div id="messages"></div>
+    <div id="messages"></div>
+    <div is="messageInputContainer">
         <form id="messageForm">
             <input type="text" id="messageInput" placeholder="Skriv ett meddelande..." autocomplete="off">
             <button type="submit" id="sendButton">Skicka</button>
         </form>
+    </div>
 </div>
 <script>
     const host = location.hostname + ":" + location.port;
