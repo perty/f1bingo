@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end; /* Justera innehållet mot slutet av container */
-    height: 100vh; /* Använder hela skärmens höjd, justera enligt dina behov */
 }
 
 #messages {

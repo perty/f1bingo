@@ -104,6 +104,18 @@
     }
 
     loadMessages();
+
+    function adjustChatContainerHeight() {
+        const chatContainer = document.getElementById('chatContainer');
+        if (chatContainer) {
+            chatContainer.style.height = window.innerHeight + 'px';
+        }
+    }
+
+    // Anropa funktionen när sidan laddas och när fönstrets storlek ändras
+    window.addEventListener('load', adjustChatContainerHeight);
+    window.addEventListener('resize', adjustChatContainerHeight);
+
 </script>
 </body>
 </html>
