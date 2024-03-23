@@ -32,11 +32,15 @@
     border-width: 1px;
 }
 
-.one-column table tr td:nth-child(2) {
+.one-column table tr td:nth-child(1) {
     text-align: center;
 }
 
 .one-column table tr td:nth-child(3) {
+    text-align: center;
+}
+
+.one-column table tr td:nth-child(4) {
     text-align: right;
 }
 
