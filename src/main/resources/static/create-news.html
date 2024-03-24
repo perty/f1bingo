@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Skriv nyheter</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/calendar.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
+        Nytt meddelande i chatten!
+    </div>
+    <div class="header">
+        <div class="logo">
+            <a href="/home.html" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <p>Lägga upp nyheter</p>
+        </div>
+    </div>
+    <div class="content">
+        <div class="news">
+            <div class="news-header">
+                <h2>Nyheter, de 5 senaste</h2>
+            </div>
+            <div id="news" class="news-content">
+                <!-- Här kommer nyheter att läggas till -->
+            </div>
+        </div>
+        <form id="newsForm">
+            <div class="form-field">
+                <label for="content">Nyhet:</label>
+                <input type="text" id="content" name="content" required size="50">
+                <button type="submit">Skicka</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="js/news.js"></script>
+<script>
+    // Fånga formulärets submit och skicka nyheten till servern.
+    document.getElementById('newsForm').addEventListener('submit', event => {
+        event.preventDefault();
+        sendNews();
+    });
+
+    function sendNews() {
+        const content = document.getElementById('content').value;
+        if (content) {
+            fetch('/news', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({content: content})
+            })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('content').value = '';
+                        fetchNews(5);
+                    } else {
+                        console.error('Error:', response);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
+    fetchNews(5);
+</script>
+<script src="js/chat-notification.js"></script>
+</body>
+</html>
