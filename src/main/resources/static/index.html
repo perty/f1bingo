@@ -11,40 +11,29 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="F1 Bingo">
-    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
 <body>
 <div class="container">
-    <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
-        Nytt meddelande i chatten!
-    </div>
     <div class="header">
         <div class="logo">
             <img src="images/logo.png" alt="logo" id="logo">
         </div>
         <div class="title shadow">
-            <a href="help.html">
-                <div class="help-icon">
-                    <div>?</div>
-                </div>
-            </a>
-            <p>Bingo 2024</p>
-            <a href="chat.html">
-                <div class="chat-icon">
-                    <div><img src="/images/chat.svg" alt="Chat symbol"></div>
-                </div>
-            </a>
+            <p>F1 Bingo 2024</p>
         </div>
     </div>
-    <div>
+
+    <div class="content">
         <form id="weekendPaletteForm">
             <div class="weekend-form-card shadow">
-                <div class="form-field">
-                    <label for="weekend">Grand Prix:</label>
-                    <select id="weekend" name="weekend" required>
-                        <option value="">Välj ett GP...</option>
-                    </select><br><br>
-                </div>
+                <h3>Välkommen till vår F1-app!</h3>
+                <p>
+                    Här kan du spela bingo och chatta med övriga F1-nördar.
+                    Du hittar också info om regler och förare.
+                </p>
+                <p>
+                    Kontakta gärna oss, se längst ner på sidan.
+                </p>
                 <div class="form-field">
                     <label for="fan">F1-nörd:</label>
                     <select id="fan" name="fan" required>
@@ -52,7 +41,7 @@
                     </select><br><br>
                 </div>
                 <div class="submitButtonRow">
-                    <div>Till dina bingobrickor:</div>
+                    <div>Logga in:</div>
                     <div>
                         <button type="submit"><img class="flag" src="/images/flag/finish.png" alt="finish flag">
                         </button>
@@ -61,54 +50,30 @@
             </div>
         </form>
     </div>
-    <div class="midsection">
-        <div class="car"><a href="team/rb.html"><img src="images/car/rb.png" alt="rb"></a></div>
-        <div class="car"><a href="team/haas.html"><img src="images/car/haas.png" alt="haas"></a></div>
-        <div class="car"><a href="team/sauber.html"><img src="images/car/sauber.png" alt="Kick Sauber"></a></div>
-        <div class="car"><a href="team/mclaren.html"><img src="images/car/mclaren.png" alt="mclaren"></a></div>
-        <div class="car"><a href="team/alpine.html"><img src="images/car/alpine.png" alt="alpine"></a></div>
-        <div class="car"><a href="team/mercedes.html"><img src="images/car/mercedes.png" alt="mercedes"></a></div>
-        <div class="car"><a href="team/aston-martin.html"><img src="images/car/aston-martin.png" alt="aston-martin"></a>
-        </div>
-        <div class="car"><a href="team/red-bull.html"><img src="images/car/red-bull.png" alt="red-bull"></a></div>
-        <div class="car"><a href="team/ferrari.html"><img src="images/car/ferrari.png" alt="ferrari"></a></div>
-        <div class="car"><a href="team/williams.html"><img src="images/car/williams.png" alt="williams"></a></div>
+
+    <div class="news">
+        <h2>Senaste nytt</h2>
+        <table>
+            <tr>
+                <td>2024-03-24</td>
+                <td>Nya påståenden i kval.
+                    Halva fältet inom en sekund efter respektive Q1, Q2 eller Q3.
+                </td>
+            </tr>
+            <tr>
+                <td>2024-03-23</td>
+                <td>Nu kan du chatta med andra F1-nördar!</td>
+            </tr>
+        </table>
     </div>
+
     <div class="footer">
-        <a class="shadow button-link" href="login.html?redirectUrl=/admin.html">Admin</a>
-        <a class="shadow button-link" href="points.html">Poäng</a>
-        <a class="shadow button-link" href="calendar.html">Kalender</a>
-        <a class="shadow button-link" href="misc-info.html">Övrig info</a>
+        <div class="footer-text">
+            <p>Kontakta oss: <a href="mailto:lundholm@artcomputer.se">lundholm@artcomputer.se</a></p>
+        </div>
     </div>
 </div>
 
-<script>
-    function fetchRaceWeekends() {
-        fetch('/weekend')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                const select = document.getElementById('weekend');
-                data.forEach(function (weekend) {
-                    const option = document.createElement('option');
-                    option.value = weekend.id;
-                    option.textContent = weekend.name;
-                    select.appendChild(option);
-                });
-                const selectedWeekend = localStorage.getItem('selectedWeekend');
-                if (selectedWeekend) {
-                    document.getElementById('weekend').value = selectedWeekend;
-                }
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-            });
-    }
-
-    // Kalla på funktionen när sidan laddas
-    fetchRaceWeekends();
-</script>
 <script>
     function fetchFans() {
         fetch('/fan')
@@ -133,15 +98,12 @@
             });
     }
 
-    // Kalla på funktionen när sidan laddas
     fetchFans();
 </script>
 <script>
     document.getElementById('weekendPaletteForm').onsubmit = function (event) {
         event.preventDefault();
-        const weekend = document.getElementById('weekend').value;
-        const fan = document.getElementById('fan').value;
-        window.location.href = '/weekend.html?weekend=' + encodeURIComponent(weekend) + '&fan=' + encodeURIComponent(fan);
+        window.location.href = '/home.html';
     };
 </script>
 <script>
@@ -160,11 +122,6 @@
     document.getElementById('fan').onchange = function () {
         localStorage.setItem('selectedFan', this.value);
     };
-    // When changing the selected GP, store the selected GP in local storage.
-    document.getElementById('weekend').onchange = function () {
-        localStorage.setItem('selectedWeekend', this.value);
-    };
 </script>
-<script src="js/chat-notification.js"></script>
 </body>
 </html>
