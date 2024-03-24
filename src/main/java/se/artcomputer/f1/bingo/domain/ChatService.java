@@ -16,10 +16,11 @@ public class ChatService {
         this.chatRepository = chatRepository;
     }
 
-    public ChatMessageEntity save(String messageString) {
+    public ChatMessageEntity save(String messageString, int fan) {
         ChatMessageEntity message = new ChatMessageEntity();
         message.setMessage(messageString);
         message.setTimestamp(Date.from(Instant.now()));
+        message.setFan(fan);
         return chatRepository.save(message);
     }
 

@@ -21,6 +21,6 @@ public class ChatRestController {
     @GetMapping
     public List<ChatMessageDto> getMessages() {
         List<ChatMessageEntity> all = chatService.getAllMessages();
-        return all.stream().map(e -> new ChatMessageDto(e.getTimestamp(), e.getMessage())).toList();
+        return all.stream().map(e -> new ChatMessageDto(e.getTimestamp(), e.getMessage(), e.getFan())).toList();
     }
 }

@@ -59,7 +59,10 @@
         if (messageContent) {
             stompClient.publish({
                 destination: "/app/message",
-                body: JSON.stringify({'message': messageContent})
+                body: JSON.stringify({
+                    'message': messageContent,
+                    'fan': selectedFan
+                })
             });
         }
     }
@@ -68,9 +71,10 @@
         document.getElementById('messageInput').value = '';
     }
 
-    function showReceivedMessage(message) {
+    function showReceivedMessage(message, fanId) {
+        const fanName = getSenderName(fanId);
         const messageElement = document.createElement('div');
-        messageElement.textContent = message;
+        messageElement.textContent = fanName + ': ' + message;
         document.getElementById('messages').appendChild(messageElement);
 
         // Skrolla till det senaste meddelandet
@@ -98,12 +102,10 @@
             .then(response => response.json())
             .then(data => {
                 data.forEach(message => {
-                    showReceivedMessage(message.message);
+                    showReceivedMessage(message.message, message.fan);
                 });
             });
     }
-
-    loadMessages();
 
     function adjustChatContainerHeight() {
         const chatContainer = document.getElementById('chatContainer');
@@ -115,6 +117,25 @@
     // Anropa funktionen när sidan laddas och när fönstrets storlek ändras
     window.addEventListener('load', adjustChatContainerHeight);
     window.addEventListener('resize', adjustChatContainerHeight);
+
+    const selectedFan = localStorage.getItem('selectedFan');
+
+    let fansMap = {};
+
+    fetch('/fan')
+        .then(response => response.json())
+        .then(data => {
+            fansMap = data.reduce((map, fan) => {
+                map[fan.id] = fan.name;
+                return map;
+            }, {});
+        })
+        .then(loadMessages)
+        .catch(error => console.error('Fel vid hämtning av fans:', error));
+
+    function getSenderName(senderId) {
+        return fansMap[senderId] || 'Okänd användare';
+    }
 
 </script>
 </body>

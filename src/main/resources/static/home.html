@@ -140,7 +140,7 @@
     document.getElementById('weekendPaletteForm').onsubmit = function (event) {
         event.preventDefault();
         const weekend = document.getElementById('weekend').value;
-        const fan = document.getElementById('fan').value;
+        const fan = localStorage.getItem('selectedFan');
         window.location.href = '/weekend.html?weekend=' + encodeURIComponent(weekend) + '&fan=' + encodeURIComponent(fan);
     };
 </script>
