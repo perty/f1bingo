@@ -45,12 +45,6 @@
                         <option value="">Välj ett GP...</option>
                     </select><br><br>
                 </div>
-                <div class="form-field">
-                    <label for="fan">F1-nörd:</label>
-                    <select id="fan" name="fan" required>
-                        <option value="">Välj en F1-nörd...</option>
-                    </select><br><br>
-                </div>
                 <div class="submitButtonRow">
                     <div>Till dina bingobrickor:</div>
                     <div>
@@ -108,33 +102,6 @@
 
     // Kalla på funktionen när sidan laddas
     fetchRaceWeekends();
-</script>
-<script>
-    function fetchFans() {
-        fetch('/fan')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                const select = document.getElementById('fan');
-                data.forEach(function (fan) {
-                    const option = document.createElement('option');
-                    option.value = fan.id;
-                    option.textContent = fan.name;
-                    select.appendChild(option);
-                });
-                const selectedFan = localStorage.getItem('selectedFan');
-                if (selectedFan) {
-                    document.getElementById('fan').value = selectedFan;
-                }
-            })
-            .catch(function (error) {
-                console.error('Error:', error);
-            });
-    }
-
-    // Kalla på funktionen när sidan laddas
-    fetchFans();
 </script>
 <script>
     document.getElementById('weekendPaletteForm').onsubmit = function (event) {
