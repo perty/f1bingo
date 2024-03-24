@@ -184,6 +184,21 @@ input, select, button {
     }
 }
 
+.footer-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-bottom: env(safe-area-inset-bottom); /* Kompatibilitet för iPhone X och liknande enheter */
+    box-sizing: border-box; /* Ser till att padding inte läggs till utanför den angivna bredden */
+    padding-right: 20px;
+}
+
+@media (min-width: 600px) {
+    .footer-bar {
+        max-width: 600px;
+    }
+}
+
 .footer {
     display: flex;
     justify-content: space-between;
