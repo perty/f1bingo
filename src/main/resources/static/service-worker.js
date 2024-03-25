@@ -28,7 +28,8 @@ self.addEventListener('install', event => {
                 '/css/style.css',
                 '/css/team.css',
                 '/css/verify.css',
-                '/images/chat.svg',
+                '/images/logo.png',
+                '/images/f1-bg.png',
                 '/images/car/alpine.png',
                 '/images/car/aston-martin.png',
                 '/images/car/ferrari.png',
@@ -39,7 +40,9 @@ self.addEventListener('install', event => {
                 '/images/car/red-bull.png',
                 '/images/car/sauber.png',
                 '/images/car/williams.png',
+                '/images/flag/finish.png',
                 '/misc-info/driver-info.html',
+                '/js/chat-notification.js',
             ]);
         })
     );
