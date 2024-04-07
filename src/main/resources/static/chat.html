@@ -37,7 +37,8 @@
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/messages', (message) => {
             console.log('Received message: ' + message);
-            showReceivedMessage(JSON.parse(message.body).message);
+            let parsed = JSON.parse(message.body);
+            showReceivedMessage(parsed.message, parsed.fan);
         });
     };
 
