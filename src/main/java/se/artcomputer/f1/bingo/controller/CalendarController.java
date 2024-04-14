@@ -1,6 +1,7 @@
 package se.artcomputer.f1.bingo.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.artcomputer.f1.bingo.domain.RaceService;
@@ -21,6 +22,12 @@ public class CalendarController {
     @GetMapping
     public List<CalendarDto> races() {
         List<RaceWeekend> races = raceService.getRaceWeekends();
+        return races.stream().map(this::toDto).toList();
+    }
+
+    @GetMapping("/{year}")
+    public List<CalendarDto> races(@PathVariable int year) {
+        List<RaceWeekend> races = raceService.getRaceWeekends(year);
         return races.stream().map(this::toDto).toList();
     }
 
