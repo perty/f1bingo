@@ -33,6 +33,7 @@ public class BingoCardService {
         return switch (raceWeekend.getType()) {
             case CLASSIC -> createBingoCardsClassic(weekendPalette);
             case SPRINT -> createBingoCardsSprint(weekendPalette);
+            case TBD -> List.of();
         };
     }
 

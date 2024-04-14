@@ -32,6 +32,15 @@ public class CalendarController {
     }
 
     private CalendarDto toDto(RaceWeekend raceWeekend) {
-        return new CalendarDto(raceWeekend.nameWithDates(), raceWeekend.getType() == RaceWeekendType.CLASSIC ? "klassisk" : "sprint");
+        return new CalendarDto(raceWeekend.nameWithDates(), translateType(raceWeekend.getType()));
+    }
+
+    // Translate a type to a string
+    private String translateType(RaceWeekendType type) {
+        return switch (type) {
+            case CLASSIC -> "klassisk";
+            case SPRINT -> "sprint";
+            case TBD -> "TBD";
+        };
     }
 }
