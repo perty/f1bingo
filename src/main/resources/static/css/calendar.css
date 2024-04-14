@@ -11,3 +11,29 @@ th {
 tr:nth-child(even) {
     background-color: var(--gray-background-color);
 }
+
+#calendarControls {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+ button {
+     padding: 10px 20px;
+     border: none;
+     background-color: var(--gray-background-color);
+     color: var(--primary-color);
+     font-size: 16px;
+     cursor: pointer;
+     transition: background-color 0.5s ease;
+     border-radius: 5px;
+ }
+
+button:hover {
+    background-color: var(--shade-color);
+}
+
+button.active {
+    background-color: var(--red-background-color);
+    color: var(--secondary-color);
+}

@@ -23,6 +23,10 @@
         </div>
     </div>
     <div class="content">
+        <div id="calendarControls" style="text-align: center;">
+            <button id="year2024Btn" class="active">2024</button>
+            <button id="year2025Btn">2025</button>
+        </div>
         <table>
             <thead>
             <tr>
@@ -36,8 +40,38 @@
     </div>
 </div>
 <script>
+    document.getElementById('year2024Btn').addEventListener('click', function() {
+        setActiveButton(this);
+        fetchCalendar(2024);
+    });
+
+    document.getElementById('year2025Btn').addEventListener('click', function() {
+        setActiveButton(this);
+        fetchCalendar(2025);
+    });
+
+    function setActiveButton(activeButton) {
+        // Ta bort 'active' klassen från alla knappar först
+        document.querySelectorAll('button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Lägg till 'active' klassen till den klickade knappen
+        activeButton.classList.add('active');
+    }
+
+    function fetchCalendar(year) {
+        fetch(`/calendar/${year}`)
+            .then(response => response.json())
+            .then(data => {
+                displayCalendar(data);
+            })
+            .catch(error => console.error('Error fetching calendar:', error));
+    }
+
     function displayCalendar(data) {
         const calendarBody = document.getElementById('calendar-body');
+        calendarBody.innerHTML = ''; // Rensa tidigare innehåll
         for(dataIndex = 0; dataIndex < data.length; dataIndex++) {
             const tr = document.createElement('tr');
             const grandPrix = document.createElement('td');
@@ -50,9 +84,7 @@
         }
     }
 
-    fetch('/calendar')
-        .then(response => response.json())
-        .then(data => displayCalendar(data));
+    fetchCalendar(2024);
 
 </script>
 <script src="js/chat-notification.js"></script>
