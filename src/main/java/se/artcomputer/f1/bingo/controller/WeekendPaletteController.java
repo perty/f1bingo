@@ -5,6 +5,7 @@ import se.artcomputer.f1.bingo.domain.VerifyService;
 import se.artcomputer.f1.bingo.domain.WeekendPaletteService;
 import se.artcomputer.f1.bingo.entity.*;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 @RequestMapping("palette")
@@ -41,7 +42,9 @@ public class WeekendPaletteController {
                 raceWeekend.getEndDate(),
                 raceWeekend.getCountry(),
                 raceWeekend.getTrack(),
-                weekendPalette.getBingoCards().stream().map(bingoCard -> toDto(bingoCard, raceWeekend)).toList()
+                weekendPalette.getBingoCards().stream()
+                        .sorted(Comparator.comparing(bc -> bc.getSession().getSortOrder()))
+                        .map(bingoCard -> toDto(bingoCard, raceWeekend)).toList()
         );
     }
 
