@@ -22,7 +22,7 @@
             <div class="small-logo">
                 <a href="/home.html" title="Gå till första sidan"><img src="images/logo.png" alt="logotype"></a>
                 <div class="flag">
-                    <img src="images/flag/italy.png" alt="country flag" id="flagImage">
+                    <img src="images/flag/finish.png" alt="country flag" id="flagImage">
                 </div>
             </div>
             <div id="fanName"></div>
@@ -78,7 +78,7 @@
             cardDiv.classList.add('bingo-card');
             const session = document.createElement('div');
             session.classList.add('session');
-            const sessionTitle = sessionName(card.session) + (card.verified ? ' (Avgjord)' : '');
+            const sessionTitle = sessionName(card.session) + (card.verified ? ' (Avgjord) ' : ' ') + formatUTCDateToLocal(card.utcStart);
             session.appendChild(document.createTextNode(sessionTitle));
             cardDiv.appendChild(session);
             if (card.statements.length > 0) {
@@ -86,6 +86,22 @@
             }
             container.appendChild(cardDiv);
         });
+    }
+
+    function formatUTCDateToLocal(isoDateString) {
+        if(!isoDateString) {
+            return '';
+        }
+        const date = new Date(isoDateString);
+        const options = {
+            day: '2-digit',
+            month: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+
+        return date.toLocaleString('sv-SE', options);
     }
 
     function sessionName(sessionType) {

@@ -5,8 +5,8 @@ import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import se.artcomputer.f1.bingo.entity.SessionSchedule;
 import se.artcomputer.f1.bingo.repository.SessionScheduleRepository;
 
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,14 +20,14 @@ public class SessionScheduleService {
         this.sessionScheduleRepository = sessionScheduleRepository;
     }
 
-    public Optional<Date> findSessionStart(Long weekendId, Session session) {
+    public Optional<Instant> findSessionStart(Long weekendId, Session session) {
         RaceWeekend raceWeekend = raceService.getRaceWeekend(weekendId);
         String country = raceWeekend.getCountry();
-        Date endDate = Date.from(raceWeekend.getEndDate().toInstant().plus(1, ChronoUnit.DAYS));
+        Instant endDate = (raceWeekend.getEndDate().toInstant().plus(1, ChronoUnit.DAYS));
         List<SessionSchedule> byLocation = sessionScheduleRepository.findByLocationOrderByStartTime(country)
                 .stream()
-                .filter(sessionSchedule -> sessionSchedule.getStartTime().before(endDate) &&
-                        sessionSchedule.getEndTime().after(raceWeekend.getStartDate()))
+                .filter(sessionSchedule -> sessionSchedule.getStartTime().isBefore(endDate) &&
+                        sessionSchedule.getEndTime().isAfter(raceWeekend.getStartDate().toInstant()))
                 .toList();
         int index = sessionIndex(session);
         if (byLocation.size() > index) {

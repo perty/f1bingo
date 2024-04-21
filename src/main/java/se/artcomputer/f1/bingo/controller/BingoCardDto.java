@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public record BingoCardDto(String session,
                            Optional<Date> verified,
-                           Optional<Date> utcStart,
+                           Optional<java.time.Instant> utcStart,
                            List<BingoCardStatementDto> statements
 ) {
 }

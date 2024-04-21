@@ -1,6 +1,12 @@
 # Notes
 
-So we have at least the following concepts
+## To Do
+
+- [ ] Hamilton kraschar inte in i Verstappen.
+- [ ] Typo, "starter".
+- [ ] Chrome pops up Google search when touching text. Add to user manual how to turn off.
+
+## Concepts
 
 | Swedish     | English         | Comment                                    |
 |-------------|-----------------|--------------------------------------------|

@@ -1,4 +1,6 @@
-create table public.session_schedule
+drop table if exists session_schedule;
+
+create table session_schedule
 (
     id        serial,
     summary   text      not null,
@@ -82,8 +84,6 @@ insert into session_schedule (summary, location, starttime, endtime) values ('�
 insert into session_schedule (summary, location, starttime, endtime) values ('🏎 FORMULA 1 GRAND PRIX DU CANADA 2024 - Practice 3', 'Canada', '20240608T163000Z', '20240608T173000Z');
 insert into session_schedule (summary, location, starttime, endtime) values ('⏱️ FORMULA 1 GRAND PRIX DU CANADA 2024 - Qualifying', 'Canada', '20240608T200000Z', '20240608T210000Z');
 insert into session_schedule (summary, location, starttime, endtime) values ('🏁 FORMULA 1 GRAND PRIX DU CANADA 2024 - Race', 'Canada', '20240609T180000Z', '20240609T200000Z');
-insert into session_schedule (summary, location, starttime, endtime) values ('⏱️ FORMULA 1 MSC CRUISES JAPANESE GRAND PRIX 2024 - Qualifying', 'Japan', '20240406T060000Z', '20240406T070000Z');
-insert into session_schedule (summary, location, starttime, endtime) values ('🏁 FORMULA 1 MSC CRUISES JAPANESE GRAND PRIX 2024 - Race', 'Japan', '20240407T050000Z', '20240407T070000Z');
 insert into session_schedule (summary, location, starttime, endtime) values ('🏎 FORMULA 1 LENOVO CHINESE GRAND PRIX 2024 - Practice 1', 'China', '20240419T033000Z', '20240419T043000Z');
 insert into session_schedule (summary, location, starttime, endtime) values ('⏱️ FORMULA 1 LENOVO CHINESE GRAND PRIX 2024 - Sprint Qualificat', 'China', '20240419T073000Z', '20240419T081400Z');
 insert into session_schedule (summary, location, starttime, endtime) values ('🏁 FORMULA 1 LENOVO CHINESE GRAND PRIX 2024 - Sprint Race', 'China', '20240420T030000Z', '20240420T040000Z');

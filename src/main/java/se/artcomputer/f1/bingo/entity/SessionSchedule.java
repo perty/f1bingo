@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Entity
 @Table(name = "session_schedule")
@@ -20,16 +20,16 @@ public class SessionSchedule {
     private String location;
 
     @Column(name = "starttime")
-    private Date startTime;
+    private Instant startTime;
 
     @Column(name = "endtime")
-    private Date endTime;
+    private Instant endTime;
 
-    public Date getStartTime() {
+    public Instant getStartTime() {
         return startTime;
     }
 
-    public Date getEndTime() {
+    public Instant getEndTime() {
         return endTime;
     }
 }

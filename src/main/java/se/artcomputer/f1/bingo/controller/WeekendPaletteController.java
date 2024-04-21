@@ -6,8 +6,8 @@ import se.artcomputer.f1.bingo.domain.VerifyService;
 import se.artcomputer.f1.bingo.domain.WeekendPaletteService;
 import se.artcomputer.f1.bingo.entity.*;
 
+import java.time.Instant;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Optional;
 
 @RequestMapping("palette")
@@ -47,7 +47,7 @@ public class WeekendPaletteController {
                 raceWeekend.nameWithDates(),
                 raceWeekend.getStartDate(),
                 raceWeekend.getEndDate(),
-                raceWeekend.getCountry(),
+                toFlag(raceWeekend.getCountry()),
                 raceWeekend.getTrack(),
                 weekendPalette.getBingoCards().stream()
                         .sorted(Comparator.comparing(bc -> bc.getSession().getSortOrder()))
@@ -55,9 +55,18 @@ public class WeekendPaletteController {
         );
     }
 
+    private String toFlag(String country) {
+        return switch (country) {
+            case "United States" -> "usa";
+            case "United Arab Emirates" -> "abu-dhabi";
+            case "United Kingdom" -> "great-britain";
+            default -> country.toLowerCase().replace(" ", "-");
+        };
+    }
+
     private BingoCardDto toDto(BingoCard bingoCard, RaceWeekend weekend) {
         Optional<VerifiedSession> verifiedSession = verifyService.getVerifiedSession(weekend.getId(), bingoCard.getSession().name());
-        Optional<Date> utcStartTime = sessionScheduleService.findSessionStart(weekend.getId(), bingoCard.getSession());
+        Optional<Instant> utcStartTime = sessionScheduleService.findSessionStart(weekend.getId(), bingoCard.getSession());
         return new BingoCardDto(
                 bingoCard.getSession().name(),
                 verifiedSession.map(VerifiedSession::getCreated),

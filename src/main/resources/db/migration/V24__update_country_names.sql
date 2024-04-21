@@ -21,3 +21,4 @@ update race_weekend set country = 'Saudi Arabia' where country ='saudi-arabia';
 update race_weekend set country = 'Singapore' where country ='singapore';
 update race_weekend set country = 'Spain' where country ='spain';
 update race_weekend set country = 'United States' where country ='usa';
+update race_weekend set country = 'United States' where country ='USA';
