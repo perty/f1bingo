@@ -30,6 +30,7 @@
     <table>
         <thead>
         <tr>
+            <th style="width: 10px;"></th>
             <th style="width: 10px;">E</th>
             <th>Påstående</th>
             <th style="width: 10px;">Kategori</th>
@@ -56,13 +57,14 @@
                 tbody.innerHTML = ''; // Rensa befintliga element
                 statements.forEach(statement => {
                     const row = document.createElement('tr');
-                    row.appendChild(booleanCell(statement.enabled));
+                    row.appendChild(hiddenCell(statement.id));
+                    row.appendChild(booleanCell(statement.enabled, 'enabled'));
                     row.appendChild(textCell(statement.text));
                     row.appendChild(categoryCell(statement.category));
-                    row.appendChild(booleanCell(statement.sprintShootout));
-                    row.appendChild(booleanCell(statement.sprintRace));
-                    row.appendChild(booleanCell(statement.qualifying));
-                    row.appendChild(booleanCell(statement.race));
+                    row.appendChild(booleanCell(statement.sprintShootout, 'sprintShootout'));
+                    row.appendChild(booleanCell(statement.sprintRace, 'sprintRace'));
+                    row.appendChild(booleanCell(statement.qualifying, 'qualifying'));
+                    row.appendChild(booleanCell(statement.race, 'race'));
                     row.appendChild(saveButton());
                     tbody.appendChild(row);
                 });
@@ -71,13 +73,24 @@
             .catch(error => console.error('Error:', error));
     });
 
-    function booleanCell(enabled) {
+    function booleanCell(enabled, className) {
         const cell = document.createElement('td');
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = enabled;
         checkbox.classList.add('editable');
+        checkbox.classList.add(className);
         cell.appendChild(checkbox);
+        return cell;
+    }
+
+    function hiddenCell(id) {
+        const cell = document.createElement('td');
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.value = id;
+        hiddenInput.classList.add('id');
+        cell.appendChild(hiddenInput);
         return cell;
     }
 
@@ -87,6 +100,7 @@
         textInput.type = 'text';
         textInput.value = text;
         textInput.classList.add('editable');
+        textInput.classList.add('text');
         cell.appendChild(textInput);
         return cell;
     }
@@ -94,7 +108,7 @@
     function categoryCell(text) {
         const cell = document.createElement('td');
         const select = document.createElement('select');
-        "INGEN,POLE_POSITION,DRIVER_OF_THE_DAY,FASTEST_LAP,RACE_WINNER,QUALIFYING_LAST".split(',').forEach(category => {
+        "NONE,POLE_POSITION,DRIVER_OF_THE_DAY,FASTEST_LAP,RACE_WINNER,QUALIFYING_LAST".split(',').forEach(category => {
             const option = document.createElement('option');
             option.value = category;
             option.textContent = category;
@@ -102,6 +116,7 @@
         });
         select.value = text;
         select.classList.add('editable');
+        select.classList.add('category');
         cell.appendChild(select);
         return cell;
     }
@@ -128,15 +143,30 @@
         saveButtons.forEach(button => {
             button.addEventListener('click', function () {
                 const row = this.closest('tr');
-                const checkbox = row.querySelector('input[type="checkbox"]').checked;
-                const text = row.querySelector('input[type="text"]').value;
-                const dropdown = row.querySelector('select').value;
-
-                // Här kan du lägga till kod för att spara datat, t.ex. via en AJAX-anrop
-                console.log(`Sparar: Checkbox: ${checkbox}, Text: ${text}, Dropdown: ${dropdown}`);
-
-                // Ta bort markeringen när ändringar sparats
-                row.classList.remove('modified');
+                const id = row.querySelector('.id').value;
+                const body = JSON.stringify({
+                    enabled: row.querySelector('.enabled').checked,
+                    text: row.querySelector('.text').value,
+                    category: row.querySelector('.category').value,
+                    sprintShootout: row.querySelector('.sprintShootout').checked,
+                    sprintRace: row.querySelector('.sprintRace').checked,
+                    qualifying: row.querySelector('.qualifying').checked,
+                    race: row.querySelector('.race').checked
+                });
+                console.log(body);
+                fetch('admin/statements/' + id, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: body,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        row.classList.remove('modified');
+                    })
+                    .catch(error => console.error('Error:', error));
             });
         });
     }

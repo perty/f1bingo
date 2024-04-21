@@ -52,9 +52,9 @@ public class BingoCardService {
                 .flatMap(wc -> wc.getBingoCards().stream())
                 .filter(bingoCard -> bingoCard.getSession().equals(session))
                 .toList();
-        for(BingoCard bingoCard : cards) {
+        for (BingoCard bingoCard : cards) {
             List<BingoCardStatement> bingoCardStatements = bingoCardStatementRepository.findByBingoCard(bingoCard);
-            for(BingoCardStatement bcs : bingoCardStatements) {
+            for (BingoCardStatement bcs : bingoCardStatements) {
                 bcs.setChecked(CheckState.POSSIBLE);
             }
             bingoCardStatementRepository.saveAll(bingoCardStatements);
@@ -115,7 +115,7 @@ public class BingoCardService {
                         takenCategories);
                 bingoCard.getBingoCardStatements().add(bingoCardStatement);
                 takenStatements.add(bingoCardStatement.getStatement());
-                if(bingoCardStatement.getStatement().getOptionalCategory().isPresent()) {
+                if (!bingoCardStatement.getStatement().getCategory().equals(StatementCategory.NONE)) {
                     takenCategories.add(bingoCardStatement.getStatement().getCategory());
                 }
             }
@@ -138,9 +138,11 @@ public class BingoCardService {
 
     private Optional<Statement> findStatementForSession(Session session, List<Statement> takenStatements, Set<StatementCategory> takenCategories) {
         return switch (session) {
-            case QUALIFYING -> selectRandom(statementRepository.findByQualifying(true).toList(), takenStatements, takenCategories);
+            case QUALIFYING ->
+                    selectRandom(statementRepository.findByQualifying(true).toList(), takenStatements, takenCategories);
             case RACE -> selectRandom(statementRepository.findByRace(true).toList(), takenStatements, takenCategories);
-            case SPRINT_RACE -> selectRandom(statementRepository.findBySprintRace(true).toList(), takenStatements, takenCategories);
+            case SPRINT_RACE ->
+                    selectRandom(statementRepository.findBySprintRace(true).toList(), takenStatements, takenCategories);
             case SPRINT_SHOOTOUT ->
                     selectRandom(statementRepository.findBySprintShootout(true).toList(), takenStatements, takenCategories);
         };
@@ -152,7 +154,9 @@ public class BingoCardService {
         }
         int index = (int) (Math.random() * allStatements.size());
         Statement selectedStatement = allStatements.get(index);
-        if (takenStatements.contains(selectedStatement) || selectedStatement.getOptionalCategory().map(takenCategories::contains).orElse(false)) {
+        if (!selectedStatement.isEnabled() ||
+                takenStatements.contains(selectedStatement) ||
+                takenCategories.contains(selectedStatement.getCategory())) {
             return selectRandom(allStatements, takenStatements, takenCategories);
         }
         return Optional.of(selectedStatement);
@@ -214,10 +218,10 @@ public class BingoCardService {
     }
 
     private boolean checkRow(List<BingoCardStatement> list, List<Statement> verifiedSessionStatements) {
-        if(list.isEmpty()) {
+        if (list.isEmpty()) {
             return false;
         }
-        if(verifiedSessionStatements.isEmpty()) {
+        if (verifiedSessionStatements.isEmpty()) {
             return list.stream().allMatch(bingoCardStatement -> bingoCardStatement.getChecked() == CheckState.HAPPENED);
         }
         return list.stream().allMatch(bingoCardStatement -> bingoCardStatement.getChecked() == CheckState.HAPPENED && verifiedSessionStatements.contains(bingoCardStatement.getStatement()));

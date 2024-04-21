@@ -30,6 +30,11 @@ public class AdminController {
         return adminService.getStatements().stream().map(this::toDto).toList();
     }
 
+    @PostMapping("/statements/{id}")
+    public StatementDto setStatement(@PathVariable long id, @RequestBody StatementUpdateRequest statementUpdateRequest) {
+        return toDto(adminService.setStatement(id, statementUpdateRequest));
+    }
+
     @PostMapping(path = "/login", consumes = {"application/x-www-form-urlencoded"})
     public ResponseEntity<String> login(@RequestParam MultiValueMap<String, String> loginData) {
         String pinCode = loginData.getFirst("pin-code");
@@ -50,8 +55,10 @@ public class AdminController {
     }
 
     private StatementDto toDto(Statement statement) {
-        return new StatementDto(statement.getText(),
-                statement.getCategory() == null ? "INGEN" : statement.getCategory().name(),
+        return new StatementDto(
+                statement.getId(),
+                statement.getText(),
+                statement.getCategory().name(),
                 statement.isEnabled(),
                 statement.isRace(),
                 statement.isQualifying(),

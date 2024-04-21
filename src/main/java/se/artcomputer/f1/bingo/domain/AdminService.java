@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import se.artcomputer.f1.bingo.controller.StatementUpdateRequest;
 import se.artcomputer.f1.bingo.entity.Statement;
 import se.artcomputer.f1.bingo.exception.UnAuthorizedException;
 import se.artcomputer.f1.bingo.repository.StatementRepository;
@@ -40,5 +41,17 @@ public class AdminService {
 
     public String getCookieValue(String pinCode) {
         return ENCRYPTED_TOKEN_VALUE + pinCode;
+    }
+
+    public Statement setStatement(long id, StatementUpdateRequest statementUpdateRequest) {
+        Statement statement = statementRepository.findById(id).orElseThrow();
+        statement.setEnabled(statementUpdateRequest.enabled());
+        statement.setText(statementUpdateRequest.text());
+        statement.setCategory(StatementCategory.valueOf(statementUpdateRequest.category()));
+        statement.setSprintShootout(statementUpdateRequest.sprintShootout());
+        statement.setSprintRace(statementUpdateRequest.sprintRace());
+        statement.setQualifying(statementUpdateRequest.qualifying());
+        statement.setRace(statementUpdateRequest.race());
+        return statementRepository.save(statement);
     }
 }
