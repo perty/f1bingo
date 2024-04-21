@@ -7,7 +7,7 @@
 - [ ] Chrome pops up Google search when touching text. Add to user manual how to turn off.
 - [ ] Check how it looks on iPhone.
 - [ ] Fall back for failing to support websocket.
-- [ ] Admin can disable a statement.
+- [X] Admin can disable a statement.
 
 ## Concepts
 
