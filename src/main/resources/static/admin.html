@@ -25,45 +25,74 @@
         <a class="admin-button-link shadow" href="fan.html">Lägga till F1-nördar</a>
         <a class="admin-button-link shadow" href="reset.html">Nollställa brickor</a>
     </div>
-    <div id="statementsGrid" class="flex-grid">
-        <!-- Påståenden kommer att läggas till här -->
-    </div>
+</div>
+<div class="statementsGrid">
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 10px;">E</th>
+            <th>Påstående</th>
+            <th style="width: 10px;">Kategori</th>
+            <th style="width: 10px;">SQ</th>
+            <th style="width: 10px;">SR</th>
+            <th style="width: 10px;">Q</th>
+            <th style="width: 10px;">R</th>
+            <th style="width: 10px;">Spara</th>
+        </tr>
+        </thead>
+        <tbody id="statementsGrid">
+
+        </tbody>
+    </table>
 </div>
 <script>
     document.getElementById('loadStatementsButton').addEventListener('click', function () {
         fetch('admin/statements')
             .then(response => response.json())
             .then(statements => {
-                const grid = document.getElementById('statementsGrid');
-                grid.innerHTML = ''; // Rensa befintliga element
-                grid.appendChild(header('Påstående'));
-                grid.appendChild(header('Kategori'));
+                const section = document.getElementsByClassName('statementsGrid')[0];
+                section.style.display = 'block';
+                const tbody = document.getElementById('statementsGrid');
+                tbody.innerHTML = ''; // Rensa befintliga element
                 statements.forEach(statement => {
-                    grid.appendChild(textCell(statement.text));
-                    grid.appendChild(categoryCell(statement.category));
+                    const row = document.createElement('tr');
+                    row.appendChild(booleanCell(statement.enabled));
+                    row.appendChild(textCell(statement.text));
+                    row.appendChild(categoryCell(statement.category));
+                    row.appendChild(booleanCell(statement.sprintShootout));
+                    row.appendChild(booleanCell(statement.sprintRace));
+                    row.appendChild(booleanCell(statement.qualifying));
+                    row.appendChild(booleanCell(statement.race));
+                    row.appendChild(saveButton());
+                    tbody.appendChild(row);
                 });
+                tableCreated();
             })
             .catch(error => console.error('Error:', error));
     });
 
-    function header(text) {
-        let header = document.createElement('div');
-        header.classList.add('grid-item');
-        header.classList.add('grid-item-header');
-        header.textContent = text;
-        return header;
+    function booleanCell(enabled) {
+        const cell = document.createElement('td');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = enabled;
+        checkbox.classList.add('editable');
+        cell.appendChild(checkbox);
+        return cell;
     }
 
     function textCell(text) {
-        let row = document.createElement('div');
-        row.classList.add('grid-item');
-        row.textContent = text;
-        return row;
+        const cell = document.createElement('td');
+        const textInput = document.createElement('input');
+        textInput.type = 'text';
+        textInput.value = text;
+        textInput.classList.add('editable');
+        cell.appendChild(textInput);
+        return cell;
     }
 
     function categoryCell(text) {
-        let row = document.createElement('div');
-        row.classList.add('grid-item');
+        const cell = document.createElement('td');
         const select = document.createElement('select');
         "INGEN,POLE_POSITION,DRIVER_OF_THE_DAY,FASTEST_LAP,RACE_WINNER,QUALIFYING_LAST".split(',').forEach(category => {
             const option = document.createElement('option');
@@ -72,8 +101,44 @@
             select.appendChild(option);
         });
         select.value = text;
-        row.appendChild(select);
-        return row;
+        select.classList.add('editable');
+        cell.appendChild(select);
+        return cell;
+    }
+
+    function saveButton() {
+        const cell = document.createElement('td');
+        const button = document.createElement('button');
+        button.textContent = 'Spara';
+        button.classList.add('saveBtn');
+        cell.appendChild(button);
+        return cell;
+    }
+
+    function tableCreated() {
+        const table = document.getElementById('statementsGrid');
+        table.addEventListener('change', function (event) {
+            if (event.target.classList.contains('editable')) {
+                const row = event.target.closest('tr');
+                row.classList.add('modified');
+            }
+        });
+
+        const saveButtons = table.querySelectorAll('.saveBtn');
+        saveButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const row = this.closest('tr');
+                const checkbox = row.querySelector('input[type="checkbox"]').checked;
+                const text = row.querySelector('input[type="text"]').value;
+                const dropdown = row.querySelector('select').value;
+
+                // Här kan du lägga till kod för att spara datat, t.ex. via en AJAX-anrop
+                console.log(`Sparar: Checkbox: ${checkbox}, Text: ${text}, Dropdown: ${dropdown}`);
+
+                // Ta bort markeringen när ändringar sparats
+                row.classList.remove('modified');
+            });
+        });
     }
 
 </script>
