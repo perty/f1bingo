@@ -2,8 +2,8 @@
 
 ## To Do
 
-- [ ] Hamilton kraschar inte in i Verstappen.
-- [ ] Typo, "starter".
+- [x] Hamilton kraschar inte in i Verstappen.
+- [x] Typo, "starter".
 - [ ] Chrome pops up Google search when touching text. Add to user manual how to turn off.
 - [ ] Check how it looks on iPhone.
 - [ ] Fall back for failing to support websocket.
