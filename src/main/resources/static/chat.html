@@ -38,7 +38,7 @@
         stompClient.subscribe('/topic/messages', (message) => {
             console.log('Received message: ' + message);
             let parsed = JSON.parse(message.body);
-            showReceivedMessage(parsed.message, parsed.fan);
+            showReceivedMessage(parsed.message, parsed.fan, parsed.timestamp);
         });
     };
 
@@ -65,6 +65,7 @@
                     'fan': selectedFan
                 })
             });
+            clearInput();
         }
     }
 
@@ -72,7 +73,12 @@
         document.getElementById('messageInput').value = '';
     }
 
-    function showReceivedMessage(message, fanId) {
+    function showReceivedMessage(message, fanId, timestamp) {
+        const timeElement = document.createElement('div');
+        timeElement.textContent = new Date(timestamp).toLocaleDateString() + ' ' + new Date(timestamp).toLocaleTimeString();
+        timeElement.classList.add('time-stamp');
+        document.getElementById('messages').appendChild(timeElement);
+
         const fanName = getSenderName(fanId);
         const messageElement = document.createElement('div');
         messageElement.textContent = fanName + ': ' + message;
@@ -80,7 +86,6 @@
 
         // Skrolla till det senaste meddelandet
         document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
-        clearInput();
     }
 
     document.getElementById('messageInput').addEventListener('keydown', function (event) {
@@ -103,7 +108,7 @@
             .then(response => response.json())
             .then(data => {
                 data.forEach(message => {
-                    showReceivedMessage(message.message, message.fan);
+                    showReceivedMessage(message.message, message.fan, message.timestamp);
                 });
             });
     }

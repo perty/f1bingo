@@ -46,3 +46,8 @@
     padding: 10px 20px; /* Exempel på padding, justera efter behov */
     margin-right: 10px;
 }
+
+.time-stamp {
+    font-size: 0.8em;
+    color: #666;
+}
