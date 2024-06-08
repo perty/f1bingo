@@ -51,3 +51,15 @@
     font-size: 0.8em;
     color: #666;
 }
+
+.gp-message {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    text-align: center;
+}
+
+.chat-message {
+    text-align: left;
+}

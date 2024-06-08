@@ -44,7 +44,7 @@
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/messages', (message) => {
             let parsed = JSON.parse(message.body);
-            showReceivedMessage(parsed.message, parsed.fan, parsed.timestamp);
+            showReceivedMessage(parsed.messageType, parsed.message, parsed.fan, parsed.timestamp);
             setLastRead();
         });
     };
@@ -80,16 +80,24 @@
         document.getElementById('messageInput').value = '';
     }
 
-    function showReceivedMessage(message, fanId, timestamp) {
-        const timeElement = document.createElement('div');
-        timeElement.textContent = new Date(timestamp).toLocaleDateString() + ' ' + new Date(timestamp).toLocaleTimeString();
-        timeElement.classList.add('time-stamp');
-        document.getElementById('messages').appendChild(timeElement);
+    function showReceivedMessage(messageType, message, fanId, timestamp) {
+        if(messageType === 'MESSAGE') {
+            const timeElement = document.createElement('div');
+            timeElement.textContent = new Date(timestamp).toLocaleDateString() + ' ' + new Date(timestamp).toLocaleTimeString();
+            timeElement.classList.add('time-stamp');
+            document.getElementById('messages').appendChild(timeElement);
+            const fanName = getSenderName(fanId);
+            const messageElement = document.createElement('div');
+            messageElement.className = 'chat-message';
+            messageElement.textContent = fanName + ': ' + message;
+            document.getElementById('messages').appendChild(messageElement);
+        } else if (messageType === 'GP') {
+            const messageElement = document.createElement('div');
+            messageElement.className = 'gp-message';
+            messageElement.textContent =  message;
+            document.getElementById('messages').appendChild(messageElement);
+        }
 
-        const fanName = getSenderName(fanId);
-        const messageElement = document.createElement('div');
-        messageElement.textContent = fanName + ': ' + message;
-        document.getElementById('messages').appendChild(messageElement);
 
         // Skrolla till det senaste meddelandet
         document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
@@ -112,14 +120,14 @@
     function loadMessages() {
         const fanId = localStorage.getItem('selectedFan');
         if(!fanId) {
-            showReceivedMessage('Välj en F1-nörd att chatta som', 0, new Date());
+            showReceivedMessage('MESSAGE', 'Välj en F1-nörd att chatta som', 0, new Date());
             return;
         }
         fetch('/chat/messages/' + fanId)
             .then(response => response.json())
             .then(data => {
                 data.forEach(message => {
-                    showReceivedMessage(message.message, message.fan, message.timestamp);
+                    showReceivedMessage(message.messageType, message.message, message.fan, message.timestamp);
                 });
             });
     }
