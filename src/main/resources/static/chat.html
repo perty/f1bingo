@@ -111,6 +111,10 @@
 
     function loadMessages() {
         const fanId = localStorage.getItem('selectedFan');
+        if(!fanId) {
+            showReceivedMessage('Välj en F1-nörd att chatta som', 0, new Date());
+            return;
+        }
         fetch('/chat/messages/' + fanId)
             .then(response => response.json())
             .then(data => {
