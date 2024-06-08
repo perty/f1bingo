@@ -3,6 +3,8 @@ package se.artcomputer.f1.bingo.entity;
 import jakarta.persistence.*;
 import se.artcomputer.f1.bingo.domain.FanName;
 
+import java.util.Date;
+
 @Entity
 public class Fan {
     @Id
@@ -11,6 +13,9 @@ public class Fan {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "last_read")
+    private Date lastRead;
 
     public void setId(Long id) {
         this.id = id;
@@ -29,5 +34,13 @@ public class Fan {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getLastRead() {
+        return lastRead;
+    }
+
+    public void setLastRead(Date lastRead) {
+        this.lastRead = lastRead;
     }
 }

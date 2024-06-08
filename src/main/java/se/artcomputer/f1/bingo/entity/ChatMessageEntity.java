@@ -19,7 +19,7 @@ public class ChatMessageEntity {
     private Date timestamp;
 
     @Column(name = "fan")
-    private int fan;
+    private long fan;
 
     public Long getId() {
         return id;
@@ -45,11 +45,11 @@ public class ChatMessageEntity {
         this.timestamp = timestamp;
     }
 
-    public void setFan(int fan) {
+    public void setFan(long fan) {
         this.fan = fan;
     }
 
-    public int getFan() {
+    public long getFan() {
         return fan;
     }
 }

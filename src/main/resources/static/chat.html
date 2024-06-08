@@ -33,12 +33,19 @@
         brokerURL: 'wss://' + host + '/chat-ws'
     });
 
+    function setLastRead() {
+        let fanId = localStorage.getItem('selectedFan');
+        fetch('/chat/lastRead/' + fanId, {
+            method: 'POST'
+        });
+    }
+
     stompClient.onConnect = (frame) => {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/messages', (message) => {
-            console.log('Received message: ' + message);
             let parsed = JSON.parse(message.body);
             showReceivedMessage(parsed.message, parsed.fan, parsed.timestamp);
+            setLastRead();
         });
     };
 
@@ -103,8 +110,8 @@
     connect();
 
     function loadMessages() {
-        // fetch  from /chat and append to messages
-        fetch('/chat')
+        const fanId = localStorage.getItem('selectedFan');
+        fetch('/chat/messages/' + fanId)
             .then(response => response.json())
             .then(data => {
                 data.forEach(message => {

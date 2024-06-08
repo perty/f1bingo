@@ -43,4 +43,27 @@ function connect() {
     stompClient.activate();
 }
 
-connect();
+document.addEventListener('DOMContentLoaded', () => {
+    // Kontrollera om det finns nya meddelanden vid sidladdning
+    const fanId = localStorage.getItem('selectedFan');
+    if(fanId) {
+        checkForNewMessages(fanId);
+    }
+
+    connect(); // Anslut till WebSocket
+});
+
+function checkForNewMessages(fanId) {
+    fetch('/chat/new-messages/' + fanId, {
+        method: 'GET',
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                data.forEach(message => {
+                    showNewMessagePopup(message.message);
+                });
+            }
+        })
+        .catch(error => console.error('Error fetching new messages:', error));
+}

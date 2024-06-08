@@ -1,4 +1,4 @@
 package se.artcomputer.f1.bingo.controller;
 
-public record ChatMessageRequest(String message, int fan) {
+public record ChatMessageRequest(String message, long fan) {
 }

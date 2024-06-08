@@ -19,6 +19,7 @@ public class ChatWSController {
     @SendTo("/topic/messages")
     public ChatMessageDto send(ChatMessageRequest message) {
         ChatMessageEntity saved = chatService.save(message.message(), message.fan());
+        chatService.setLastReadForFan(message.fan());
         return new ChatMessageDto(saved.getTimestamp(), message.message(), message.fan());
     }
 }

@@ -1,4 +1,6 @@
 package se.artcomputer.f1.bingo.controller;
 
-public record ChatMessageDto(java.util.Date timestamp, String message, int fan) {
+import java.util.Date;
+
+public record ChatMessageDto(Date timestamp, String message, long fan) {
 }
