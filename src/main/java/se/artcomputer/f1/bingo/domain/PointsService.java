@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Service
 public class PointsService {
@@ -43,18 +44,54 @@ public class PointsService {
                 .toList());
     }
 
+    private static class FanPointsPerRace {
+        private final Map<RaceName, Long> points = new HashMap<>();
+
+        public void addPoints(RaceName raceName, long sessionPoints) {
+            points.put(raceName, points.getOrDefault(raceName, 0L) + sessionPoints);
+        }
+
+        public List<Long> getPoints(List<RaceName> verifiedRaces) {
+            return verifiedRaces.stream().map(points::get).toList();
+        }
+
+        public long totalPoints() {
+            return points.values().stream().mapToLong(Long::longValue).sum();
+        }
+    }
+
     public ResultsDto getResults() {
         List<VerifiedSession> verifiedSessions = verifyService.getVerifiedSessions();
         List<RaceName> verifiedRaces = getVerifiedRaceNames(verifiedSessions);
-        Map<FanName, Map<RaceName, Long>> fanPoints = getFanPoints(verifiedSessions, verifiedRaces);
-        List<ResultFanDto> list = fanPoints.entrySet().stream()
-                .map(entry -> new ResultFanDto(entry.getKey(),
-                        verifiedRaces.stream()
-                                .map(raceName -> entry.getValue().get(raceName))
-                                .toList()))
-                .toList();
+        Map<FanName, FanPointsPerRace> fanPoints = getFanPoints(verifiedSessions);
+        List<ResultFanDto> resultFanDtos = getResultFanDtos(fanPoints, verifiedRaces);
+        return new ResultsDto(verifiedRaces, resultFanDtos);
+    }
 
-        return new ResultsDto(verifiedRaces, list);
+    private Map<FanName, FanPointsPerRace> getFanPoints(List<VerifiedSession> verifiedSessions) {
+        Map<FanName, FanPointsPerRace> fanPoints = new HashMap<>();
+        for (VerifiedSession verifiedSession : verifiedSessions) {
+            RaceWeekend raceWeekend = verifiedSession.getRaceWeekend();
+            RaceName raceName = raceWeekend.getRaceName();
+            Session session = verifiedSession.getSession();
+            List<WeekendPalette> weekendPalettes = weekendPaletteService.getWeekendPalettes(raceWeekend);
+            for (WeekendPalette weekendPalette : weekendPalettes) {
+                long sessionPoints = countBingos(weekendPalette, session);
+                FanName fanName = weekendPalette.getFan().getFanName();
+                fanPoints.putIfAbsent(fanName, new FanPointsPerRace());
+                fanPoints.get(fanName).addPoints(raceName, sessionPoints);
+            }
+        }
+        return fanPoints;
+    }
+
+    private static List<ResultFanDto> getResultFanDtos(Map<FanName, FanPointsPerRace> fanPoints, List<RaceName> verifiedRaces) {
+        Stream<Map.Entry<FanName, FanPointsPerRace>> fansPointEntries = fanPoints.entrySet().stream();
+        return fansPointEntries
+                .map(entry -> new ResultFanDto(entry.getKey(),
+                        entry.getValue().getPoints(verifiedRaces),
+                        entry.getValue().totalPoints()))
+                .toList();
     }
 
     private static List<RaceName> getVerifiedRaceNames(List<VerifiedSession> verifiedSessions) {
@@ -68,24 +105,6 @@ public class PointsService {
         return verifiedRaces;
     }
 
-    private Map<FanName, Map<RaceName, Long>> getFanPoints(List<VerifiedSession> verifiedSessions, List<RaceName> verifiedRaces) {
-        Map<FanName, Map<RaceName, Long>> fanPoints = new HashMap<>();
-        for (VerifiedSession verifiedSession : verifiedSessions) {
-            RaceWeekend raceWeekend = verifiedSession.getRaceWeekend();
-            RaceName raceName = raceWeekend.getRaceName();
-            Session session = verifiedSession.getSession();
-            List<WeekendPalette> weekendPalettes = weekendPaletteService.getWeekendPalettes(raceWeekend);
-            for (WeekendPalette weekendPalette : weekendPalettes) {
-                long sessionPoints = countBingos(weekendPalette, session);
-                FanName fanName = weekendPalette.getFan().getFanName();
-                fanPoints.putIfAbsent(fanName, initialMap(verifiedRaces));
-                Map<RaceName, Long> weekendPoints = fanPoints.get(fanName);
-                weekendPoints.put(raceName, weekendPoints.getOrDefault(raceName, 0L) + sessionPoints);
-            }
-        }
-        return fanPoints;
-    }
-
     private long countBingos(WeekendPalette weekendPalette, Session session) {
         return weekendPalette.getBingoCards().stream()
                 .filter(bingoCard -> bingoCard.getSession() == session)
@@ -94,11 +113,4 @@ public class PointsService {
                 .sum();
     }
 
-    private static Map<RaceName, Long> initialMap(List<RaceName> raceNames) {
-        Map<RaceName, Long> result = new HashMap<>();
-        for (RaceName raceName : raceNames) {
-            result.put(raceName, 0L);
-        }
-        return result;
-    }
 }

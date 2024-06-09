@@ -33,6 +33,12 @@
             <tbody id="table-body">
 
             </tbody>
+            <tfoot>
+            <tr id="table-foot-row">
+                <td></td>
+                <td>Totalt</td>
+            </tr>
+            </tfoot>
         </table>
     </div>
 </div>
@@ -53,16 +59,20 @@
             tr.appendChild(raceName);
             tableBody.appendChild(tr);
         }
+        const tableFootRow = document.getElementById('table-foot-row');
         for (let fan = 0; fan < data.fans.length; fan++) {
             const th = document.createElement('th');
             th.textContent = data.fans[fan].fanName.name;
             tableHeadRow.appendChild(th);
             for (let row = 0; row < data.fans[fan].fanScores.length; row++) {
-                const rowElement = document.getElementById('row' +  row);
+                const rowElement = document.getElementById('row' + row);
                 const td = document.createElement('td');
                 td.textContent = data.fans[fan].fanScores[row];
                 rowElement.appendChild(td);
             }
+            const td = document.createElement('td');
+            td.textContent = data.fans[fan].totalScore;
+            tableFootRow.appendChild(td);
         }
     }
 
