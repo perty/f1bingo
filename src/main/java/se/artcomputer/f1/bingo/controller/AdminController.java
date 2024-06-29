@@ -38,8 +38,12 @@ public class AdminController {
     @PostMapping(path = "/login", consumes = {"application/x-www-form-urlencoded"})
     public ResponseEntity<String> login(@RequestParam MultiValueMap<String, String> loginData) {
         String pinCode = loginData.getFirst("pin-code");
+        String redirectUrl = loginData.getFirst(REDIRECT_URL);
         if (pinCode == null || !adminService.login(pinCode)) {
-            return ResponseEntity.status(401).body("Felaktig pinkod");
+            String redirectArg = redirectUrl == null ? "" : "&redirectUrl=" + redirectUrl;
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .header(HttpHeaders.LOCATION, "/login.html?error=Felaktig+pinkod" + redirectArg)
+                    .build();
         }
         ResponseCookie responseCookie = ResponseCookie.from(AUTH_COOKIE, adminService.getCookieValue(pinCode))
                 .maxAge(24 * 60 * 60)
@@ -47,9 +51,8 @@ public class AdminController {
                 .path("/")
                 .build();
 
-        String url = loginData.getFirst(REDIRECT_URL);
         return ResponseEntity.status(HttpStatus.FOUND)
-                .header(HttpHeaders.LOCATION, url)
+                .header(HttpHeaders.LOCATION, redirectUrl)
                 .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
                 .build();
     }
