@@ -30,6 +30,12 @@ public class AdminController {
         return adminService.getStatements().stream().map(this::toDto).toList();
     }
 
+    @PostMapping("/statements")
+    public ResponseEntity<StatementRequest> newStatement(@RequestBody StatementRequest statementRequest) {
+        adminService.newStatement(statementRequest.text(), statementRequest.category());
+        return ResponseEntity.ok(statementRequest);
+    }
+
     @PostMapping("/statements/{id}")
     public StatementDto setStatement(@PathVariable long id, @RequestBody StatementUpdateRequest statementUpdateRequest) {
         return toDto(adminService.setStatement(id, statementUpdateRequest));

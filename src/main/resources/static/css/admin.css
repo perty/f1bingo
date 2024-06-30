@@ -49,6 +49,16 @@
     box-sizing: border-box;
 }
 
+.newStatement {
+    width: 100%;
+    padding: 5px;
+    border: var(--red-background-color) solid 1px;
+}
+
+.newStatement input, select, button {
+    margin-top: 5px;
+}
+
 .modified {
     background-color: #ffff99; /* ljusgul bakgrund */
 }

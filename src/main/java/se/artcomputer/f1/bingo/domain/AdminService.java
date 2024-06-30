@@ -25,7 +25,7 @@ public class AdminService {
     }
 
     public Collection<Statement> getStatements() {
-        return statementRepository.findAll(Sort.by("id"));
+        return statementRepository.findAll(Sort.by("id").reverse());
     }
 
     public void checkLogin(String cookie, String redirectUrl) {
@@ -53,5 +53,13 @@ public class AdminService {
         statement.setQualifying(statementUpdateRequest.qualifying());
         statement.setRace(statementUpdateRequest.race());
         return statementRepository.save(statement);
+    }
+
+    public void newStatement(String text, StatementCategory category) {
+        Statement entity = new Statement();
+        entity.setText(text);
+        entity.setCategory(category);
+        entity.setEnabled(true);
+        statementRepository.save(entity);
     }
 }

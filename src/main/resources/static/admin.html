@@ -27,6 +27,20 @@
     </div>
 </div>
 <div class="statementsGrid">
+    <div class="newStatement">
+        <form id="statementsForm">
+            <label for="text">Nytt påstående</label>
+            <input type="text" name="text" id="text" maxlength="52" style="max-width: calc(52ch + 0.8em)">
+            <label for="category">Kategori</label>
+            <select name="category" id="category">
+                <option value="NONE">NONE</option>
+                <option value="POLE_POSITION">POLE_POSITION</option>
+                <option value="DRIVER_OF_THE_DAY">DRIVER_OF_THE_DAY</option>
+                <option value="FASTEST_LAP">FASTEST_LAP</option>
+            </select>
+            <button id="addStatement">Lägg till</button>
+        </form>
+    </div>
     <table>
         <thead>
         <tr>
@@ -47,6 +61,32 @@
     </table>
 </div>
 <script>
+    // Lyssna på klick på knappen "Lägg till"
+    document.getElementById('addStatement').addEventListener('click', function (event) {
+        event.preventDefault();
+        const form = document.getElementById('statementsForm');
+        const text = form.querySelector('#text').value;
+        const category = form.querySelector('#category').value;
+        const body = JSON.stringify({
+            text: text,
+            category: category
+        });
+        fetch('admin/statements', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: body,
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                form.reset();
+                document.getElementById('loadStatementsButton').click();
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
     document.getElementById('loadStatementsButton').addEventListener('click', function () {
         fetch('admin/statements')
             .then(response => response.json())
