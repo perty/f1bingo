@@ -47,6 +47,9 @@
 .small-logo img {
     height: 60px;
     margin: 5px;
+    border-color: var(--secondary-color);
+    border-style: solid;
+    border-width: 1px;
 }
 
 .small-logo h2 {
