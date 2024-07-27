@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v48';
+const CACHE_NAME = 'v49'; // Change in misc-info.html as well.
 
 self.addEventListener('install', event => {
     event.waitUntil(
