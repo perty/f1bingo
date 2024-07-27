@@ -47,10 +47,18 @@
     </div>
 </div>
 <script>
+    function getParameterOrUseLocalStorage(urlParams, parameter, storage) {
+        const maybeParameter = urlParams.get(parameter);
+        if (maybeParameter) {
+            return maybeParameter;
+        }
+        return localStorage.getItem(storage)
+    }
+
     function fetchBingoCards() {
         const urlParams = new URLSearchParams(window.location.search);
-        const weekendId = urlParams.get('weekend');
-        const fanId = urlParams.get('fan');
+        const weekendId = getParameterOrUseLocalStorage(urlParams, 'weekend', 'selectedWeekend');
+        const fanId = getParameterOrUseLocalStorage(urlParams, 'fan', 'selectedFan');
 
         fetch('/palette/weekend/' + encodeURIComponent(weekendId) + '/fan/' + encodeURIComponent(fanId))
             .then(function (response) {
@@ -181,7 +189,6 @@
         return "xxx";
     }
 
-    // Kalla på funktionen när sidan laddas
     fetchBingoCards();
 </script>
 <script src="js/chat-notification.js"></script>

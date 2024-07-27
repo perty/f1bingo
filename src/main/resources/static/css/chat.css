@@ -9,13 +9,13 @@
     flex-grow: 1; /* Låter meddelandelistan expandera och ta upp allt tillgängligt utrymme */
     margin-left: 10px;
     margin-right: 10px;
-    padding-bottom: 50px;
+    padding-bottom: 80px;
 }
 
 #messageInputContainer {
     position: fixed;
     left: 0;
-    bottom: 0; /* Placeras längst ner på skärmen */
+    bottom: 30px; /* Placeras längst ner på skärmen */
     width: 100%; /* Bredden sätts till att ta upp hela bredden av skärmen */
     padding-bottom: env(safe-area-inset-bottom); /* Kompatibilitet för iPhone X och liknande enheter */
     box-sizing: border-box; /* Ser till att padding inte läggs till utanför den angivna bredden */
