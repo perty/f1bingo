@@ -105,3 +105,41 @@
 .icon {
     margin-right: 10px;
 }
+
+.teams {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Avstånd mellan teamen */
+}
+
+.teams .team {
+    display: flex;
+    flex-direction: column; /* Placera bild och text i en kolumn */
+    align-items: center; /* Centrera hela innehållet horisontellt */
+    text-align: center;
+}
+
+.teams .team a {
+    display: flex;
+    flex-direction: column; /* Placera bild och text i en kolumn inom länken */
+    align-items: center; /* Centrera innehållet inom länken */
+    text-decoration: none; /* Ta bort understrykningen på länkarna */
+    color: inherit; /* Behåll ärvd färg */
+}
+
+.teams img {
+    width: auto;
+    height: 50px;
+    border-radius: 50%;
+    margin-bottom: 10px; /* Lägg till avstånd mellan bild och text */
+    transition: transform 0.3s ease; /* En enkel hover-effekt */
+}
+
+.teams img:hover {
+    transform: scale(1.1); /* Förstorar bilden vid hover */
+}
+
+.teams .team span {
+    font-size: 14px; /* Justera storleken på texten */
+    color: var(--primary-color); /* Färg på teamnamnet, kan justeras */
+}
