@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v51'; // Change in misc-info.html as well.
+const CACHE_NAME = 'v52'; // Change in misc-info.html as well.
 
 self.addEventListener('install', event => {
     event.waitUntil(
@@ -42,6 +42,7 @@ self.addEventListener('install', event => {
                 '/images/car/williams.png',
                 '/images/flag/finish.png',
                 '/misc-info/driver-info.html',
+                '/misc-info/grid-2025.html',
                 '/js/chat-notification.js',
             ]);
         })
