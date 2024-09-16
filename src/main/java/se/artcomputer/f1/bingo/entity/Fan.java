@@ -11,11 +11,11 @@ public class Fan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "last_read")
-    private Date lastRead;
+    @Column(name = "last_read", nullable = false)
+    private Date lastRead = new Date(0);
 
     public void setId(Long id) {
         this.id = id;
@@ -28,6 +28,7 @@ public class Fan {
     public String getName() {
         return name;
     }
+
     public FanName getFanName() {
         return new FanName(name);
     }
@@ -43,4 +44,5 @@ public class Fan {
     public void setLastRead(Date lastRead) {
         this.lastRead = lastRead;
     }
+
 }
