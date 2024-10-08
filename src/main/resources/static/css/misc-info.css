@@ -143,3 +143,25 @@
     font-size: 14px; /* Justera storleken på texten */
     color: var(--primary-color); /* Färg på teamnamnet, kan justeras */
 }
+
+.table-img {
+    width: 80px; /* Minska bildens bredd */
+    height: auto; /* Behåll bildens proportioner */
+    margin-right: 10px; /* Lägg till marginal till höger om bilden */
+    vertical-align: middle; /* Justera bildens vertikala position */
+}
+
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.content td {
+    padding: 5px;
+    border: 1px solid #ddd;
+    vertical-align: middle; /* Justera cellens vertikala position */
+}
+
+.content td img {
+    display: inline-block;
+}
