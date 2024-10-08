@@ -43,20 +43,11 @@
         brokerURL: 'wss://' + host + '/chat-ws'
     });
 
-    const maxReconnectAttempts = 5;
-    let reconnectAttempts = 0;
-    const reconnectDelay = 5000; // 5 seconds
     function connect() {
-        if (reconnectAttempts < maxReconnectAttempts) {
-            reconnectAttempts++;
-            console.log(`Reconnection attempt ${reconnectAttempts} of ${maxReconnectAttempts}`);
-            setTimeout(() => {
-                stompClient.activate();
-            }, reconnectDelay);
-        } else {
-            console.log('Max reconnection attempts reached');
-        }
+        stompClient.activate();
     }
+
+    connect();
 
     function setLastRead() {
         let fanId = localStorage.getItem('selectedFan');
@@ -153,8 +144,6 @@
         event.preventDefault(); // Förhindra att formuläret skickas på det traditionella sättet
         sendMessage();
     });
-
-    connect();
 
     function loadMessages() {
         const fanId = localStorage.getItem('selectedFan');

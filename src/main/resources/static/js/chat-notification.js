@@ -1,7 +1,7 @@
 // Funktion som visar pop-upen
 function showNewMessagePopup(message) {
     const popUp = document.getElementById('chatPopup');
-    if(popUp) {
+    if (popUp) {
         popUp.style.display = 'block';
         const messageElement = document.createElement('div');
         messageElement.textContent = message;
@@ -11,7 +11,7 @@ function showNewMessagePopup(message) {
 
 function goToChatPage() {
     const popUp = document.getElementById('chatPopup');
-    if(popUp) {
+    if (popUp) {
         popUp.style.display = 'none';
         window.location.href = '/chat.html';
     }
@@ -39,25 +39,14 @@ stompClient.onStompError = (frame) => {
     console.error('Additional details: ' + frame.body);
 };
 
-const maxReconnectAttempts = 5;
-let reconnectAttempts = 0;
-const reconnectDelay = 5000; // 5 seconds
 function connect() {
-    if (reconnectAttempts < maxReconnectAttempts) {
-        reconnectAttempts++;
-        console.log(`Reconnection attempt ${reconnectAttempts} of ${maxReconnectAttempts}`);
-        setTimeout(() => {
-            stompClient.activate();
-        }, reconnectDelay);
-    } else {
-        console.log('Max reconnection attempts reached');
-    }
+    stompClient.activate();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     // Kontrollera om det finns nya meddelanden vid sidladdning
     const fanId = localStorage.getItem('selectedFan');
-    if(fanId) {
+    if (fanId) {
         checkForNewMessages(fanId);
     }
 
