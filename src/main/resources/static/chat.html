@@ -43,6 +43,21 @@
         brokerURL: 'wss://' + host + '/chat-ws'
     });
 
+    const maxReconnectAttempts = 5;
+    let reconnectAttempts = 0;
+    const reconnectDelay = 5000; // 5 seconds
+    function connect() {
+        if (reconnectAttempts < maxReconnectAttempts) {
+            reconnectAttempts++;
+            console.log(`Reconnection attempt ${reconnectAttempts} of ${maxReconnectAttempts}`);
+            setTimeout(() => {
+                stompClient.activate();
+            }, reconnectDelay);
+        } else {
+            console.log('Max reconnection attempts reached');
+        }
+    }
+
     function setLastRead() {
         let fanId = localStorage.getItem('selectedFan');
         fetch('/chat/lastRead/' + fanId, {
@@ -85,10 +100,6 @@
         connectionStatus.classList.add('disconnected');
         connectionStatus.classList.remove('connected');
     };
-
-    function connect() {
-        stompClient.activate();
-    }
 
     function sendMessage() {
         const messageContent = document.getElementById('messageInput').value;

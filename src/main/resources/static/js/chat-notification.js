@@ -39,8 +39,19 @@ stompClient.onStompError = (frame) => {
     console.error('Additional details: ' + frame.body);
 };
 
+const maxReconnectAttempts = 5;
+let reconnectAttempts = 0;
+const reconnectDelay = 5000; // 5 seconds
 function connect() {
-    stompClient.activate();
+    if (reconnectAttempts < maxReconnectAttempts) {
+        reconnectAttempts++;
+        console.log(`Reconnection attempt ${reconnectAttempts} of ${maxReconnectAttempts}`);
+        setTimeout(() => {
+            stompClient.activate();
+        }, reconnectDelay);
+    } else {
+        console.log('Max reconnection attempts reached');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
