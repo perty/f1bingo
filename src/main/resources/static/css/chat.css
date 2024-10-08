@@ -63,3 +63,20 @@
 .chat-message {
     text-align: left;
 }
+
+.status {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.status.connected {
+    background-color: #4CAF50; /* Grön för ansluten */
+    color: white;
+}
+
+.status.disconnected {
+    background-color: #f44336; /* Röd för ej ansluten */
+    color: white;
+}
