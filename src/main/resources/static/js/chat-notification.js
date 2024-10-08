@@ -17,41 +17,40 @@ function goToChatPage() {
     }
 }
 
-const host = location.hostname + ":" + location.port;
-const stompClient = new StompJs.Client({
-    brokerURL: 'wss://' + host + '/chat-ws'
-});
-
-stompClient.onConnect = (frame) => {
-    console.log('Connected: ' + frame);
-    stompClient.subscribe('/topic/messages', (message) => {
-        console.log('Received message: ' + message);
-        showNewMessagePopup(JSON.parse(message.body).message);
-    });
-};
-
-stompClient.onWebSocketError = (error) => {
-    console.error('Error with websocket', error);
-};
-
-stompClient.onStompError = (frame) => {
-    console.error('Broker reported error: ' + frame.headers['message']);
-    console.error('Additional details: ' + frame.body);
-};
-
-function connect() {
-    stompClient.activate();
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Kontrollera om det finns nya meddelanden vid sidladdning
-    const fanId = localStorage.getItem('selectedFan');
-    if (fanId) {
-        checkForNewMessages(fanId);
+    const host = location.hostname + ":" + location.port;
+    const stompClient = new StompJs.Client({
+        brokerURL: 'wss://' + host + '/chat-ws'
+    });
+
+    stompClient.onConnect = (frame) => {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/messages', (message) => {
+            console.log('Received message: ' + message);
+            showNewMessagePopup(JSON.parse(message.body).message);
+        });
+    };
+
+    stompClient.onWebSocketError = (error) => {
+        console.error('Error with websocket', error);
+    };
+
+    stompClient.onStompError = (frame) => {
+        console.error('Broker reported error: ' + frame.headers['message']);
+        console.error('Additional details: ' + frame.body);
+    };
+
+    function connect() {
+        stompClient.activate();
     }
 
     connect(); // Anslut till WebSocket
 });
+
+const fanId = localStorage.getItem('selectedFan');
+if (fanId) {
+    checkForNewMessages(fanId);
+}
 
 function checkForNewMessages(fanId) {
     fetch('/chat/new-messages/' + fanId, {
