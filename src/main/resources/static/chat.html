@@ -70,6 +70,13 @@
         });
     };
 
+    stompClient.onDisconnect = (frame) => {
+        console.log('WebSocket disconnected', frame);
+        connectionStatus.textContent = 'Anslutningsstatus: Ej ansluten';
+        connectionStatus.classList.add('disconnected');
+        connectionStatus.classList.remove('connected');
+    };
+
     stompClient.onWebSocketClose = () => {
         console.log('WebSocket connection closed');
         connectionStatus.textContent = 'Anslutningsstatus: Ej ansluten';
