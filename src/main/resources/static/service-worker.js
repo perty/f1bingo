@@ -1,6 +1,7 @@
-const CACHE_NAME = 'v60'; // Change in misc-info.html as well.
+const CACHE_NAME = 'v61'; // Change in misc-info.html as well.
 
 self.addEventListener('install', event => {
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             return cache.addAll([
@@ -62,8 +63,18 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request)
+        fetch(event.request)
             .then(response => {
-                return response || fetch(event.request);
-            }));
+                // Om nätverksförfrågan lyckas, uppdatera cachen
+                return caches.open(CACHE_NAME).then(cache => {
+                    cache.put(event.request, response.clone());
+                    return response;
+                });
+            })
+            .catch(() => {
+                // Om nätverksförfrågan misslyckas, använd cache
+                return caches.match(event.request);
+            })
+    );
 });
+
