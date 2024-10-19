@@ -218,13 +218,22 @@
         const tableRows = document.getElementById("driversTable").rows;
         const birthDateColumn = 2;
         const ageColumn = 3;
+        const heightColumn = 4;
+        let totalAge = 0;
+        let totalHeight = 0;
 
         for (let i = 1; i < tableRows.length; i++) {
             const birthdateCell = tableRows[i].cells[birthDateColumn];
             const ageCell = tableRows[i].cells[ageColumn];
             const birthdate = convertSwedishDateStringToDate(birthdateCell.textContent);
-            ageCell.textContent = calculateAge(birthdate) + "";
+            let age = calculateAge(birthdate);
+            ageCell.textContent = age + "";
+            totalAge += age;
+            totalHeight += parseInt(tableRows[i].cells[heightColumn].textContent);
         }
+        const averageAge = totalAge / (tableRows.length - 1);
+        const averageHeight = totalHeight / (tableRows.length - 1);
+        document.querySelector(".content p").innerHTML = `Medellängd: ${averageHeight.toFixed(2)} cm<br/>Medelålder: ${averageAge.toFixed(1)} år`;
 
         function calculateAge(birthdate) {
             const today = new Date();
