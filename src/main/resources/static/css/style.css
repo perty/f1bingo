@@ -32,9 +32,30 @@ input, select, button {
     }
 }
 
+.header-bar {
+    position: fixed;
+    top: 5px;
+    width: 100%;
+    padding-top: env(safe-area-inset-top); /* Compatibility for iPhone X and similar devices */
+    box-sizing: border-box; /* Ensure padding does not add to the specified width */
+    padding-right: 20px;
+    z-index: 1000; /* Ensure header-bar is above other elements */
+    max-width: 600px; /* Same max-width as container */
+    margin-left: auto; /* Center the header-bar */
+    margin-right: auto; /* Center the header-bar */
+}
+
+.header-bar div {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 5px;
+}
+
 .container {
-    max-width: 600px;
-    margin: 0 auto;
+    margin-top: 35px; /* Adjust this value based on the header-bar height */
+    max-width: 600px; /* Same max-width as header-bar */
+    margin-left: auto; /* Center the container */
+    margin-right: auto; /* Center the container */
     font-size: 14px;
 }
 
@@ -184,34 +205,11 @@ input, select, button {
     }
 }
 
-.footer-bar {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    padding-bottom: env(safe-area-inset-bottom); /* Kompatibilitet för iPhone X och liknande enheter */
-    box-sizing: border-box; /* Ser till att padding inte läggs till utanför den angivna bredden */
-    padding-right: 20px;
-}
-
-@media (min-width: 600px) {
-    .footer-bar {
-        max-width: 600px;
-    }
-}
-
 .footer {
     display: flex;
     justify-content: space-between;
     border-radius: 5px;
     background-color: var(--red-background-color);
-}
-
-.footer button {
-    font-size: 18px;
-    background-color: var(--red-background-color);
-    border-radius: 5px;
-    border: 1px solid var(--shade-color);
-    margin: 1px;
 }
 
 .footer-text {
