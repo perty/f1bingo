@@ -26,9 +26,12 @@
         <a href="/misc-info.html"><< Tillbaka</a>
     </div>
     <div class="content">
+        <p id="stats">
+            Medellängd: XXX cm<br/>
+            Medelålder: XXX år
+        </p>
         <p>
-            Medellängd: 177,45 cm<br/>
-            Medelålder: 28,6 år
+            Sortera genom att klicka på rubrikerna i tabellen.
         </p>
         <div class="one-column">
             <table id="driversTable">
@@ -215,25 +218,35 @@
         'sep': 8, 'okt': 9, 'nov': 10, 'dec': 11
     };
 
-    function sortTable(columnIndex) {
-        const table = document.getElementById("driversTable");
-        const rows = Array.from(table.rows).slice(1); // Exkludera rubrikraden
-        const isNumericColumn = columnIndex === 0 || columnIndex === 3 || columnIndex === 4;
+let sortOrder = 1; // 1 för stigande, -1 för fallande
+let lastSortedColumn = -1;
 
-        rows.sort((rowA, rowB) => {
-            const cellA = rowA.cells[columnIndex].textContent.trim();
-            const cellB = rowB.cells[columnIndex].textContent.trim();
+function sortTable(columnIndex) {
+    const table = document.getElementById("driversTable");
+    const rows = Array.from(table.rows).slice(1); // Exkludera rubrikraden
+    const isNumericColumn = columnIndex === 0 || columnIndex === 3 || columnIndex === 4;
 
-            if (isNumericColumn) {
-                return parseFloat(cellA) - parseFloat(cellB);
-            } else {
-                return cellA.localeCompare(cellB, 'sv');
-            }
-        });
-
-        // Återställ tabellens rader i sorterad ordning
-        rows.forEach(row => table.tBodies[0].appendChild(row));
+    if (lastSortedColumn === columnIndex) {
+        sortOrder *= -1; // Växla sorteringsordningen
+    } else {
+        sortOrder = 1; // Återställ till stigande sortering
     }
+    lastSortedColumn = columnIndex;
+
+    rows.sort((rowA, rowB) => {
+        const cellA = rowA.cells[columnIndex].textContent.trim();
+        const cellB = rowB.cells[columnIndex].textContent.trim();
+
+        if (isNumericColumn) {
+            return (parseFloat(cellA) - parseFloat(cellB)) * sortOrder;
+        } else {
+            return cellA.localeCompare(cellB, 'sv') * sortOrder;
+        }
+    });
+
+    // Återställ tabellens rader i sorterad ordning
+    rows.forEach(row => table.tBodies[0].appendChild(row));
+}
 
     document.addEventListener("DOMContentLoaded", function () {
         const tableRows = document.getElementById("driversTable").rows;
@@ -254,7 +267,7 @@
         }
         const averageAge = totalAge / (tableRows.length - 1);
         const averageHeight = totalHeight / (tableRows.length - 1);
-        document.querySelector(".content p").innerHTML = `Medellängd: ${averageHeight.toFixed(2)} cm<br/>Medelålder: ${averageAge.toFixed(1)} år`;
+        document.getElementById("stats").innerHTML = `Medellängd: ${averageHeight.toFixed(2)} cm<br/>Medelålder: ${averageAge.toFixed(1)} år`;
 
         function calculateAge(birthdate) {
             const today = new Date();
