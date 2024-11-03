@@ -34,11 +34,11 @@
             <table id="driversTable">
                 <thead>
                 <tr>
-                    <th>Nr</th>
-                    <th>Förare</th>
+                    <th onclick="sortTable(0)">Nr</th>
+                    <th onclick="sortTable(1)">Förare</th>
                     <th>Född</th>
-                    <th>Ålder</th>
-                    <th>Längd</th>
+                    <th onclick="sortTable(3)">Ålder</th>
+                    <th onclick="sortTable(4)">Längd</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -215,7 +215,27 @@
         'sep': 8, 'okt': 9, 'nov': 10, 'dec': 11
     };
 
-    document.addEventListener("DOMContentLoaded", function() {
+    function sortTable(columnIndex) {
+        const table = document.getElementById("driversTable");
+        const rows = Array.from(table.rows).slice(1); // Exkludera rubrikraden
+        const isNumericColumn = columnIndex === 0 || columnIndex === 3 || columnIndex === 4;
+
+        rows.sort((rowA, rowB) => {
+            const cellA = rowA.cells[columnIndex].textContent.trim();
+            const cellB = rowB.cells[columnIndex].textContent.trim();
+
+            if (isNumericColumn) {
+                return parseFloat(cellA) - parseFloat(cellB);
+            } else {
+                return cellA.localeCompare(cellB, 'sv');
+            }
+        });
+
+        // Återställ tabellens rader i sorterad ordning
+        rows.forEach(row => table.tBodies[0].appendChild(row));
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
         const tableRows = document.getElementById("driversTable").rows;
         const birthDateColumn = 2;
         const ageColumn = 3;
@@ -252,7 +272,7 @@
         const day = parseInt(parts[0], 10);
         const monthCode = parts[1].toLowerCase(); // Konvertera till små bokstäver för matchning
         let year = parseInt(parts[2], 10) + 2000;
-        if(year > new Date().getFullYear()) {
+        if (year > new Date().getFullYear()) {
             year -= 100;
         }
 
