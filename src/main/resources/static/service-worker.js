@@ -46,6 +46,8 @@ self.addEventListener('install', event => {
                 '/misc-info/grid-2025.html',
                 '/js/chat-notification.js',
             ]);
+        }).catch(error => {
+            console.error('Failed to cache resources during install:', error);
         })
     );
 });
