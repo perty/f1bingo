@@ -80,3 +80,6 @@ self.addEventListener('fetch', event => {
     );
 });
 
+self.addEventListener('controllerchange', () => {
+    window.location.reload();
+});
