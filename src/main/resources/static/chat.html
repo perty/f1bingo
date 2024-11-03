@@ -26,9 +26,9 @@
         </div>
         <div class="title shadow">
             <p>Chat</p>
+            <div id="connectionStatus" class="status">Ej ansluten</div>
         </div>
     </div>
-    <div id="connectionStatus" class="status">Anslutningsstatus: Ej ansluten</div>
     <div id="messages"></div>
     <div id="messageInputContainer">
         <form id="messageForm">
@@ -60,7 +60,7 @@
 
     stompClient.onConnect = (frame) => {
         console.log('Connected: ' + frame);
-        connectionStatus.textContent = 'Anslutningsstatus: Ansluten';
+        connectionStatus.textContent = 'Ansluten';
         connectionStatus.classList.add('connected');
         connectionStatus.classList.remove('disconnected');
         stompClient.subscribe('/topic/messages', (message) => {
@@ -72,21 +72,21 @@
 
     stompClient.onDisconnect = (frame) => {
         console.log('WebSocket disconnected', frame);
-        connectionStatus.textContent = 'Anslutningsstatus: Ej ansluten';
+        connectionStatus.textContent = 'Ej ansluten';
         connectionStatus.classList.add('disconnected');
         connectionStatus.classList.remove('connected');
     };
 
     stompClient.onWebSocketClose = () => {
         console.log('WebSocket connection closed');
-        connectionStatus.textContent = 'Anslutningsstatus: Ej ansluten';
+        connectionStatus.textContent = 'Ej ansluten';
         connectionStatus.classList.add('disconnected');
         connectionStatus.classList.remove('connected');
     };
 
     stompClient.onWebSocketError = (error) => {
         console.error('Error with websocket', error);
-        connectionStatus.textContent = 'Anslutningsstatus: Fel';
+        connectionStatus.textContent = 'Fel';
         connectionStatus.classList.add('disconnected');
         connectionStatus.classList.remove('connected');
     };
@@ -94,7 +94,7 @@
     stompClient.onStompError = (frame) => {
         console.error('Broker reported error: ' + frame.headers['message']);
         console.error('Additional details: ' + frame.body);
-        connectionStatus.textContent = 'Anslutningsstatus: Fel';
+        connectionStatus.textContent = 'Fel';
         connectionStatus.classList.add('disconnected');
         connectionStatus.classList.remove('connected');
     };
