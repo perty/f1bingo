@@ -1,11 +1,17 @@
-// Funktion som visar pop-upen
+
 function showNewMessagePopup(message) {
     const popUp = document.getElementById('chatPopup');
     if (popUp) {
         popUp.style.display = 'block';
         const messageElement = document.createElement('div');
-        messageElement.textContent = message;
+        messageElement.textContent = message.length > 120 ? message.substring(0, 120) + '...' : message;
         popUp.appendChild(messageElement);
+
+        // Hide the popup after 15 seconds
+        setTimeout(() => {
+            popUp.style.display = 'none';
+            popUp.removeChild(messageElement);
+        }, 15000);
     }
 }
 
