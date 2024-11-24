@@ -1,4 +1,6 @@
 # F1 Bingo
+![Build Status](https://github.com/perty/f1bingo/actions/workflows/maven.yml/badge.svg)
+
 A bingo game for Formula 1 fans. In Swedish.
 
 ## Can I play?
