@@ -1,4 +1,4 @@
-const CACHE_NAME = 'v70'; // Change in misc-info.html as well.
+const CACHE_NAME = 'v71'; // Change in misc-info.html as well.
 
 self.addEventListener('install', event => {
     self.skipWaiting();
