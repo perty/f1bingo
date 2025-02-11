@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Skriv nyheter</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="../public/css/style.css">
+    <link rel="stylesheet" href="../public/css/calendar.css">
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
@@ -16,7 +16,7 @@
     </div>
     <div class="header">
         <div class="logo">
-            <a href="/home.html" title="Gå till första sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
+            <a href="/home.html" title="Gå till första sidan"><img src="../public/images/logo.png" alt="logo" id="logo"></a>
         </div>
         <div class="title shadow">
             <p>Lägga upp nyheter</p>
@@ -40,7 +40,7 @@
         </form>
     </div>
 </div>
-<script src="js/news.js"></script>
+<script src="../public/js/news.js"></script>
 <script>
     // Fånga formulärets submit och skicka nyheten till servern.
     document.getElementById('newsForm').addEventListener('submit', event => {
@@ -72,6 +72,6 @@
 
     fetchNews(5);
 </script>
-<script src="js/chat-notification.js"></script>
+<script src="../public/js/chat-notification.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 
 @font-face {
     font-family: 'race_sport';
-    src: url('/font/race_sport.ttf') format('truetype')
+    src: url('/public/font/race_sport.ttf') format('truetype')
 }
 
 body {

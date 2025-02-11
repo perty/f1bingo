@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>F1 Bingo</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="public/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
@@ -12,11 +12,10 @@
 <div class="container">
     <div class="header-bar">
         <div>
-            <a class="shadow button-link" href="login.html?redirectUrl=/admin.html">Admin</a>
-            <a class="shadow button-link" href="points.html">Poäng</a>
-            <a class="shadow button-link" href="chat.html">Chat</a>
-            <a class="shadow button-link" href="calendar.html">Kalender</a>
-            <a class="shadow button-link" href="misc-info.html">Info</a>
+            <a class="shadow button-link" href="public/points.html">Poäng</a>
+            <a class="shadow button-link" href="private/chat.html">Chat</a>
+            <a class="shadow button-link" href="public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="public/misc-info.html">Info</a>
         </div>
     </div>
     <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
@@ -24,10 +23,10 @@
     </div>
     <div class="header">
         <div class="logo">
-            <a href="/" title="Gå till login-sidan"><img src="images/logo.png" alt="logo" id="logo"></a>
+            <a href="/" title="Gå till login-sidan"><img src="public/images/logo.png" alt="logo" id="logo"></a>
         </div>
         <div class="title shadow">
-            <a href="help.html">
+            <a href="public/help.html">
                 <div class="help-icon">
                     <div>?</div>
                 </div>
@@ -47,7 +46,7 @@
                 <div class="submitButtonRow">
                     <div>Till dina bingobrickor:</div>
                     <div>
-                        <button type="submit"><img class="flag" src="/images/flag/finish.png" alt="finish flag">
+                        <button type="submit"><img class="flag" src="/public/images/flag/finish.png" alt="finish flag">
                         </button>
                     </div>
                 </div>
@@ -55,17 +54,17 @@
         </form>
     </div>
     <div class="midsection">
-        <div class="car"><a href="team/rb.html"><img src="images/car/rb.png" alt="rb"></a></div>
-        <div class="car"><a href="team/haas.html"><img src="images/car/haas.png" alt="haas"></a></div>
-        <div class="car"><a href="team/sauber.html"><img src="images/car/sauber.png" alt="Kick Sauber"></a></div>
-        <div class="car"><a href="team/mclaren.html"><img src="images/car/mclaren.png" alt="mclaren"></a></div>
-        <div class="car"><a href="team/alpine.html"><img src="images/car/alpine.png" alt="alpine"></a></div>
-        <div class="car"><a href="team/mercedes.html"><img src="images/car/mercedes.png" alt="mercedes"></a></div>
-        <div class="car"><a href="team/aston-martin.html"><img src="images/car/aston-martin.png" alt="aston-martin"></a>
+        <div class="car"><a href="public/team/rb.html"><img src="public/images/car/rb.png" alt="rb"></a></div>
+        <div class="car"><a href="public/team/haas.html"><img src="public/images/car/haas.png" alt="haas"></a></div>
+        <div class="car"><a href="public/team/sauber.html"><img src="public/images/car/sauber.png" alt="Kick Sauber"></a></div>
+        <div class="car"><a href="public/team/mclaren.html"><img src="public/images/car/mclaren.png" alt="mclaren"></a></div>
+        <div class="car"><a href="public/team/alpine.html"><img src="public/images/car/alpine.png" alt="alpine"></a></div>
+        <div class="car"><a href="public/team/mercedes.html"><img src="public/images/car/mercedes.png" alt="mercedes"></a></div>
+        <div class="car"><a href="public/team/aston-martin.html"><img src="public/images/car/aston-martin.png" alt="aston-martin"></a>
         </div>
-        <div class="car"><a href="team/red-bull.html"><img src="images/car/red-bull.png" alt="red-bull"></a></div>
-        <div class="car"><a href="team/ferrari.html"><img src="images/car/ferrari.png" alt="ferrari"></a></div>
-        <div class="car"><a href="team/williams.html"><img src="images/car/williams.png" alt="williams"></a></div>
+        <div class="car"><a href="public/team/red-bull.html"><img src="public/images/car/red-bull.png" alt="red-bull"></a></div>
+        <div class="car"><a href="public/team/ferrari.html"><img src="public/images/car/ferrari.png" alt="ferrari"></a></div>
+        <div class="car"><a href="public/team/williams.html"><img src="public/images/car/williams.png" alt="williams"></a></div>
     </div>
 </div>
 
@@ -121,6 +120,6 @@
         localStorage.setItem('selectedWeekend', this.value);
     };
 </script>
-<script src="js/chat-notification.js"></script>
+<script src="public/js/chat-notification.js"></script>
 </body>
 </html>
