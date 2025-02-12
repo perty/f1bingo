@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/",
                                 "/chat-ws",
+                                "/chat",
                                 "/points/results",
                                 "/home.html",
                                 "/index.html",

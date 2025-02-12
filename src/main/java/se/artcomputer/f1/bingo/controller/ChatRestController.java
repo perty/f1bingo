@@ -1,9 +1,13 @@
 package se.artcomputer.f1.bingo.controller;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import se.artcomputer.f1.bingo.controller.util.GetUserDetails;
 import se.artcomputer.f1.bingo.domain.ChatService;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("chat")
@@ -17,19 +21,18 @@ public class ChatRestController {
 
     @GetMapping("/messages/{fan}")
     public List<ChatMessageDto> getMessages(@PathVariable Long fan) {
-        List<ChatMessageDto> allMessages = chatService.getAllMessages();
-        chatService.setLastReadForFan(fan);
-        return allMessages;
+        return GetUserDetails.doIfLoggedIn(chatService::getAllMessages, Collections.emptyList());
     }
 
     @GetMapping("/new-messages/{fan}")
     public List<ChatMessageDto> getNewMessagesForFan(@PathVariable Long fan) {
-        return chatService.getNewMessagesForFan(fan);
+        return GetUserDetails.doIfLoggedIn(chatService::getNewMessagesForFan, Collections.emptyList());
     }
 
     @PostMapping("/lastRead/{fan}")
     public void setLastReadForFan(@PathVariable Long fan) {
-        chatService.setLastReadForFan(fan);
+        Optional<UserDetails> userDetails = GetUserDetails.getLoggedInUserDetails();
+        userDetails.ifPresent(chatService::setLastReadForFan);
     }
 
 }
