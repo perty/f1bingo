@@ -28,7 +28,6 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
-                                "/news",
                                 "/chat-ws",
                                 "/points/results",
                                 "/home.html",

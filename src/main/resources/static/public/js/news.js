@@ -7,7 +7,7 @@ const options = {
 
 // En funktion som hämtar nyheter och lägger till de 5 senaste i DOM:en.
 function fetchNews(maxNews) {
-    fetch('/news')
+    fetch('/public/news')
         .then(response => response.json())
         .then(news => {
             let newsCounter = maxNews

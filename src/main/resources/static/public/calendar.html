@@ -69,7 +69,7 @@
     }
 
     function fetchCalendar(year) {
-        fetch(`/calendar/${year}`)
+        fetch(`/public/calendar/${year}`)
             .then(response => response.json())
             .then(data => {
                 displayCalendar(data);

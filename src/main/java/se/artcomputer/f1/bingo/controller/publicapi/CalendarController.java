@@ -1,4 +1,4 @@
-package se.artcomputer.f1.bingo.controller;
+package se.artcomputer.f1.bingo.controller.publicapi;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +11,7 @@ import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import java.util.List;
 
 @RestController
-@RequestMapping("calendar")
+@RequestMapping("public/calendar")
 public class CalendarController {
     private final RaceService raceService;
 

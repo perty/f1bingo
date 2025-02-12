@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("news")
+@RequestMapping("public/news")
 public class NewsController {
 
     private final NewsService newsService;

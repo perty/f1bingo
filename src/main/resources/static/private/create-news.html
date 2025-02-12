@@ -51,7 +51,7 @@
     function sendNews() {
         const content = document.getElementById('content').value;
         if (content) {
-            fetch('/news', {
+            fetch('/public/news', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
