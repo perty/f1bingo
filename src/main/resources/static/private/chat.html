@@ -4,8 +4,8 @@
     <title>Chat</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="../public/css/style.css">
-    <link rel="stylesheet" href="../public/css/chat.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/chat.css">
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
@@ -13,10 +13,10 @@
 <div id="chatContainer" class="container">
     <div class="header-bar">
         <div>
-            <a class="shadow button-link" href="../public/points.html">Poäng</a>
-            <a class="shadow button-link" href="weekend.html">Bingo</a>
-            <a class="shadow button-link" href="../public/calendar.html">Kalender</a>
-            <a class="shadow button-link" href="../public/misc-info.html">Info</a>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/misc-info.html">Info</a>
         </div>
     </div>
     <div class="header">
@@ -157,7 +157,7 @@
             showReceivedMessage('MESSAGE', 'Välj en F1-nörd att chatta som', 0, new Date());
             return;
         }
-        fetch('/chat/messages/' + fanId)
+        fetch('/chat/messages')
             .then(response => response.json())
             .then(data => {
                 data.forEach(message => {

@@ -4,8 +4,8 @@
     <title>Däcktyper</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/misc-info.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/misc-info.css">
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
@@ -14,17 +14,24 @@
     <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
         Nytt meddelande i chatten!
     </div>
+    <div class="header-bar">
+        <div>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/private/chat.html">Chat</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/misc-info.html">Info</a>
+        </div>
+    </div>
     <div class="header">
         <div class="logo">
-            <a href="/home.html" title="Gå till första sidan"><img src="/images/logo.png" alt="logo" id="logo"></a>
+            <a href="/home.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
         </div>
         <div class="title shadow">
             <p>Däcktyper</p>
         </div>
     </div>
-    <div class="minor-title">
-        <a href="/misc-info.html"><< Tillbaka</a>
-    </div>
+
     <div class="content">
         <div class="one-column">
             <table>
@@ -37,27 +44,27 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><img class="responsive-img" src="/images/tyres/blue.png" alt="blue tyre"></td>
+                    <td><img class="responsive-img" src="/public/images/tyres/blue.png" alt="blue tyre"></td>
                     <td>Full wets</td>
                     <td>Vid kraftigt regn</td>
                 </tr>
                 <tr>
-                    <td><img class="responsive-img" src="/images/tyres/green.png" alt="green tyre"></td>
+                    <td><img class="responsive-img" src="/public/images/tyres/green.png" alt="green tyre"></td>
                     <td>Intermediate</td>
                     <td>Vid lätt regn och upptorkande bana</td>
                 </tr>
                 <tr>
-                    <td><img class="responsive-img" src="/images/tyres/white.png" alt="white tyre"></td>
+                    <td><img class="responsive-img" src="/public/images/tyres/white.png" alt="white tyre"></td>
                     <td>Hard</td>
                     <td>Håller länge men långsammast</td>
                 </tr>
                 <tr>
-                    <td><img class="responsive-img" src="/images/tyres/yellow.png" alt="yellow tyre"></td>
+                    <td><img class="responsive-img" src="/public/images/tyres/yellow.png" alt="yellow tyre"></td>
                     <td>Medium</td>
                     <td>Mellanalternativet</td>
                 </tr>
                 <tr>
-                    <td><img class="responsive-img" src="/images/tyres/red.png" alt="red tyre"></td>
+                    <td><img class="responsive-img" src="/public/images/tyres/red.png" alt="red tyre"></td>
                     <td>Soft</td>
                     <td>Snabbt men kort livslängd</td>
                 </tr>
@@ -66,6 +73,6 @@
         </div>
     </div>
 </div>
-<script src="/js/chat-notification.js"></script>
+<script src="/public/js/chat-notification.js"></script>
 </body>
 </html>

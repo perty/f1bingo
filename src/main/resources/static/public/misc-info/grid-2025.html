@@ -4,8 +4,8 @@
     <title>Gridden 2025</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/misc-info.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/misc-info.css">
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
@@ -14,17 +14,24 @@
     <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
         Nytt meddelande i chatten!
     </div>
+    <div class="header-bar">
+        <div>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/private/chat.html">Chat</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/misc-info.html">Info</a>
+        </div>
+    </div>
     <div class="header">
         <div class="logo">
-            <a href="/home.html" title="Gå till första sidan"><img src="/images/logo.png" alt="logo" id="logo"></a>
+            <a href="/home.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
         </div>
         <div class="title shadow">
             <p>Gridden 2025</p>
         </div>
     </div>
-    <div class="minor-title">
-        <a href="/misc-info.html"><< Tillbaka</a>
-    </div>
+
     <div class="content">
         <p>Vilka står på gridden 2025? Hur långt kontrakt har de? Här är vad vi vet just nu. <strong>Permanent nya för året i fetstil.</strong></p>
         <p>Flera av de som har 2026 som angiven kontraktslängd kan i själva verket vara längre.</p>
@@ -135,6 +142,6 @@
         </table>
     </div>
 </div>
-<script src="/js/chat-notification.js"></script>
+<script src="/public/js/chat-notification.js"></script>
 </body>
 </html>

@@ -4,8 +4,8 @@
     <title>Stallinfo</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/misc-info.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/misc-info.css">
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
@@ -14,30 +14,37 @@
     <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
         Nytt meddelande i chatten!
     </div>
+    <div class="header-bar">
+        <div>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/private/chat.html">Chat</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/misc-info.html">Info</a>
+        </div>
+    </div>
     <div class="header">
         <div class="logo">
-            <a href="/home.html" title="Gå till första sidan"><img src="/images/logo.png" alt="logo" id="logo"></a>
+            <a href="/home.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
         </div>
         <div class="title shadow">
             <p>Stall</p>
         </div>
     </div>
-    <div class="minor-title">
-        <a href="/misc-info.html"><< Tillbaka</a>
-    </div>
+
     <div class="teams">
-        <div class="team"><a href="/team/alpine.html"><img src="/images/car/alpine.png" alt="Alpine"><span>Alpine</span></a></div>
-        <div class="team"><a href="/team/aston-martin.html"><img src="/images/car/aston-martin.png" alt="Aston Martin"><span>Aston Martin</span></a></div>
-        <div class="team"><a href="/team/ferrari.html"><img src="/images/car/ferrari.png" alt="Ferrari"><span>Ferrari</span></a></div>
-        <div class="team"><a href="/team/haas.html"><img src="/images/car/haas.png" alt="Haas"><span>Haas</span></a></div>
-        <div class="team"><a href="/team/sauber.html"><img src="/images/car/sauber.png" alt="Sauber"><span>Kick Sauber</span></a></div>
-        <div class="team"><a href="/team/mclaren.html"><img src="/images/car/mclaren.png" alt="McLaren"><span>McLaren</span></a></div>
-        <div class="team"><a href="/team/mercedes.html"><img src="/images/car/mercedes.png" alt="Mercedes"><span>Mercedes</span></a></div>
-        <div class="team"><a href="/team/rb.html"><img src="/images/car/rb.png" alt="RB"><span>RB</span></a></div>
-        <div class="team"><a href="/team/red-bull.html"><img src="/images/car/red-bull.png" alt="Red Bull"><span>Red Bull Racing</span></a></div>
-        <div class="team"><a href="/team/williams.html"><img src="/images/car/williams.png" alt="Williams"><span>Williams</span></a></div>
+        <div class="team"><a href="/public/team/alpine.html"><img src="/public/images/car/alpine.png" alt="Alpine"><span>Alpine</span></a></div>
+        <div class="team"><a href="/public/team/aston-martin.html"><img src="/public/images/car/aston-martin.png" alt="Aston Martin"><span>Aston Martin</span></a></div>
+        <div class="team"><a href="/public/team/ferrari.html"><img src="/public/images/car/ferrari.png" alt="Ferrari"><span>Ferrari</span></a></div>
+        <div class="team"><a href="/public/team/haas.html"><img src="/public/images/car/haas.png" alt="Haas"><span>Haas</span></a></div>
+        <div class="team"><a href="/public/team/sauber.html"><img src="/public/images/car/sauber.png" alt="Sauber"><span>Kick Sauber</span></a></div>
+        <div class="team"><a href="/public/team/mclaren.html"><img src="/public/images/car/mclaren.png" alt="McLaren"><span>McLaren</span></a></div>
+        <div class="team"><a href="/public/team/mercedes.html"><img src="/public/images/car/mercedes.png" alt="Mercedes"><span>Mercedes</span></a></div>
+        <div class="team"><a href="/public/team/rb.html"><img src="/public/images/car/rb.png" alt="RB"><span>RB</span></a></div>
+        <div class="team"><a href="/public/team/red-bull.html"><img src="/public/images/car/red-bull.png" alt="Red Bull"><span>Red Bull Racing</span></a></div>
+        <div class="team"><a href="/public/team/williams.html"><img src="/public/images/car/williams.png" alt="Williams"><span>Williams</span></a></div>
     </div>
 </div>
-<script src="/js/chat-notification.js"></script>
+<script src="/public/js/chat-notification.js"></script>
 </body>
 </html>

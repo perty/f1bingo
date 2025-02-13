@@ -4,8 +4,8 @@
     <title>Övrig information</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/misc-info.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/misc-info.css">
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
@@ -13,10 +13,10 @@
 <div class="container">
     <div class="header-bar">
         <div>
-            <a class="shadow button-link" href="../private/weekend.html">Bingo</a>
-            <a class="shadow button-link" href="../private/chat.html">Chat</a>
-            <a class="shadow button-link" href="calendar.html">Kalender</a>
-            <a class="shadow button-link" href="misc-info.html">Info</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/private/chat.html">Chat</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
         </div>
     </div>
     <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
@@ -33,49 +33,49 @@
     <div class="content">
         <ul class="link-list">
             <li>
-                <a href="/misc-info/points-info.html">
+                <a href="/public/misc-info/points-info.html">
                     <span class="icon">
-                        <img src="/images/flag2.png" alt="flag"/>
+                        <img src="/public/images/flag2.png" alt="flag"/>
                     </span>
                     Poängtilldelning
                 </a>
             </li>
             <li>
-                <a href="/misc-info/tyre-info.html">
+                <a href="/public/misc-info/tyre-info.html">
                     <span class="icon">
-                        <img src="/images/flag2.png" alt="flag"/>
+                        <img src="/public/images/flag2.png" alt="flag"/>
                     </span>
                     Däcktyper och däckfärger
                 </a>
             </li>
             <li>
-                <a href="/misc-info/qual-info.html">
+                <a href="/public/misc-info/qual-info.html">
                     <span class="icon">
-                        <img src="/images/flag2.png" alt="flag"/>
+                        <img src="/public/images/flag2.png" alt="flag"/>
                     </span>
                     Format, sprint och klassiskt
                 </a>
             </li>
             <li>
-                <a href="/misc-info/driver-info.html">
+                <a href="/public/misc-info/driver-info.html">
                     <span class="icon">
-                        <img src="/images/flag2.png" alt="flag"/>
+                        <img src="/public/images/flag2.png" alt="flag"/>
                     </span>
                     Förarinformation
                 </a>
             </li>
             <li>
-                <a href="/misc-info/team-info.html">
+                <a href="/public/misc-info/team-info.html">
                     <span class="icon">
-                        <img src="/images/flag2.png" alt="flag"/>
+                        <img src="/public/images/flag2.png" alt="flag"/>
                     </span>
                     Stallinformation
                 </a>
             </li>
             <li>
-                <a href="/misc-info/grid-2025.html">
+                <a href="/public/misc-info/grid-2025.html">
                     <span class="icon">
-                        <img src="/images/flag2.png" alt="flag"/>
+                        <img src="/public/images/flag2.png" alt="flag"/>
                     </span>
                     Gridden 2025
                 </a>
@@ -84,6 +84,6 @@
     </div>
     <p>Version 72</p> <!-- Change service-worker.js also -->
 </div>
-<script src="js/chat-notification.js"></script>
+<script src="/public/js/chat-notification.js"></script>
 </body>
 </html>
