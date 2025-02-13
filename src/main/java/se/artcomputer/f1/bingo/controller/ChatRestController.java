@@ -1,7 +1,10 @@
 package se.artcomputer.f1.bingo.controller;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import se.artcomputer.f1.bingo.controller.util.GetUserDetails;
 import se.artcomputer.f1.bingo.domain.ChatService;
 
@@ -19,18 +22,18 @@ public class ChatRestController {
         this.chatService = chatService;
     }
 
-    @GetMapping("/messages/{fan}")
-    public List<ChatMessageDto> getMessages(@PathVariable Long fan) {
+    @GetMapping("/messages")
+    public List<ChatMessageDto> getMessages() {
         return GetUserDetails.doIfLoggedIn(chatService::getAllMessages, Collections.emptyList());
     }
 
-    @GetMapping("/new-messages/{fan}")
-    public List<ChatMessageDto> getNewMessagesForFan(@PathVariable Long fan) {
+    @GetMapping("/new-messages")
+    public List<ChatMessageDto> getNewMessagesForFan() {
         return GetUserDetails.doIfLoggedIn(chatService::getNewMessagesForFan, Collections.emptyList());
     }
 
-    @PostMapping("/lastRead/{fan}")
-    public void setLastReadForFan(@PathVariable Long fan) {
+    @PostMapping("/lastRead")
+    public void setLastReadForFan() {
         Optional<UserDetails> userDetails = GetUserDetails.getLoggedInUserDetails();
         userDetails.ifPresent(chatService::setLastReadForFan);
     }

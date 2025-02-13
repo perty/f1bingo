@@ -20,36 +20,20 @@
             <img src="public/images/logo.png" alt="logo" id="logo">
         </div>
         <div class="title shadow">
-            <p>F1 Bingo 2024</p>
+            <p>F1 Bingo 2025</p>
         </div>
     </div>
-
     <div class="content">
-        <form id="weekendPaletteForm">
-            <div class="weekend-form-card shadow">
-                <h3>Välkommen till vår F1-app!</h3>
-                <p>
-                    Här kan du spela bingo och chatta med övriga F1-nördar.
-                    Du hittar också info om regler och förare.
-                </p>
-                <p>
-                    Kontakta gärna oss om du vill vara med, se längst ner på sidan.
-                </p>
-                <div class="form-field">
-                    <label for="fan">F1-nörd:</label>
-                    <select id="fan" name="fan" required>
-                        <option value="">Välj en F1-nörd...</option>
-                    </select><br><br>
-                </div>
-                <div class="submitButtonRow">
-                    <div>Logga in:</div>
-                    <div>
-                        <button type="submit"><img class="flag" src="/public/images/flag/finish.png" alt="finish flag">
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </form>
+        <div class="weekend-form-card shadow">
+            <h3>Välkommen till vår F1-app!</h3>
+            <p>
+                Här kan du spela bingo och chatta med övriga F1-nördar.
+                Du hittar också info om regler och förare.
+            </p>
+            <p>
+                Kontakta gärna oss om du vill vara med, se längst ner på sidan.
+            </p>
+        </div>
     </div>
 
     <div class="news">
@@ -67,14 +51,6 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    document.getElementById('weekendPaletteForm').onsubmit = function (event) {
-        event.preventDefault();
-        window.location.href = '/home.html';
-    };
-</script>
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -90,7 +66,7 @@
 </script>
 <script src="public/js/news.js"></script>
 <script>
-fetchNews(5);
+    fetchNews(5);
 </script>
 </body>
 </html>

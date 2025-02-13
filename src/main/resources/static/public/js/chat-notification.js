@@ -1,4 +1,3 @@
-
 function showNewMessagePopup(message) {
     const popUp = document.getElementById('chatPopup');
     if (popUp) {
@@ -53,13 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
     connect(); // Anslut till WebSocket
 });
 
-const fanId = localStorage.getItem('selectedFan');
-if (fanId) {
-    checkForNewMessages(fanId);
-}
+checkForNewMessages();
 
-function checkForNewMessages(fanId) {
-    fetch('/chat/new-messages/' + fanId, {
+function checkForNewMessages() {
+    fetch('/chat/new-messages', {
         method: 'GET',
     })
         .then(response => response.json())

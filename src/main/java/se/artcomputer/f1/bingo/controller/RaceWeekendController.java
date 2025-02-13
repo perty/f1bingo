@@ -9,7 +9,7 @@ import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import java.util.List;
 
 @RestController
-@RequestMapping("weekend")
+@RequestMapping("/public/weekend")
 public class RaceWeekendController {
     private final RaceService raceService;
 
