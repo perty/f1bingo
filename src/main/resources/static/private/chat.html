@@ -24,7 +24,7 @@
     </div>
     <div class="header">
         <div class="logo">
-            <a href="/index.html" title="Gå till första sidan"><img src="../public/images/logo.png" alt="logo" id="logo"></a>
+            <a href="/index.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
         </div>
         <div class="title shadow">
             <p>Chat</p>
@@ -52,8 +52,7 @@
     connect();
 
     function setLastRead() {
-        let fanId = localStorage.getItem('selectedFan');
-        fetch('/chat/lastRead/' + fanId, {
+        fetch('/chat/lastRead', {
             method: 'POST'
         });
     }
