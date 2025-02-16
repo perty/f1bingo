@@ -3,22 +3,22 @@ package se.artcomputer.f1.bingo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import se.artcomputer.f1.bingo.entity.OurUser;
+import se.artcomputer.f1.bingo.entity.Fan;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class OurUserInfoDetails implements UserDetails {
+public class FanDetails implements UserDetails {
     private final String email;
     private final String password;
     private final List<GrantedAuthority> roles;
 
-    public OurUserInfoDetails(OurUser ourUser) {
-        this.email = ourUser.getEmail();
-        this.password = ourUser.getPassword();
-        this.roles = Arrays.stream(ourUser.getRoles().split(","))
+    public FanDetails(Fan fan) {
+        this.email = fan.getName();
+        this.password = fan.getPassword();
+        this.roles = Arrays.stream(fan.getRoles().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

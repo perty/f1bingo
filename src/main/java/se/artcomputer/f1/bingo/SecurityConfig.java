@@ -57,7 +57,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return new OurUserInfoUserDetailsService();
+        return new FanDetailsService();
     }
 
     @Bean

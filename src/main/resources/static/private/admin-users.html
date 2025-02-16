@@ -1,0 +1,71 @@
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>F1 Fans</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/admin.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <p>Administrera fans
+            </p>
+        </div>
+    </div>
+    <div class="content">
+        <div id="error-message" style="color: red; display: none;">You do not have permission to access this page.</div>
+        <h2>Lägg till fan</h2>
+        <form id="add-user-form">
+            <div class="form-field">
+                <label for="email">Användarnamn:</label>
+                <input type="text" id="email" name="email" required>
+            </div>
+            <div class="form-field">
+                <label for="roles">Roller:</label>
+                <input type="text" id="roles" name="roles" required>
+            </div>
+            <div class="form-field">
+                <label for="initial-pw">Initialt lösenord:</label>
+                <input type="text" id="initial-pw" name="initial-pw" required>
+            </div>
+            <div class="submitButtonRow">
+                <button type="submit" class="submitButton">Lägg till</button>
+            </div>
+        </form>
+        <h2>Återställ lösenord</h2>
+        <form id="reset-password-form">
+            <div class="form-field">
+                <label for="reset-email">Användarnamn:</label>
+                <input type="text" id="reset-email" name="reset-email" required>
+            </div>
+            <div class="form-field">
+                <label for="new-password">Nytt lösenord:</label>
+                <input type="text" id="new-password" name="new-password" required>
+            </div>
+            <div class="submitButtonRow">
+                <button type="submit" class="submitButton">Sätt lösenord</button>
+            </div>
+        </form>
+        <div id="users_section">
+            <h2>Fans</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Användarnamn</th>
+                    <th>Roller</th>
+                </tr>
+                </thead>
+                <tbody id="users">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="/public/js/admin-users.js"></script>
+</body>
+</html>

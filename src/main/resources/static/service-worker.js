@@ -30,7 +30,6 @@ self.addEventListener('install', event => {
                 '/private/weekend.html',
                 '/private/admin.html',
                 '/private/create-news.html',
-                '/private/fan.html',
                 '/private/verify.html',
                 '/private/chat.html',
                 '/public/css/misc-info.css',
