@@ -1,0 +1,49 @@
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>FBK Hockey Fans</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/mypage.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/home.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <p>Min sida
+            </p>
+        </div>
+    </div>
+    <div class="content">
+        <!-- Show user email and roles. -->
+        <div id="user-info">
+            <p>Email: <span id="user-email"></span></p>
+            <p>Roller: <span id="user-roles"></span></p>
+        </div>
+        <h2>Byta lösenord</h2>
+        <form id="change-password-form">
+            <label for="current-password">Nuvarande lösenord:</label>
+            <input type="password" id="current-password" name="currentPassword" required>
+            <br>
+            <label for="new-password">Nytt lösenord:</label>
+            <input type="password" id="new-password" name="newPassword" required>
+            <br>
+            <label for="confirm-password">En gång till:</label>
+            <input type="password" id="confirm-password" name="confirmPassword" required>
+            <br>
+            <span id="password-match-message"></span>
+            <br>
+            <button type="submit" class="submitButton">Byt lösenord</button>
+        </form>
+        <button id="adminBtn" style="display: none;" onclick="location.href='/private/admin.html'">Admin</button>
+        <div class="submitButtonRow">
+            <a href="/logout"><button class="submitButton">Logga ut</button></a>
+        </div>
+    </div>
+</div>
+<script src="/public/js/mypage.js"></script>
+</body>
+</html>
