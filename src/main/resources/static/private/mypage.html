@@ -8,6 +8,15 @@
 </head>
 <body>
 <div class="container">
+    <div class="header-bar">
+        <div>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/private/chat.html">Chat</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/misc-info.html">Info</a>
+        </div>
+    </div>
     <div class="header">
         <div class="logo">
             <a href="/index.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
@@ -23,29 +32,35 @@
         </div>
     </div>
     <div class="content">
-        <!-- Show user name and roles. -->
         <div id="user-info">
             <p>Namn: <span id="user-name"></span></p>
             <p>Roller: <span id="user-roles"></span></p>
         </div>
         <h2>Byta lösenord</h2>
         <form id="change-password-form">
-            <label for="current-password">Nuvarande lösenord:</label>
-            <input type="password" id="current-password" name="currentPassword" required>
-            <br>
-            <label for="new-password">Nytt lösenord:</label>
-            <input type="password" id="new-password" name="newPassword" required>
-            <br>
-            <label for="confirm-password">En gång till:</label>
-            <input type="password" id="confirm-password" name="confirmPassword" required>
-            <br>
+            <div class="form-field">
+                <label for="current-password">Nuvarande:</label>
+                <input type="password" id="current-password" name="currentPassword" required>
+            </div>
+            <div class="form-field">
+                <label for="new-password">Nytt lösenord:</label>
+                <input type="password" id="new-password" name="newPassword" required>
+            </div>
+            <div class="form-field">
+                <label for="confirm-password">En gång till:</label>
+                <input type="password" id="confirm-password" name="confirmPassword" required>
+            </div>
             <span id="password-match-message"></span>
             <br>
-            <button type="submit" class="submitButton">Byt lösenord</button>
+            <div class="submitButtonRow">
+                <button type="submit" class="submitButton">Byt lösenord</button>
+            </div>
         </form>
         <button id="adminBtn" style="display: none;" onclick="location.href='/private/admin.html'">Admin</button>
         <div class="submitButtonRow">
-            <a href="/logout"><button class="submitButton">Logga ut</button></a>
+            <a href="/logout">
+                <button class="submitButton">Logga ut</button>
+            </a>
         </div>
     </div>
 </div>
