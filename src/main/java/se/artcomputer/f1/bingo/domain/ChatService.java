@@ -3,6 +3,7 @@ package se.artcomputer.f1.bingo.domain;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import se.artcomputer.f1.bingo.controller.ChatMessageDto;
+import se.artcomputer.f1.bingo.controller.FanIdName;
 import se.artcomputer.f1.bingo.entity.ChatMessageEntity;
 import se.artcomputer.f1.bingo.entity.Fan;
 import se.artcomputer.f1.bingo.entity.RaceWeekend;
@@ -54,6 +55,10 @@ public class ChatService {
             return chatRepository.findByTimestampGreaterThan(fan.get().getLastRead()).stream().map(this::messageDto).toList();
         }
         return Collections.emptyList();
+    }
+
+    public List<FanIdName> getFanIdNames(UserDetails userDetails) {
+        return fanRepository.findAll().stream().map(f -> new FanIdName(f.getId(), f.getName())).toList();
     }
 
     public void setLastReadForFan(UserDetails userDetails) {

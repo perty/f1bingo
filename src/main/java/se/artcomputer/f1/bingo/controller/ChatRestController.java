@@ -32,6 +32,11 @@ public class ChatRestController {
         return GetUserDetails.doIfLoggedIn(chatService::getNewMessagesForFan, Collections.emptyList());
     }
 
+    @GetMapping("/fan-ids")
+    public List<FanIdName> getFanIds() {
+        return GetUserDetails.doIfLoggedIn(chatService::getFanIdNames, Collections.emptyList());
+    }
+
     @PostMapping("/lastRead")
     public void setLastReadForFan() {
         Optional<UserDetails> userDetails = GetUserDetails.getLoggedInUserDetails();

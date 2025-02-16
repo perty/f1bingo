@@ -184,7 +184,7 @@
 
     let fansMap = {};
 
-    fetch('/fan')
+    fetch('/chat/fan-ids')
         .then(response => response.json())
         .then(data => {
             fansMap = data.reduce((map, fan) => {
