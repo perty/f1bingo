@@ -57,7 +57,7 @@ public class ChatService {
         return Collections.emptyList();
     }
 
-    public List<FanIdName> getFanIdNames(UserDetails userDetails) {
+    public List<FanIdName> getFanIdNames() {
         return fanRepository.findAll().stream().map(f -> new FanIdName(f.getId(), f.getName())).toList();
     }
 
