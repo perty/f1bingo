@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class FanDetails implements UserDetails {
-    private final String email;
+    private final String name;
     private final String password;
     private final List<GrantedAuthority> roles;
 
     public FanDetails(Fan fan) {
-        this.email = fan.getName();
+        this.name = fan.getName();
         this.password = fan.getPassword();
         this.roles = Arrays.stream(fan.getRoles().split(","))
                 .map(SimpleGrantedAuthority::new)
@@ -35,7 +35,7 @@ public class FanDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return this.name;
     }
 
     @Override

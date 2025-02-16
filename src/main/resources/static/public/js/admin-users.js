@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('add-user-form').addEventListener('submit', function (event) {
         event.preventDefault();
-        const email = document.getElementById('email').value;
+        const name = document.getElementById('name').value;
         const roles = document.getElementById('roles').value;
         const password = document.getElementById('initial-pw').value;
 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({email, roles, password})
+            body: JSON.stringify({name: name, roles, password})
         })
             .then(response => {
                 if (!response.ok) {
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(user => {
-                alert('Fan tillagd  ' + user.email);
+                alert('Fan tillagd  ' + user.name);
                 document.getElementById('add-user-form').reset();
                 fetchUsers();
             })
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.getElementById('reset-password-form').addEventListener('submit', function (event) {
     event.preventDefault();
-    const email = document.getElementById('reset-email').value;
+    const name = document.getElementById('reset-name').value;
     const newPassword = document.getElementById('new-password').value;
 
     fetch('/users/reset-password', {
@@ -60,7 +60,7 @@ document.getElementById('reset-password-form').addEventListener('submit', functi
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email, newPassword})
+        body: JSON.stringify({name: name, newPassword})
     })
         .then(response => {
             if (response.status === 404) {

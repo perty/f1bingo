@@ -40,11 +40,11 @@ public class AuthController {
     @PostMapping("/users/save")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> saveUser(@RequestBody SaveUserRequest saveUserRequest) {
-        Optional<Fan> checkUser = fanRepository.findByName(saveUserRequest.email());
+        Optional<Fan> checkUser = fanRepository.findByName(saveUserRequest.name());
         if (checkUser.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
         }
-        Fan ourUser = new Fan(saveUserRequest.email(), saveUserRequest.roles(), passwordEncoder.encode(saveUserRequest.password()));
+        Fan ourUser = new Fan(saveUserRequest.name(), saveUserRequest.roles(), passwordEncoder.encode(saveUserRequest.password()));
         Fan result = fanRepository.save(ourUser);
         if (result.getId() > 0) {
             return ResponseEntity.ok(new UserSingleResponse(result.getName(), result.getRoles()));
@@ -61,14 +61,14 @@ public class AuthController {
     @GetMapping("/users/single")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public ResponseEntity<UserSingleResponse> getMyDetails() {
-        Fan byEmail = fanRepository.findByName(getLoggedInUserDetails().getUsername()).orElseThrow();
-        return ResponseEntity.ok(new UserSingleResponse(byEmail.getName(), byEmail.getRoles()));
+        Fan fan = fanRepository.findByName(getLoggedInUserDetails().getUsername()).orElseThrow();
+        return ResponseEntity.ok(new UserSingleResponse(fan.getName(), fan.getRoles()));
     }
 
     @PostMapping("/users/reset-password")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
-        Optional<Fan> userOptional = fanRepository.findByName(resetPasswordRequest.email());
+        Optional<Fan> userOptional = fanRepository.findByName(resetPasswordRequest.name());
         if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }

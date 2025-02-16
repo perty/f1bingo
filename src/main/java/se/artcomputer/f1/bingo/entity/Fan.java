@@ -21,8 +21,8 @@ public class Fan {
     public Fan() {
     }
 
-    public Fan(String email, String roles, String encode) {
-        this.name = email;
+    public Fan(String name, String roles, String encode) {
+        this.name = name;
         this.roles = roles;
         this.password = encode;
     }
@@ -48,8 +48,8 @@ public class Fan {
         return name;
     }
 
-    public void setName(String email) {
-        this.name = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     fetch('/users/single')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('user-email').textContent = data.email;
+            document.getElementById('user-name').textContent = data.name;
             document.getElementById('user-roles').textContent = data.roles;
             if (data.roles.split(',').includes('ADMIN')) {
                 document.getElementById('adminBtn').style.display = 'block';
