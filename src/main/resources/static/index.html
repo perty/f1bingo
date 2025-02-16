@@ -115,8 +115,7 @@
     document.getElementById('weekendPaletteForm').onsubmit = function (event) {
         event.preventDefault();
         const weekend = document.getElementById('weekend').value;
-        const fan = localStorage.getItem('selectedFan');
-        window.location.href = '/private/weekend.html?weekend=' + encodeURIComponent(weekend) + '&fan=' + encodeURIComponent(fan);
+        window.location.href = '/private/weekend.html?weekend=' + encodeURIComponent(weekend);
     };
 </script>
 <script>

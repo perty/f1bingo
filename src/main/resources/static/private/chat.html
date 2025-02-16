@@ -107,7 +107,6 @@
                 destination: "/app/message",
                 body: JSON.stringify({
                     'message': messageContent,
-                    'fan': selectedFan
                 })
             });
             clearInput();
@@ -154,11 +153,6 @@
     });
 
     function loadMessages() {
-        const fanId = localStorage.getItem('selectedFan');
-        if (!fanId) {
-            showReceivedMessage('MESSAGE', 'Välj en F1-nörd att chatta som', 0, new Date());
-            return;
-        }
         fetch('/chat/messages')
             .then(response => response.json())
             .then(data => {
@@ -178,8 +172,6 @@
     // Anropa funktionen när sidan laddas och när fönstrets storlek ändras
     window.addEventListener('load', adjustChatContainerHeight);
     window.addEventListener('resize', adjustChatContainerHeight);
-
-    const selectedFan = localStorage.getItem('selectedFan');
 
     let fansMap = {};
 

@@ -18,7 +18,7 @@ function goToChatPage() {
     const popUp = document.getElementById('chatPopup');
     if (popUp) {
         popUp.style.display = 'none';
-        window.location.href = '/chat.html';
+        window.location.href = '/private/chat.html';
     }
 }
 

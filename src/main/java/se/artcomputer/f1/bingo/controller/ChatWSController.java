@@ -28,6 +28,7 @@ public class ChatWSController {
         if (saved.isEmpty()) {
             return new ChatMessageDto(ChatMessageType.MESSAGE, Timestamp.from(Instant.now()), "Could not save message", 0);
         }
-        return new ChatMessageDto(ChatMessageType.MESSAGE, saved.get().getTimestamp(), message.message(), message.fan());
+        ChatMessageEntity savedEntity = saved.get();
+        return new ChatMessageDto(ChatMessageType.MESSAGE, savedEntity.getTimestamp(), savedEntity.getMessage(), savedEntity.getFan());
     }
 }
