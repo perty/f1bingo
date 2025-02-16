@@ -172,6 +172,15 @@ input, select, button {
     border: 1px solid var(--shade-color);
 }
 
+.submitButtonRow .flag-button {
+    font-size: 20px;
+    font-style: normal;
+    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    border: 1px solid var(--shade-color);
+}
+
 .submitButtonRow img {
     width: 25px;
     height: 25px;
@@ -182,7 +191,7 @@ input, select, button {
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 10px;
-    background-image: url("/images/f1-bg.png");
+    background-image: url("/public/images/f1-bg.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: auto;
