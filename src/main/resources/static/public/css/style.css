@@ -151,7 +151,7 @@ input, select, button {
     margin-right: 10px;
     margin-top: 10px;
     border-radius: 5px;
-    width: 100%;
+    width: fit-content;
     color: var(--primary-color);
 }
 
@@ -172,7 +172,7 @@ input, select, button {
     border: 1px solid var(--shade-color);
 }
 
-.submitButtonRow .flag-button {
+.flag-button {
     font-size: 20px;
     font-style: normal;
     color: var(--secondary-color);
@@ -181,7 +181,7 @@ input, select, button {
     border: 1px solid var(--shade-color);
 }
 
-.submitButtonRow img {
+.flag-button img {
     width: 25px;
     height: 25px;
 }

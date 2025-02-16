@@ -22,22 +22,42 @@
             </a>
         </div>
     </div>
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
+        </div>
+        <div class="title shadow">
+            <a href="/public/help.html">
+                <div class="help-icon">
+                    <div>?</div>
+                </div>
+            </a>
+            <p>Bingo</p>
+        </div>
+    </div>
     <div id="chatPopup" style="display:none;" onclick="goToChatPage();">
         Nytt meddelande i chatten!
     </div>
-    <div class="weekend-title">
-        <span id="raceWeekendName"></span>
-    </div>
+        <div class="weekend-title">
+            <div>
+                <form id="weekendPaletteForm">
+                    <div class="weekend-form-card shadow">
+                        <div class="form-field">
+                            <select id="weekend" name="weekend" required>
+                                <option value="">Välj ett GP...</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     <div class="weekend-header">
         <div class="weekend-header-item">
             <div class="small-logo">
-                <a href="/index.html" title="Gå till första sidan"><img src="/public/images/logo.png"
-                                                                        alt="logotype"></a>
-                <div class="flag">
+                <div class="weekend-header-item-content">
                     <img src="/public/images/flag/finish.png" alt="country flag" id="flagImage">
                 </div>
             </div>
-            <div id="fanName"></div>
         </div>
         <div class="weekend-header-item">
             <div class="weekend-header-item-content">
@@ -49,6 +69,42 @@
     <div id="bingoCardsContainer"></div>
 
 </div>
+<script>
+    function fetchRaceWeekends() {
+        fetch('/public/weekend')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                const select = document.getElementById('weekend');
+                data.forEach(function (weekend) {
+                    const option = document.createElement('option');
+                    option.value = weekend.id;
+                    option.textContent = weekend.name;
+                    select.appendChild(option);
+                });
+                const selectedWeekend = localStorage.getItem('selectedWeekend');
+                if (selectedWeekend) {
+                    document.getElementById('weekend').value = selectedWeekend;
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    }
+
+    // Kalla på funktionen när sidan laddas
+    fetchRaceWeekends();
+</script>
+<script>
+    document.getElementById('weekend').addEventListener('change', function () {
+        const weekend = this.value;
+        if (weekend) {
+            localStorage.setItem('selectedWeekend', weekend);
+            window.location.href = '/private/weekend.html?weekend=' + encodeURIComponent(weekend);
+        }
+    });
+</script>
 <script>
     function getParameterOrUseLocalStorage(urlParams, parameter, storage) {
         const maybeParameter = urlParams.get(parameter);
@@ -74,8 +130,6 @@
     }
 
     function displayBingoCards(data) {
-        document.getElementById('fanName').textContent = data.fanName;
-        document.getElementById('raceWeekendName').textContent = data.raceWeekendName;
         document.getElementById('flagImage').src = '/public/images/flag/' + data.country + '.png';
         document.getElementById('trackImage').src = '/public/images/track/' + data.track + '.png';
 

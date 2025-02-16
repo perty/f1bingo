@@ -24,6 +24,6 @@ public class RaceWeekendController {
     }
 
     private RaceWeekendDto toDto(RaceWeekend raceWeekend) {
-        return new RaceWeekendDto(raceWeekend.getId(), raceWeekend.getName());
+        return new RaceWeekendDto(raceWeekend.getId(), raceWeekend.nameWithDates());
     }
 }
