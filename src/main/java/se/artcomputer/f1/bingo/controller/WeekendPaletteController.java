@@ -1,6 +1,8 @@
 package se.artcomputer.f1.bingo.controller;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import se.artcomputer.f1.bingo.controller.util.GetUserDetails;
 import se.artcomputer.f1.bingo.domain.SessionScheduleService;
 import se.artcomputer.f1.bingo.domain.VerifyService;
 import se.artcomputer.f1.bingo.domain.WeekendPaletteService;
@@ -26,16 +28,21 @@ public class WeekendPaletteController {
         this.sessionScheduleService = sessionScheduleService;
     }
 
-    @GetMapping("/weekend/{weekendId}/fan/{fanId}")
-    public WeekendPaletteDto getWeekendPalette(@PathVariable Long weekendId, @PathVariable Long fanId) {
-        return toDto(weekendPaletteService.getWeekendPalette(weekendId, fanId));
+    @GetMapping("/weekend/{weekendId}")
+    public WeekendPaletteDto getWeekendPalette(@PathVariable Long weekendId) {
+        Optional<WeekendPalette> weekendPalette = GetUserDetails.doIfLoggedIn((userDetails) -> weekendPaletteService.getWeekendPalette(weekendId, userDetails), Optional.empty());
+        return toDto(weekendPalette.orElseThrow());
     }
 
-    @PostMapping("/weekend/{weekendId}/fan/{fanId}/click")
-    public WeekendPaletteDto postClick(@PathVariable Long weekendId, @PathVariable Long fanId,
-                                       @RequestBody ClickRequest clickRequest) {
-        weekendPaletteService.click(clickRequest.cellId());
-        return toDto(weekendPaletteService.getWeekendPalette(weekendId, fanId));
+    @PostMapping("/weekend/{weekendId}/click")
+    public WeekendPaletteDto postClick(@PathVariable Long weekendId, @RequestBody ClickRequest clickRequest) {
+        Optional<UserDetails> loggedInUserDetails = GetUserDetails.getLoggedInUserDetails();
+        if (loggedInUserDetails.isPresent()) {
+            weekendPaletteService.click(clickRequest.cellId());
+            WeekendPalette weekendPalette = weekendPaletteService.getWeekendPalette(weekendId, loggedInUserDetails.get()).orElseThrow();
+            return toDto(weekendPalette);
+        }
+        return getWeekendPalette(weekendId);
     }
 
     private WeekendPaletteDto toDto(WeekendPalette weekendPalette) {

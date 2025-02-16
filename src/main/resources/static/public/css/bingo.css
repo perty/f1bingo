@@ -98,7 +98,7 @@
 }
 
 .grid-item.bingo {
-    background-image: url('/images/f1-bg.png');
+    background-image: url('/public/images/f1-bg.png');
     background-size: cover; /* eller contain beroende på dina behov */
     background-position: center;
     background-repeat: no-repeat;

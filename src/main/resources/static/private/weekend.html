@@ -31,7 +31,8 @@
     <div class="weekend-header">
         <div class="weekend-header-item">
             <div class="small-logo">
-                <a href="/index.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logotype"></a>
+                <a href="/index.html" title="Gå till första sidan"><img src="/public/images/logo.png"
+                                                                        alt="logotype"></a>
                 <div class="flag">
                     <img src="/public/images/flag/finish.png" alt="country flag" id="flagImage">
                 </div>
@@ -60,9 +61,7 @@
     function fetchBingoCards() {
         const urlParams = new URLSearchParams(window.location.search);
         const weekendId = getParameterOrUseLocalStorage(urlParams, 'weekend', 'selectedWeekend');
-        const fanId = getParameterOrUseLocalStorage(urlParams, 'fan', 'selectedFan');
-
-        fetch('/palette/weekend/' + encodeURIComponent(weekendId) + '/fan/' + encodeURIComponent(fanId))
+        fetch('/palette/weekend/' + encodeURIComponent(weekendId))
             .then(function (response) {
                 return response.json();
             })
@@ -92,14 +91,14 @@
             session.appendChild(document.createTextNode(sessionTitle));
             cardDiv.appendChild(session);
             if (card.statements.length > 0) {
-                cardDiv.appendChild(createBingoCard(card, data.weekendId, data.fanId));
+                cardDiv.appendChild(createBingoCard(card, data.weekendId));
             }
             container.appendChild(cardDiv);
         });
     }
 
     function formatUTCDateToLocal(isoDateString) {
-        if(!isoDateString) {
+        if (!isoDateString) {
             return '';
         }
         const date = new Date(isoDateString);
@@ -130,7 +129,7 @@
         }
     }
 
-    function createBingoCard(bingoCardData, weekendId, fanId) {
+    function createBingoCard(bingoCardData, weekendId) {
         const grid = document.createElement('div');
         grid.classList.add('grid');
         for (let row = 0; row < 4; row++) {
@@ -154,13 +153,11 @@
                     bingoCell.appendChild(cellContent);
                 }
                 grid.appendChild(bingoCell);
-                if(bingoCardData.verified) {
+                if (bingoCardData.verified) {
                     continue;
                 }
                 bingoCell.addEventListener('click', function () {
-                    fetch('/palette/weekend/' + encodeURIComponent(weekendId) +
-                        '/fan/' + encodeURIComponent(fanId) +
-                        '/click', {
+                    fetch('/palette/weekend/' + encodeURIComponent(weekendId) + '/click', {
                         method: 'POST',
                         body: JSON.stringify({cellId: cellData.id}),
                         headers: {
