@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>F1 Bingo</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/public/ikon/ikon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="F1 Bingo">
+</head>
+<body>
+<div class="container">
+    <div class="header-bar">
+        <div>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/private/chat.html">Chat</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/misc-info.html">Info</a>
+        </div>
+    </div>
+    <div class="header">
+        <div class="logo">
+            <img src="public/images/logo.png" alt="logo" id="logo">
+        </div>
+        <div class="title shadow">
+            <p>F1 Bingo 2025</p>
+        </div>
+    </div>
+    <div class="content">
+        <div class="weekend-form-card shadow">
+            <h3>Välkommen till vår F1-app!</h3>
+            <p>
+                Här kan du spela bingo och chatta med övriga F1-nördar.
+                Du hittar också info om regler och förare.
+            </p>
+            <p>
+                Kontakta gärna oss om du vill vara med, se längst ner på sidan.
+            </p>
+        </div>
+    </div>
+
+    <div class="news">
+        <div class="news-header">
+            <h2>Senaste nytt</h2>
+        </div>
+        <div id="news" class="news-content">
+            <!-- Här kommer nyheter att läggas till -->
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-text">
+            <p>Kontakta oss: <a href="mailto:lundholm@artcomputer.se">lundholm@artcomputer.se</a></p>
+        </div>
+    </div>
+</div>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }).catch(err => {
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
+<script>
+</script>
+<script src="public/js/news.js"></script>
+<script>
+    fetchNews(5);
+</script>
+</body>
+</html>
