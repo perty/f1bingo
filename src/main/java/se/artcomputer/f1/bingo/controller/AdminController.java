@@ -2,6 +2,7 @@ package se.artcomputer.f1.bingo.controller;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import se.artcomputer.f1.bingo.domain.AdminService;
 import se.artcomputer.f1.bingo.entity.Statement;
@@ -24,12 +25,14 @@ public class AdminController {
     }
 
     @PostMapping("/statements")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<StatementRequest> newStatement(@RequestBody StatementRequest statementRequest) {
         adminService.newStatement(statementRequest.text(), statementRequest.category());
         return ResponseEntity.ok(statementRequest);
     }
 
     @PostMapping("/statements/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public StatementDto setStatement(@PathVariable long id, @RequestBody StatementUpdateRequest statementUpdateRequest) {
         return toDto(adminService.setStatement(id, statementUpdateRequest));
     }
