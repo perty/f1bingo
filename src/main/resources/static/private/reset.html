@@ -12,7 +12,7 @@
 <div class="container">
     <div class="header">
         <div class="logo">
-            <a href="/index.html" title="Gå till första sidan"><img src="../public/images/logo.png" alt="logo" id="logo"></a>
+            <a href="/index.html" title="Gå till första sidan"><img src="/public/images/logo.png" alt="logo" id="logo"></a>
         </div>
         <div class="title shadow">
             <p>Nollställa</p>
@@ -131,7 +131,7 @@
         event.preventDefault();
         const weekendId = document.getElementById('weekend').value;
         const session = document.getElementById('session').value;
-        window.location.href = '/reset.html?weekend=' + encodeURIComponent(weekendId) + '&session=' + encodeURIComponent(session);
+        window.location.href = '/private/reset.html?weekend=' + encodeURIComponent(weekendId) + '&session=' + encodeURIComponent(session);
     };
 </script>
 </body>

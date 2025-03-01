@@ -65,7 +65,7 @@ public class ResetController {
         bingoCardService.resetBingoCards(raceWeekend, session);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(new URI("/reset.html?weekend=" + weekendId + "&session=" + session.name()));
+        httpHeaders.setLocation(new URI("/private/reset.html?weekend=" + weekendId + "&session=" + session.name()));
         return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
     }
 }
