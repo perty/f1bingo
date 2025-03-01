@@ -1,0 +1,1 @@
+create unique index unique_palette_per_user on weekend_palette (fan, weekend);
