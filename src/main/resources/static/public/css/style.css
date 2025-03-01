@@ -155,6 +155,20 @@ input, select, button {
     color: var(--primary-color);
 }
 
+#flag-button {
+    font-size: 20px;
+    font-style: normal;
+    color: var(--secondary-color);
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+    border: 1px solid var(--shade-color);
+}
+
+#flag-button img {
+    width: 25px;
+    height: 25px;
+}
+
 .submitButtonRow {
     display: flex;
     justify-content: space-between;
@@ -170,20 +184,6 @@ input, select, button {
     background-color: var(--primary-color);
     border-radius: 5px;
     border: 1px solid var(--shade-color);
-}
-
-.flag-button {
-    font-size: 20px;
-    font-style: normal;
-    color: var(--secondary-color);
-    background-color: var(--secondary-color);
-    border-radius: 5px;
-    border: 1px solid var(--shade-color);
-}
-
-.flag-button img {
-    width: 25px;
-    height: 25px;
 }
 
 .midsection {
