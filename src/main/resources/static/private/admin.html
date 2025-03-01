@@ -71,7 +71,7 @@
             text: text,
             category: category
         });
-        fetch('admin/statements', {
+        fetch('/admin/statements', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -88,7 +88,7 @@
     });
 
     document.getElementById('loadStatementsButton').addEventListener('click', function () {
-        fetch('admin/statements')
+        fetch('/admin/statements')
             .then(response => response.json())
             .then(statements => {
                 const section = document.getElementsByClassName('statementsGrid')[0];
@@ -195,7 +195,7 @@
                     race: row.querySelector('.race').checked
                 });
                 console.log(body);
-                fetch('admin/statements/' + id, {
+                fetch('/admin/statements/' + id, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
