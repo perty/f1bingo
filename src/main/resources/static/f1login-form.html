@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -13,6 +13,16 @@
                 errorDiv.style.display = 'block';
             }
         };
+
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('password');
+            const passwordCheckbox = document.getElementById('show-password');
+            if (passwordCheckbox.checked) {
+                passwordField.type = 'text';
+            } else {
+                passwordField.type = 'password';
+            }
+        }
     </script>
 </head>
 <body>
@@ -42,6 +52,10 @@
                 <input type="password" id="password" name="password" class="form-control" required="">
             </p>
             <p>
+                <label for="show-password">Visa lösenord</label>
+                <input type="checkbox" id="show-password" onclick="togglePasswordVisibility()">
+            </p>
+            <p>
                 <label for="remember-me">Kom ihåg mig?</label>
                 <input type="checkbox" id="remember-me" name="remember-me" checked/>
             </p>
@@ -53,4 +67,3 @@
 </div>
 </body>
 </html>
-
