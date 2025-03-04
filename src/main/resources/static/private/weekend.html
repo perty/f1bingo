@@ -126,8 +126,8 @@
     }
 
     function displayBingoCards(data) {
-        document.getElementById('flagImage').src = '/public/images/flag/' + data.country + '.png';
-        document.getElementById('trackImage').src = '/public/images/track/' + data.track + '.png';
+        document.getElementById('flagImage').src = '/public/images/flag/' + data.country.toLowerCase() + '.png';
+        document.getElementById('trackImage').src = '/public/images/track/' + data.track.toLowerCase() + '.png';
 
         const container = document.getElementById('bingoCardsContainer');
         container.innerHTML = '';
