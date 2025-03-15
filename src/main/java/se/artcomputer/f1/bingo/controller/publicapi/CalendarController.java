@@ -32,7 +32,10 @@ public class CalendarController {
     }
 
     private CalendarDto toDto(RaceWeekend raceWeekend) {
-        return new CalendarDto(raceWeekend.nameWithDates(), translateType(raceWeekend.getType()));
+        return new CalendarDto(
+                raceWeekend.nameWithDates(),
+                translateType(raceWeekend.getType()),
+                raceWeekend.getCountry());
     }
 
     // Translate a type to a string
