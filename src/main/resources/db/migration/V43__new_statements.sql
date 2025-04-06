@@ -2,6 +2,9 @@ begin;
 alter table bingo_card_statement
     drop constraint bingo_card_statement_statement_fkey;
 
+alter table public.verified_statement
+    drop constraint verified_statement_statement_fkey;
+
 delete
 from statement;
 INSERT INTO statement (id, text, race, qualifying, sprint_shootout, sprint_race, category, enabled)
@@ -166,6 +169,10 @@ SELECT setval(
 
 alter table bingo_card_statement
     add constraint bingo_card_statement_statement_fkey
+        foreign key (statement) references statement;
+
+alter table verified_statement
+    add constraint verified_statement_statement_fkey
         foreign key (statement) references statement;
 
 commit;
