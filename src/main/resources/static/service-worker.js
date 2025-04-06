@@ -7,9 +7,7 @@ const CACHE_NAME = 'v2025.5'; // Change in misc-info.html as well.
 
 // Define which requests should be cached
 const CACHEABLE_REQUESTS = [
-    /\.(?:html|css|js|woff2|png|jpg|jpeg|svg|gif)$/,
-    // Add specific routes that should be cached
-    /^\/api\/static-data\//
+    /\.(?:html|css|js|woff2|png|jpg|jpeg|svg|gif)$/
 ];
 
 // Function to check if a request should be cached
