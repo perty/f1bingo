@@ -3,7 +3,7 @@ self.addEventListener('install', event => {
     self.skipWaiting();
 });
 
-const CACHE_NAME = 'v2025.5'; // Change in misc-info.html as well.
+const CACHE_NAME = 'v2025.6'; // Change in misc-info.html as well.
 
 // Define which requests should be cached
 const CACHEABLE_REQUESTS = [
