@@ -35,7 +35,14 @@
     </div>
     <div class="content">
         <div>
-            Kalenderlänk <a href="/public/calendar/calendar.ics" target="_blank">iCal</a>
+            <p>
+                <a href="webcal://f1bingo.agical.se/public/calendar/calendar.ics">
+                    Kalender länk, fungerar för många kalendrar.
+                </a>
+            </p>
+            <p>
+                <a href="#google">För Google Kalender:</a>
+            </p>
         </div>
         <table>
             <thead>
@@ -47,6 +54,18 @@
             <tbody id="calendar-body">
             </tbody>
         </table>
+        <div id="google">
+            <p><strong>För Google Kalender:</strong></p>
+            <ol>
+                <li>Gå till <a href="https://calendar.google.com/" target="_blank">Google Kalender</a></li>
+                <li>Klicka på <strong>+</strong> bredvid "Andra kalendrar"</li>
+                <li>Välj <strong>Från webbadress</strong></li>
+                <li>Klistra in denna länk:<br>
+                    <code>https://f1bingo.agical.se/public/calendar/calendar.ics</code>
+                </li>
+                <li>Klicka på <strong>Lägg till kalender</strong></li>
+            </ol>
+        </div>
     </div>
 </div>
 <script>
@@ -62,7 +81,7 @@
     function displayCalendar(data) {
         const calendarBody = document.getElementById('calendar-body');
         calendarBody.innerHTML = ''; // Rensa tidigare innehåll
-        for(dataIndex = 0; dataIndex < data.length; dataIndex++) {
+        for (dataIndex = 0; dataIndex < data.length; dataIndex++) {
             const tr = document.createElement('tr');
             addColumn(tr, data[dataIndex].name);
             addColumn(tr, data[dataIndex].type);
