@@ -7,6 +7,8 @@ import se.artcomputer.f1.bingo.repository.SessionScheduleRepository;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +36,37 @@ public class SessionScheduleService {
             return Optional.of(byLocation.get(index).getStartTime());
         }
         return Optional.empty();
+    }
+
+    public List<GpSessionEvent> findAll() {
+        return sessionScheduleRepository.findAll().stream()
+                .sorted(Comparator.comparing(SessionSchedule::getStartTime))
+                .map(this::toEvent)
+                .flatMap(Optional::stream)
+                .toList();
+    }
+
+    private Optional<GpSessionEvent> toEvent(SessionSchedule sessionSchedule) {
+        Date start = Date.from(sessionSchedule.getStartTime().minus(4, ChronoUnit.DAYS));
+        Date end = Date.from(sessionSchedule.getEndTime().plus(2, ChronoUnit.DAYS));
+
+        Optional<RaceWeekend> raceWeekend = raceService.findByCountry(sessionSchedule.getLocation())
+                .filter(r -> r.getStartDate().after(start) && r.getEndDate().before(end))
+                .findFirst();
+        if (raceWeekend.isEmpty()) {
+            return Optional.empty();
+        }
+        String raceName = raceWeekend.map(RaceWeekend::getRaceName).map(RaceName::name).orElse("");
+        String sessionName = sessionSchedule.getSummary()
+                .substring(sessionSchedule.getSummary().indexOf('-') + 1)
+                .replace("Practice", "FP");
+        return Optional.of(new GpSessionEvent(
+                sessionSchedule.getId(),
+                raceName + sessionName,
+                sessionSchedule.getSummary(),
+                sessionSchedule.getStartTime(),
+                sessionSchedule.getEndTime()
+        ));
     }
 
     private static int sessionIndex(Session session) {

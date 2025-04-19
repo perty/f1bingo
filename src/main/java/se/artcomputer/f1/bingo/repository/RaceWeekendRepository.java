@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface RaceWeekendRepository extends JpaRepository<RaceWeekend, Long> {
     List<RaceWeekend> findByStartDateBefore(Date from);
+
+    List<RaceWeekend> findByCountry(String country);
 }

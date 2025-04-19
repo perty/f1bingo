@@ -25,6 +25,18 @@ public class SessionSchedule {
     @Column(name = "endtime")
     private Instant endTime;
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
     public Instant getStartTime() {
         return startTime;
     }

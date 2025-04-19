@@ -34,6 +34,9 @@
         </div>
     </div>
     <div class="content">
+        <div>
+            Kalenderlänk <a href="/public/calendar/calendar.ics" target="_blank">iCal</a>
+        </div>
         <table>
             <thead>
             <tr>
@@ -55,7 +58,7 @@
             })
             .catch(error => console.error('Error fetching calendar:', error));
     }
-    
+
     function displayCalendar(data) {
         const calendarBody = document.getElementById('calendar-body');
         calendarBody.innerHTML = ''; // Rensa tidigare innehåll

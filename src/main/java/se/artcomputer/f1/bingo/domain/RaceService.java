@@ -8,6 +8,7 @@ import se.artcomputer.f1.bingo.repository.RaceWeekendRepository;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class RaceService {
@@ -36,5 +37,9 @@ public class RaceService {
     private static int getYearFromDate(Date date) {
         CALENDAR.setTime(date);
         return CALENDAR.get(Calendar.YEAR);
+    }
+
+    public Stream<RaceWeekend> findByCountry(String country) {
+        return raceWeekendRepository.findByCountry(country).stream();
     }
 }
