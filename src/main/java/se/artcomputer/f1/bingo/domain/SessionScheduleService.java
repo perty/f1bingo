@@ -62,7 +62,8 @@ public class SessionScheduleService {
                 .replace("Practice", "FP");
         return Optional.of(new GpSessionEvent(
                 sessionSchedule.getId(),
-                raceName + sessionName,
+                raceName,
+                sessionName,
                 sessionSchedule.getSummary(),
                 sessionSchedule.getStartTime(),
                 sessionSchedule.getEndTime()

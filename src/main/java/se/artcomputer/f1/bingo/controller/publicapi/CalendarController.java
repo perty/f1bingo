@@ -23,6 +23,12 @@ public class CalendarController {
     private final RaceService raceService;
     private final SessionScheduleService sessionScheduleService;
 
+    private static final List<String> reminders = List.of(
+            "Race",
+            "Qualifying",
+            "Sprint Qualification",
+            "Sprint Race");
+
     public CalendarController(RaceService raceService, SessionScheduleService sessionScheduleService) {
         this.raceService = raceService;
         this.sessionScheduleService = sessionScheduleService;
@@ -50,14 +56,22 @@ public class CalendarController {
                 .append("PRODID:-//agical.se//F1 Bingo//EN\n");
 
         for (GpSessionEvent event : events) {
+            String title = event.raceName() + event.sessionName();
             ics.append("BEGIN:VEVENT\n")
                     .append("UID:").append(event.id()).append("@f1bingo.agical.se\n")
                     .append("DTSTAMP:").append(toIcsFormat(Instant.now())).append("\n")
                     .append("DTSTART:").append(toIcsFormat(event.startTime())).append("\n")
                     .append("DTEND:").append(toIcsFormat(event.endTime())).append("\n")
-                    .append("SUMMARY:").append(event.title()).append("\n")
-                    .append("DESCRIPTION:").append(event.description()).append("\n")
-                    .append("END:VEVENT\n");
+                    .append("SUMMARY:").append(title).append("\n")
+                    .append("DESCRIPTION:").append(event.description()).append("\n");
+            if (reminders.contains(event.sessionName().trim())) {
+                ics.append("BEGIN:VALARM").append("\n")
+                        .append("TRIGGER:-PT15M\n")
+                        .append("ACTION:DISPLAY\n")
+                        .append("DESCRIPTION:").append(title).append("\n")
+                        .append("END:VALARM\n");
+            }
+            ics.append("END:VEVENT\n");
         }
 
         ics.append("END:VCALENDAR");
