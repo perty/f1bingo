@@ -7,10 +7,7 @@ import se.artcomputer.f1.bingo.repository.SessionScheduleRepository;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class SessionScheduleService {
@@ -57,9 +54,7 @@ public class SessionScheduleService {
             return Optional.empty();
         }
         String raceName = raceWeekend.map(RaceWeekend::getRaceName).map(RaceName::name).orElse("");
-        String sessionName = sessionSchedule.getSummary()
-                .substring(sessionSchedule.getSummary().indexOf("- ") + 1)
-                .replace("Practice", "FP");
+        String sessionName = getSessionName(sessionSchedule);
         return Optional.of(new GpSessionEvent(
                 sessionSchedule.getId(),
                 raceName,
@@ -68,6 +63,24 @@ public class SessionScheduleService {
                 sessionSchedule.getStartTime(),
                 sessionSchedule.getEndTime()
         ));
+    }
+
+    private static final Map<String, String> SESSION_NAME_MAP = Map.of(
+            "Sprint Qualification", "Sprintkval",
+            "Sprint Race", "Sprint",
+            "Practice 1", "FP 1",
+            "Practice 2", "FP 2",
+            "Practice 3", "FP 3",
+            "Qualifying", "Kval",
+            "Race", "Race"
+    );
+
+    private static String getSessionName(SessionSchedule sessionSchedule) {
+        return SESSION_NAME_MAP.entrySet().stream()
+                .filter(e -> sessionSchedule.getSummary().contains(e.getKey()))
+                .max(Comparator.comparing(Map.Entry::getKey))
+                .map(Map.Entry::getValue)
+                .orElseGet(() -> "");
     }
 
     private static int sessionIndex(Session session) {

@@ -56,7 +56,7 @@ public class CalendarController {
                 .append("PRODID:-//agical.se//F1 Bingo//EN\n");
 
         for (GpSessionEvent event : events) {
-            String title = "\uD83C\uDFCE️ " + event.raceName() + event.sessionName();
+            String title = "\uD83C\uDFCE️ " + event.raceName() + " " + event.sessionName();
             ics.append("BEGIN:VEVENT\n")
                     .append("UID:").append(event.id()).append("@f1bingo.agical.se\n")
                     .append("DTSTAMP:").append(toIcsFormat(Instant.now())).append("\n")
