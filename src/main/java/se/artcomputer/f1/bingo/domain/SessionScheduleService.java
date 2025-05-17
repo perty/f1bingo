@@ -58,7 +58,7 @@ public class SessionScheduleService {
         }
         String raceName = raceWeekend.map(RaceWeekend::getRaceName).map(RaceName::name).orElse("");
         String sessionName = sessionSchedule.getSummary()
-                .substring(sessionSchedule.getSummary().indexOf('-') + 1)
+                .substring(sessionSchedule.getSummary().indexOf("- ") + 1)
                 .replace("Practice", "FP");
         return Optional.of(new GpSessionEvent(
                 sessionSchedule.getId(),
