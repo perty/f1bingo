@@ -78,9 +78,9 @@ public class SessionScheduleService {
     private static String getSessionName(SessionSchedule sessionSchedule) {
         return SESSION_NAME_MAP.entrySet().stream()
                 .filter(e -> sessionSchedule.getSummary().contains(e.getKey()))
-                .max(Comparator.comparing(Map.Entry::getKey))
+                .max(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue)
-                .orElseGet(() -> "");
+                .orElse("");
     }
 
     private static int sessionIndex(Session session) {
