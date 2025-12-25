@@ -20,8 +20,8 @@ During the session (qualification or race) the fans can click on the statements 
 
 After the session, the admin can go through statements that have been claimed true and accept or reject them. Admin then closes the session and points are calculated. For each bingo, one point is given. 
 
-![screenshot.jpg](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fscreenshot.jpg)
-![screenshot2.jpg](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fscreenshot2.jpg)
+![screenshot.jpg](src%2Fmain%2Fresources%2Fstatic%2Fpublic%2Fimages%2Fscreenshot.jpg)
+![screenshot2.jpg](src%2Fmain%2Fresources%2Fstatic%2Fpublic%2Fimages%2Fscreenshot2.jpg)
 
 ## Tech
 
