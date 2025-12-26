@@ -2,8 +2,8 @@ package se.artcomputer.f1.bingo.controller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import se.artcomputer.f1.bingo.controller.auth.GetUserDetails;
 import se.artcomputer.f1.bingo.domain.ChatMessageType;
 import se.artcomputer.f1.bingo.domain.ChatService;
 import se.artcomputer.f1.bingo.entity.ChatMessageEntity;
@@ -23,12 +23,14 @@ public class ChatWSController {
 
     @MessageMapping("/message")
     @SendTo("/topic/messages")
-    public ChatMessageDto send(ChatMessageRequest message) {
-        Optional<ChatMessageEntity> saved = GetUserDetails.doIfLoggedIn(userDetails -> chatService.save(message.message(), userDetails), Optional.empty());
-        if (saved.isEmpty()) {
+    public ChatMessageDto send(ChatMessageRequest message, SimpMessageHeaderAccessor headers) {
+        Long userId = (Long) headers.getSessionAttributes().get("userId");
+
+        Optional<ChatMessageEntity> optionalChatMessage = chatService.save(message.message(), userId);
+        if (optionalChatMessage.isEmpty()) {
             return new ChatMessageDto(ChatMessageType.MESSAGE, Timestamp.from(Instant.now()), "Could not save message", 0);
         }
-        ChatMessageEntity savedEntity = saved.get();
+        ChatMessageEntity savedEntity = optionalChatMessage.get();
         return new ChatMessageDto(ChatMessageType.MESSAGE, savedEntity.getTimestamp(), savedEntity.getMessage(), savedEntity.getFan());
     }
 }

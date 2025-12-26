@@ -85,7 +85,7 @@ public class AuthFilter implements Filter {
 
     private boolean isPublic(FilterChain chain, final HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws ServletException, IOException {
         final String path = servletRequest.getRequestURI();
-        if (path.startsWith("/chat-ws") ||
+        if (
                 path.startsWith("/points/results") ||
                 path.startsWith("/home.html") ||
                 path.startsWith("/index.html") ||

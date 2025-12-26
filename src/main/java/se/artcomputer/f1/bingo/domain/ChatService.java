@@ -27,8 +27,8 @@ public class ChatService {
         this.raceWeekendRepository = raceWeekendRepository;
     }
 
-    public Optional<ChatMessageEntity> save(String messageString, FanDetails FanDetails) {
-        Optional<Fan> fan = fanRepository.findByName(FanDetails.name());
+    public Optional<ChatMessageEntity> save(String messageString, Long fanId) {
+        Optional<Fan> fan = fanRepository.findById(fanId);
         if (fan.isPresent()) {
             ChatMessageEntity message = new ChatMessageEntity();
             message.setMessage(messageString);
