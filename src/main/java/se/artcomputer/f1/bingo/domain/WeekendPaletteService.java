@@ -1,7 +1,7 @@
 package se.artcomputer.f1.bingo.domain;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import se.artcomputer.f1.bingo.controller.auth.FanDetails;
 import se.artcomputer.f1.bingo.entity.Fan;
 import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import se.artcomputer.f1.bingo.entity.WeekendPalette;
@@ -28,9 +28,9 @@ public class WeekendPaletteService {
         this.bingoCardService = bingoCardService;
     }
 
-    public Optional<WeekendPalette> getWeekendPalette(Long weekendId, UserDetails userDetails) {
+    public Optional<WeekendPalette> getWeekendPalette(Long weekendId, FanDetails userDetails) {
         RaceWeekend raceWeekend = raceWeekendRepository.findById(weekendId).orElseThrow(() -> new NotFoundException("Weekend"));
-        Fan fan = fanRepository.findByName(userDetails.getUsername()).orElseThrow(() -> new NotFoundException("Fan"));
+        Fan fan = fanRepository.findByName(userDetails.name()).orElseThrow(() -> new NotFoundException("Fan"));
         WeekendPalette weekendPalette = getByRaceWeekendAndFan(raceWeekend, fan);
         checkBingo(weekendPalette);
         return Optional.of(weekendPalette);

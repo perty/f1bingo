@@ -12,6 +12,10 @@
                 const errorDiv = document.getElementById('error-message');
                 errorDiv.style.display = 'block';
             }
+            const next = urlParams.get('next');
+            if (next) {
+                document.getElementById('next').value = next;
+            }
         };
 
         function togglePasswordVisibility() {
@@ -40,7 +44,7 @@
         <div id="error-message" style="display: none; color: red;">
             Inloggningen misslyckades 😭.
         </div>
-        <form class="form-signin" method="post" action="/f1login">
+        <form class="form-signin" method="post" action="/login">
             <h2 class="form-signin-heading">Logga in</h2>
             <p>
                 <label for="username">Fan</label>
@@ -59,6 +63,7 @@
                 <label for="remember-me">Kom ihåg mig?</label>
                 <input type="checkbox" id="remember-me" name="remember-me" checked/>
             </p>
+            <input type="hidden" id="next" name="next" value="">
             <div class="submitButtonRow">
                 <button type="submit">Logga in</button>
             </div>

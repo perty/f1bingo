@@ -1,107 +1,104 @@
 package se.artcomputer.f1.bingo.controller.auth;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
+import se.artcomputer.f1.bingo.entity.AuthSession;
 import se.artcomputer.f1.bingo.entity.Fan;
 import se.artcomputer.f1.bingo.repository.FanRepository;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Optional;
+
+import static se.artcomputer.f1.bingo.controller.auth.AuthConstants.REMEMBER_ME_COOKIE;
+import static se.artcomputer.f1.bingo.controller.auth.AuthConstants.SESSION_COOKIE;
 
 @RestController
 @RequestMapping
 public class AuthController {
-    private final FanRepository fanRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(FanRepository ourUserRepo, PasswordEncoder passwordEncoder) {
-        this.fanRepository = ourUserRepo;
-        this.passwordEncoder = passwordEncoder;
+    private final FanRepository users;
+    private final SessionService sessions;
+    private final RememberMeService rememberMeService;
+
+    public AuthController(FanRepository users, SessionService sessions, RememberMeService rememberMeService) {
+        this.users = users;
+        this.sessions = sessions;
+        this.rememberMeService = rememberMeService;
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Object> login() {
-        return ResponseEntity.status(HttpStatus.FOUND).header("Location", "/user/profile.html")
-                .build();
+    public record LoginDto(String name, String password, boolean rememberMe) {
     }
 
-    @GetMapping("/f1login")
-    public ResponseEntity<Object> getLoginForm(@RequestParam(name = "error", required = false) String error) {
-        String formUrl = "/f1login-form.html" + (error != null ? "?error" : "");
-        return ResponseEntity.status(HttpStatus.FOUND).header("Location", formUrl)
-                .build();
-    }
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public void login(@RequestParam String username,
+                      @RequestParam String password,
+                      @RequestParam(defaultValue = "false", name = "remember-me") boolean rememberMeParameter,
+                      @RequestParam(required = false) String next,
+                      HttpServletRequest r,
+                      HttpServletResponse servletResponse) throws IOException {
+        LoginDto dto = new LoginDto(username, password, rememberMeParameter);
+        Optional<Fan> optionalFan = users.findByName(dto.name());
 
-    @PostMapping("/users/save")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Object> saveUser(@RequestBody SaveUserRequest saveUserRequest) {
-        Optional<Fan> checkUser = fanRepository.findByName(saveUserRequest.name());
-        if (checkUser.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists");
-        }
-        Fan ourUser = new Fan(saveUserRequest.name(), saveUserRequest.roles(), passwordEncoder.encode(saveUserRequest.password()));
-        Fan result = fanRepository.save(ourUser);
-        if (result.getId() > 0) {
-            return ResponseEntity.ok(new UserSingleResponse(result.getName(), result.getRoles()));
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error, User Not Saved");
-    }
-
-    @GetMapping("/users/all")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<AllUsersResponse> getAllUsers() {
-        return ResponseEntity.ok(AllUsersResponse.from(fanRepository.findAll()));
-    }
-
-    @GetMapping("/users/single")
-    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<UserSingleResponse> getMyDetails() {
-        Fan fan = fanRepository.findByName(getLoggedInUserDetails().getUsername()).orElseThrow();
-        return ResponseEntity.ok(new UserSingleResponse(fan.getName(), fan.getRoles()));
-    }
-
-    @PostMapping("/users/reset-password")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
-        Optional<Fan> userOptional = fanRepository.findByName(resetPasswordRequest.name());
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        if (optionalFan.isEmpty() || !BCrypt.checkpw(dto.password(), optionalFan.get().getPassword())) {
+            servletResponse.sendRedirect("/login?error=1");
+            return;
         }
 
-        Fan user = userOptional.get();
-        user.setPassword(passwordEncoder.encode(resetPasswordRequest.newPassword()));
-        fanRepository.save(user);
-        return ResponseEntity.ok("Password reset successfully");
+        AuthSession s = sessions.createFor(optionalFan.get().getId());
+        addSecureCookie(servletResponse, SESSION_COOKIE, s.getId(), 1800);
+
+        if (dto.rememberMe()) {
+            String cookieValue = rememberMeService.createCookieValue(optionalFan.get().getId());
+            addSecureCookie(servletResponse, REMEMBER_ME_COOKIE, cookieValue, 60 * 60 * 24 * 30);
+        }
+        servletResponse.sendRedirect(next != null ? next : "/");
     }
 
-    @PostMapping("/users/change-password")
-    @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
-        UserDetails userDetails = getLoggedInUserDetails();
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
-        }
-
-        Fan user = fanRepository.findByName(userDetails.getUsername()).orElseThrow();
-        if (!passwordEncoder.matches(changePasswordRequest.currentPassword(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Current password is incorrect");
-        }
-
-        user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
-        fanRepository.save(user);
-        return ResponseEntity.ok("Password changed successfully");
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(@CookieValue(value = SESSION_COOKIE, required = false) String sid, HttpServletResponse servletResponse) throws URISyntaxException {
+        if (sid != null) sessions.delete(sid);
+        expire(servletResponse, SESSION_COOKIE);
+        expire(servletResponse, REMEMBER_ME_COOKIE);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(new URI("/"));
+        return new ResponseEntity<>(httpHeaders, HttpStatus.FOUND);
     }
 
-    public UserDetails getLoggedInUserDetails() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
-            return (UserDetails) authentication.getPrincipal();
+    @GetMapping("/me")
+    public ResponseEntity<?> me() {
+        Optional<Fan> optionalFan = UserContext.get();
+        if (optionalFan.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return null;
+        Fan fan = optionalFan.get();
+        return ResponseEntity.ok(Map.of("id", fan.getId(), "name", fan.getName()));
+    }
+
+    private void addSecureCookie(HttpServletResponse w, String name, String value, int maxAgeSeconds) {
+        Cookie c = new Cookie(name, value);
+        c.setHttpOnly(true);
+        c.setSecure(true);
+        c.setPath("/");
+        c.setMaxAge(maxAgeSeconds);
+        w.addCookie(c);
+    }
+
+    private void expire(HttpServletResponse w, String name) {
+        Cookie c = new Cookie(name, "");
+        c.setHttpOnly(true);
+        c.setSecure(true);
+        c.setPath("/");
+        c.setMaxAge(0);
+        w.addCookie(c);
     }
 }

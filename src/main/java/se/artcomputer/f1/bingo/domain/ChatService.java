@@ -1,9 +1,9 @@
 package se.artcomputer.f1.bingo.domain;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import se.artcomputer.f1.bingo.controller.ChatMessageDto;
 import se.artcomputer.f1.bingo.controller.FanIdName;
+import se.artcomputer.f1.bingo.controller.auth.FanDetails;
 import se.artcomputer.f1.bingo.entity.ChatMessageEntity;
 import se.artcomputer.f1.bingo.entity.Fan;
 import se.artcomputer.f1.bingo.entity.RaceWeekend;
@@ -27,8 +27,8 @@ public class ChatService {
         this.raceWeekendRepository = raceWeekendRepository;
     }
 
-    public Optional<ChatMessageEntity> save(String messageString, UserDetails userDetails) {
-        Optional<Fan> fan = fanRepository.findByName(userDetails.getUsername());
+    public Optional<ChatMessageEntity> save(String messageString, FanDetails FanDetails) {
+        Optional<Fan> fan = fanRepository.findByName(FanDetails.name());
         if (fan.isPresent()) {
             ChatMessageEntity message = new ChatMessageEntity();
             message.setMessage(messageString);
@@ -40,19 +40,21 @@ public class ChatService {
         return Optional.empty();
     }
 
-    public List<ChatMessageDto> getAllMessages(UserDetails userDetails) {
-        Stream<ChatMessageDto> started = raceWeekendRepository.findByStartDateBefore(Date.from(Instant.now())).stream()
+    public List<ChatMessageDto> getAllMessages(FanDetails FanDetails) {
+        Date now = Date.from(Instant.now());
+        Stream<ChatMessageDto> started = raceWeekendRepository.findByStartDateBefore(now).stream()
                 .map(this::gpDto);
         Stream<ChatMessageDto> messageDtos = chatRepository.findAll().stream()
                 .map(this::messageDto);
-        setLastReadForFan(userDetails);
+        setLastReadForFan(FanDetails);
         return Stream.concat(started, messageDtos).sorted(Comparator.comparing(ChatMessageDto::timestamp)).toList();
     }
 
-    public List<ChatMessageDto> getNewMessagesForFan(UserDetails userDetails) {
-        Optional<Fan> fan = fanRepository.findByName(userDetails.getUsername());
-        if (fan.isPresent()) {
-            return chatRepository.findByTimestampGreaterThan(fan.get().getLastRead()).stream().map(this::messageDto).toList();
+    public List<ChatMessageDto> getNewMessagesForFan(FanDetails FanDetails) {
+        Optional<Fan> optionalFan = fanRepository.findByName(FanDetails.name());
+        if (optionalFan.isPresent()) {
+            Date lastRead = optionalFan.get().getLastRead();
+            return chatRepository.findByTimestampGreaterThan(lastRead).stream().map(this::messageDto).toList();
         }
         return Collections.emptyList();
     }
@@ -61,11 +63,8 @@ public class ChatService {
         return fanRepository.findAll().stream().map(f -> new FanIdName(f.getId(), f.getName())).toList();
     }
 
-    public void setLastReadForFan(UserDetails userDetails) {
-        Optional<Fan> fan = fanRepository.findByName(userDetails.getUsername());
-        if (fan.isPresent()) {
-            setLastReadForFan(fan.get());
-        }
+    public void setLastReadForFan(FanDetails FanDetails) {
+        fanRepository.findByName(FanDetails.name()).ifPresent(this::setLastReadForFan);
     }
 
     private void setLastReadForFan(Fan fan) {
