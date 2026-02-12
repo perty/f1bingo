@@ -8,7 +8,6 @@ import java.util.*;
 /**
  * Usage:
  *   java IcsToPostgresSql.java /path/to/calendar.ics > insert.sql
- *
  * Produces:
  *   insert into session_schedule (summary, location, starttime, endtime) values (...), (...), ...;
  */
@@ -58,7 +57,7 @@ public class IcsToPostgresSql {
         for (String line : split) {
             if (line.isEmpty()) {
                 // blank line: flush any buffered line (rare in ICS but safe)
-                if (current.length() > 0) {
+                if (!current.isEmpty()) {
                     out.add(current.toString());
                     current.setLength(0);
                 }
@@ -73,12 +72,12 @@ public class IcsToPostgresSql {
                 current.append(line.substring(1));
             } else {
                 // flush previous
-                if (current.length() > 0) out.add(current.toString());
+                if (!current.isEmpty()) out.add(current.toString());
                 current.setLength(0);
                 current.append(line);
             }
         }
-        if (current.length() > 0) out.add(current.toString());
+        if (!current.isEmpty()) out.add(current.toString());
         return out;
     }
 
