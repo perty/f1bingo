@@ -20,7 +20,7 @@ public class RaceService {
     }
 
     public List<RaceWeekend> getRaceWeekends() {
-        return getRaceWeekends(2025);
+        return getRaceWeekends(2026);
     }
 
     public List<RaceWeekend> getRaceWeekends(int year) {
