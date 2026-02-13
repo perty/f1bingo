@@ -55,11 +55,40 @@ public class WeekendPaletteController {
                 raceWeekend.getStartDate(),
                 raceWeekend.getEndDate(),
                 toFlag(raceWeekend.getCountry()),
-                raceWeekend.getTrack(),
+                toTrack(raceWeekend.getTrack()),
                 weekendPalette.getBingoCards().stream()
                         .sorted(Comparator.comparing(bc -> bc.getSession().getSortOrder()))
                         .map(bingoCard -> toDto(bingoCard, raceWeekend)).toList()
         );
+    }
+
+    private String toTrack(String track) {
+        return switch (track) {
+            case "Yas Marina Circuit" -> "yas_marina";
+            case "Lusail International Circuit" -> "lusail";
+            case "Las Vegas Street Circuit" -> "las-egas";
+            case "Interlagos (Autodromo Jose Carlos Pace)" -> "interlagos";
+            case "Autodromo Hermanos Rodriguez" -> "hermanos";
+            case "Circuit of the Americas" -> "cotas";
+            case "Marina Bay Street Circuit" -> "marina-bay";
+            case "Baku City Circuit" -> "baku";
+            case "Autodromo Nazionale Monza" -> "monza";
+            case "Circuit Zandvoort" -> "zandvoort";
+            case "Hungaroring" -> "hungaroring";
+            case "Circuit de Spa-Francorchamps" -> "spa";
+            case "Silverstone Circuit" -> "silverstone";
+            case "Red Bull Ring" -> "red-bull";
+            case "Circuit de Barcelona-Catalunya" -> "barcelona";
+            case "Circuit de Monaco" -> "monaco";
+            case "Circuit Gilles Villeneuve" -> "montreal";
+            case "Miami International Autodrome" -> "miami";
+            case "Jeddah Corniche Circuit" -> "jedda";
+            case "Bahrain International Circuit" -> "sakhir";
+            case "Suzuka Circuit" -> "suzuka";
+            case "Shanghai International Circuit" -> "shanghai";
+            case "Albert Park Circuit" -> "melbourne";
+            default -> track;
+        };
     }
 
     private String toFlag(String country) {
