@@ -1,12 +1,14 @@
 package se.artcomputer.f1.bingo.domain;
 
 import org.springframework.stereotype.Service;
+import se.artcomputer.f1.bingo.controller.DriverDto;
 import se.artcomputer.f1.bingo.controller.TeamDto;
 import se.artcomputer.f1.bingo.entity.TeamEntity;
 import se.artcomputer.f1.bingo.exception.NotFoundException;
 import se.artcomputer.f1.bingo.repository.TeamRepository;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,21 +38,28 @@ public class TeamService {
                 );
     }
 
-    private static List<TeamDto.DriverDto> getDriverDtos() {
+    private static List<DriverDto> getDriverDtos() {
+        Date born =  new Date();
         return List.of(
-                new TeamDto.DriverDto(
+                new DriverDto(
+                        "str",
                         1,
                         "",
                         "Black driver",
                         Country.australia.name(),
-                        flagImage(Country.australia)
+                        flagImage(Country.australia),
+                        180,
+                        born
                 ),
-                new TeamDto.DriverDto(
+                new DriverDto(
+                        "alo",
                         55,
                         "yellow-cam",
                         "Yellow driver",
                         Country.australia.name(),
-                        flagImage(Country.italy)
+                        flagImage(Country.italy),
+                        180,
+                        born
                 )
         );
     }

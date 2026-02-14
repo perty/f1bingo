@@ -12,11 +12,4 @@ public record TeamDto(
         String officialName,
         String teamPrincipal
 ) {
-    public record DriverDto(
-            int number,
-            String numberClass,
-            String name,
-            String nationality,
-            String flagImage
-    ) {}
 }

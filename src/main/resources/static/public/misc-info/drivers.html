@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Förare</title>
+
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/team.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px 10px; }
+        thead th { text-align: left; }
+        .namecell { display: flex; align-items: center; gap: 8px; }
+        .flag { width: 22px; height: auto; }
+        .num { font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html" title="Gå till första sidan">
+                <img src="/public/images/logo.png" alt="logo" id="logo">
+            </a>
+        </div>
+        <div class="title shadow">
+            <p>Förare</p>
+        </div>
+    </div>
+    <div class="header-bar">
+        <div>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/private/chat.html">Chat</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/misc-info.html">Info</a>
+        </div>
+    </div>
+    <div class="content">
+        <p id="error" style="display:none;"></p>
+
+        <div id="stats" style="margin-bottom:15px; font-weight:bold;">
+            Medellängd: <span id="avgLength"></span> cm |
+            Medelålder: <span id="avgAge"></span> år
+        </div>
+
+        <table id="drivers">
+            <thead>
+            <tr>
+                <th data-key="number">Nr</th>
+                <th data-key="name">Namn</th>
+                <th data-key="born">Född</th>
+                <th data-key="age">Ålder</th>
+                <th data-key="length">Längd</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let currentSort = { key: "number", dir: "asc" };
+    let cachedDrivers = [];
+
+    function updateStats(drivers) {
+        if (!drivers.length) return;
+
+        const totalLength = drivers.reduce((sum, d) => sum + (d.length ?? 0), 0);
+        const totalAge = drivers.reduce((sum, d) => sum + calcAge(d.born), 0);
+
+        const avgLength = (totalLength / drivers.length).toFixed(1);
+        const avgAge = (totalAge / drivers.length).toFixed(1);
+
+        document.getElementById("avgLength").textContent = avgLength;
+        document.getElementById("avgAge").textContent = avgAge;
+    }
+
+    function esc(s) {
+        return (s ?? "").toString()
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    function parseBorn(iso) {
+        return new Date(iso);
+    }
+
+    function formatBorn(iso) {
+        const d = new Date(iso);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${day}/${m}/${y}`;
+    }
+
+    function calcAge(isoBorn) {
+        const b = new Date(isoBorn);
+        const now = new Date();
+
+        let age = now.getFullYear() - b.getFullYear();
+        const hasHadBirthday =
+            (now.getMonth() > b.getMonth()) ||
+            (now.getMonth() === b.getMonth() && now.getDate() >= b.getDate());
+
+        if (!hasHadBirthday) age--;
+        return age;
+    }
+
+    function sortDrivers(drivers) {
+        const { key, dir } = currentSort;
+
+        return [...drivers].sort((a, b) => {
+            let v1, v2;
+
+            switch (key) {
+                case "number":
+                    v1 = a.number; v2 = b.number; break;
+                case "name":
+                    v1 = a.name; v2 = b.name; break;
+                case "born":
+                    v1 = parseBorn(a.born); v2 = parseBorn(b.born); break;
+                case "age":
+                    v1 = calcAge(a.born); v2 = calcAge(b.born); break;
+                case "length":
+                    v1 = a.length; v2 = b.length; break;
+                default:
+                    v1 = ""; v2 = "";
+            }
+
+            if (v1 < v2) return dir === "asc" ? -1 : 1;
+            if (v1 > v2) return dir === "asc" ? 1 : -1;
+            return 0;
+        });
+    }
+
+    function render() {
+        const drivers = sortDrivers(cachedDrivers);
+        updateStats(drivers);
+
+        const tbody = document.querySelector("#drivers tbody");
+        tbody.innerHTML = drivers.map(d => {
+            const numClass = d.numberClass ? `class="num ${esc(d.numberClass)}"` : `class="num"`;
+            const flagHtml = d.flagImage
+                ? `<img class="flag" src="${esc(d.flagImage)}" alt="${esc(d.nationality)}">`
+                : "";
+
+            return `
+        <tr>
+          <td ${numClass}>${esc(d.number)}</td>
+          <td>
+            <div class="namecell">
+              ${flagHtml}
+              <span>${esc(d.name)}</span>
+            </div>
+          </td>
+          <td class="num">${formatBorn(d.born)}</td>
+          <td class="num">${calcAge(d.born)}</td>
+          <td class="num">${esc(d.length)} cm</td>
+        </tr>
+      `;
+        }).join("");
+
+        updateSortIndicators();
+    }
+
+    function updateSortIndicators() {
+        document.querySelectorAll("th").forEach(th => {
+            th.textContent = th.dataset.label;
+        });
+
+        const active = document.querySelector(`th[data-key="${currentSort.key}"]`);
+        if (active) {
+            active.textContent += currentSort.dir === "asc" ? " ▲" : " ▼";
+        }
+    }
+
+    function setupSorting() {
+        document.querySelectorAll("th").forEach(th => {
+            th.style.cursor = "pointer";
+            th.dataset.label = th.textContent;
+
+            th.addEventListener("click", () => {
+                const key = th.dataset.key;
+
+                if (currentSort.key === key) {
+                    currentSort.dir = currentSort.dir === "asc" ? "desc" : "asc";
+                } else {
+                    currentSort.key = key;
+                    currentSort.dir = "asc";
+                }
+
+                render();
+            });
+        });
+    }
+
+    async function loadDrivers() {
+        const res = await fetch("/public/drivers", {
+            headers: { "Accept": "application/json" }
+        });
+        cachedDrivers = await res.json();
+        render();
+    }
+
+    setupSorting();
+    loadDrivers();
+</script>
+
+</body>
+</html>
