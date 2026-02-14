@@ -64,7 +64,7 @@
             <tbody id="teaminfo-tbody">
             </tbody>
         </table>
-
+        <h2><a href="/public/misc-info/team-info.html">Till alla team</a></h2>
         <p id="error" style="display:none;"></p>
     </div>
 </div>
@@ -120,7 +120,15 @@
             tr.appendChild(tdFlag);
 
             const tdName = document.createElement("td");
-            tdName.textContent = d.name ?? "";
+            if (d.code) {
+                const a = document.createElement("a");
+                a.href = `/public/misc-info/driver.html?code=${encodeURIComponent(d.code)}`;
+                a.textContent = d.name ?? "";
+                tdName.appendChild(a);
+            } else {
+                tdName.textContent = d.name ?? "";
+            }
+
             tr.appendChild(tdName);
 
             tbody.appendChild(tr);
