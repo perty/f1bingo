@@ -3,24 +3,26 @@ package se.artcomputer.f1.bingo.domain;
 import org.springframework.stereotype.Service;
 import se.artcomputer.f1.bingo.controller.DriverDto;
 import se.artcomputer.f1.bingo.controller.TeamDto;
+import se.artcomputer.f1.bingo.entity.ContractEntity;
+import se.artcomputer.f1.bingo.entity.DriverEntity;
 import se.artcomputer.f1.bingo.entity.TeamEntity;
 import se.artcomputer.f1.bingo.exception.NotFoundException;
+import se.artcomputer.f1.bingo.repository.ContractRepository;
+import se.artcomputer.f1.bingo.repository.DriverRepository;
 import se.artcomputer.f1.bingo.repository.TeamRepository;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 @Service
 public class TeamService {
     private final TeamRepository teamRepository;
+    private final ContractRepository contractRepository;
+    private final DriverRepository driverRepository;
 
-    public TeamService(TeamRepository teamRepository) {
+    public TeamService(TeamRepository teamRepository, ContractRepository contractRepository, DriverRepository driverRepository) {
         this.teamRepository = teamRepository;
-    }
-
-    public List<TeamDto> findAll() {
-        return Collections.emptyList();
+        this.contractRepository = contractRepository;
+        this.driverRepository = driverRepository;
     }
 
     public TeamDto findByCode(String codeString) {
@@ -30,37 +32,34 @@ public class TeamService {
                 teamEntity.getDisplayName(),
                 carImage(teamEntity.getCode()),
                 teamEntity.getEngine().name(),
-                getDriverDtos(),
+                getDriverDtos(teamEntity.getCode(), teamEntity.getDisplayName()),
                 teamEntity.getNationality().name(),
                 flagImage(teamEntity.getNationality()),
                 teamEntity.getOfficialName(),
                 "Team Principal"
-                );
+        );
     }
 
-    private static List<DriverDto> getDriverDtos() {
-        Date born =  new Date();
-        return List.of(
-                new DriverDto(
-                        "str",
-                        1,
-                        "",
-                        "Black driver",
-                        Country.australia.name(),
-                        flagImage(Country.australia),
-                        180,
-                        born
-                ),
-                new DriverDto(
-                        "alo",
-                        55,
-                        "yellow-cam",
-                        "Yellow driver",
-                        Country.australia.name(),
-                        flagImage(Country.italy),
-                        180,
-                        born
-                )
+    private List<DriverDto> getDriverDtos(TeamCode teamCode, String displayName) {
+        return contractRepository.findByTeam(teamCode)
+                .stream()
+                .map(contractEntity -> toDriverDto(contractEntity, displayName))
+                .toList();
+    }
+
+    private DriverDto toDriverDto(ContractEntity contractEntity, String displayName) {
+        DriverEntity driverEntity = driverRepository.findByCode(contractEntity.getDriver()).orElseThrow(() -> new NotFoundException("Driver " + contractEntity.getDriver()));
+        return new DriverDto(
+                driverEntity.getCode().name(),
+                driverEntity.getNumber(),
+                driverEntity.isYellowCam() ? "yellow-cam" : "",
+                driverEntity.getFullName(),
+                driverEntity.getNationality().getFileName(),
+                flagImage(driverEntity.getNationality()),
+                driverEntity.getLength(),
+                driverEntity.getBorn(),
+                contractEntity.getTeam(),
+                displayName
         );
     }
 
@@ -69,6 +68,6 @@ public class TeamService {
     }
 
     private static String carImage(TeamCode code) {
-        return "/public/images/car/"  + code.getFileName() + ".png";
+        return "/public/images/car/" + code.getFileName() + ".png";
     }
 }
