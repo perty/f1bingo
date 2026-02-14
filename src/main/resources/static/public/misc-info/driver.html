@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="sv">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title id="page-title">Förare</title>
 
     <link rel="stylesheet" href="/public/css/style.css">
@@ -10,52 +10,84 @@
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
 
     <style>
-        .driver-layout{
+        .driver-layout {
             display: grid;
             grid-template-columns: 0.3fr 1fr;
             gap: 20px;
         }
 
-        .driver-layout > *{
+        .driver-layout > * {
             min-width: 0; /* viktigt i grid */
         }
 
-        .portrait{
+        .portrait {
             max-width: 100%;
             height: auto;
             display: block;
         }
+
         .facts {
             border-radius: 14px;
             padding: 16px;
-            box-shadow: 0 8px 22px rgba(0,0,0,0.12);
-            background: rgba(255,255,255,0.03);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+            background: rgba(255, 255, 255, 0.03);
         }
-        .facts h2 { margin: 0 0 8px 0; }
+
+        .facts h2 {
+            margin: 0 0 8px 0;
+        }
+
         .fact-row {
             display: grid;
             grid-template-columns: 140px minmax(0, 1fr); /* viktigt */
         }
+
         .value {
             min-width: 0; /* viktigt för grid/flex-nesting */
         }
+
         .inline {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            flex-wrap: wrap;     /* så "Great-britain" kan gå ner */
+            flex-wrap: wrap; /* så "Great-britain" kan gå ner */
             min-width: 0;
         }
+
         .inline span {
             min-width: 0;
-            overflow-wrap: anywhere;  /* sista utvägen: bryt om det behövs */
+            overflow-wrap: anywhere; /* sista utvägen: bryt om det behövs */
         }
-        .fact-row:last-child { border-bottom: 0; }
-        .label { opacity: 0.8; }
-        .flag { width: 26px; height: auto; }
-        .num { font-variant-numeric: tabular-nums; }
-        .driver-number { display: inline-flex; align-items: baseline; gap: 10px; margin-top: 6px; }
-        .driver-number .big { font-size: 34px; font-weight: 800; line-height: 1; }
+
+        .fact-row:last-child {
+            border-bottom: 0;
+        }
+
+        .label {
+            opacity: 0.8;
+        }
+
+        .flag {
+            width: 26px;
+            height: auto;
+        }
+
+        .num {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .driver-number {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .driver-number .big {
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1;
+        }
 
     </style>
 </head>
@@ -125,6 +157,12 @@
                         <div class="label">Kod</div>
                         <div class="value" id="code"></div>
                     </div>
+                    <div class="fact-row" id="team-row" style="display:none;">
+                        <div class="label">Team</div>
+                        <div class="value">
+                            <a id="team-link" href=""></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -180,7 +218,7 @@
         try {
             // Anpassa om din endpoint heter något annat:
             const res = await fetch(`/public/drivers/${encodeURIComponent(code)}`, {
-                headers: { "Accept": "application/json" }
+                headers: {"Accept": "application/json"}
             });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -215,6 +253,13 @@
 
             // Code
             document.getElementById("code").textContent = d.code;
+
+            const teamRow = document.getElementById("team-row");
+            const teamLink = document.getElementById("team-link");
+
+            teamLink.textContent = d.teamDisplayName || d.teamCode;
+            teamLink.href = `/public/team.html?id=${encodeURIComponent(d.teamCode)}`;
+            teamRow.style.display = "grid";
 
             document.getElementById("driver-layout").style.display = "grid";
         } catch (e) {
