@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="sv">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title id="page-title">Förare</title>
+
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/team.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+
+    <style>
+        .driver-layout {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        .portrait {
+            height: auto;
+            border-radius: 14px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+            background: rgba(255,255,255,0.03);
+        }
+        .facts {
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+            background: rgba(255,255,255,0.03);
+        }
+        .facts h2 { margin: 0 0 8px 0; }
+        .fact-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .fact-row:last-child { border-bottom: 0; }
+        .label { opacity: 0.8; }
+        .value { font-weight: 600; }
+        .inline { display: inline-flex; align-items: center; gap: 8px; }
+        .flag { width: 26px; height: auto; }
+        .num { font-variant-numeric: tabular-nums; }
+        .driver-number { display: inline-flex; align-items: baseline; gap: 10px; margin-top: 6px; }
+        .driver-number .big { font-size: 34px; font-weight: 800; line-height: 1; }
+
+        @media (max-width: 820px) {
+            .driver-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html" title="Gå till första sidan">
+                <img src="/public/images/logo.png" alt="logo" id="logo">
+            </a>
+        </div>
+        <div class="title shadow">
+            <p id="driver-name">Förare</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <p id="error" style="display:none;"></p>
+
+        <div class="driver-layout" id="driver-layout" style="display:none;">
+            <div>
+                <img id="portrait" class="portrait" src="" alt="">
+            </div>
+
+            <div class="facts">
+                <h2 id="facts-title"></h2>
+
+                <div class="driver-number">
+                    <span class="label">Nr</span>
+                    <span id="number" class="big num"></span>
+                </div>
+
+                <div style="margin-top: 14px;">
+                    <div class="fact-row">
+                        <div class="label">Nationalitet</div>
+                        <div class="value inline">
+                            <img id="flag" class="flag" src="" alt="">
+                            <span id="nationality"></span>
+                        </div>
+                    </div>
+
+                    <div class="fact-row">
+                        <div class="label">Född</div>
+                        <div class="value num" id="born"></div>
+                    </div>
+
+                    <div class="fact-row">
+                        <div class="label">Ålder</div>
+                        <div class="value num" id="age"></div>
+                    </div>
+
+                    <div class="fact-row">
+                        <div class="label">Längd</div>
+                        <div class="value num" id="length"></div>
+                    </div>
+
+                    <div class="fact-row">
+                        <div class="label">Kod</div>
+                        <div class="value" id="code"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function qs(name) {
+        return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function formatBorn(iso) {
+        // iso är t.ex. 1997-09-29T22:00:00.000+00:00 (UTC) -> lokal date
+        const d = new Date(iso);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${day}/${m}/${y}`;
+    }
+
+    function calcAge(isoBorn) {
+        const b = new Date(isoBorn);
+        const now = new Date();
+
+        let age = now.getFullYear() - b.getFullYear();
+        const hasHadBirthday =
+            (now.getMonth() > b.getMonth()) ||
+            (now.getMonth() === b.getMonth() && now.getDate() >= b.getDate());
+
+        if (!hasHadBirthday) age--;
+        return age;
+    }
+
+    function titleCaseEnum(s) {
+        // 'greatBritain' -> 'Great Britain', 'newZealand' -> 'New Zealand'
+        if (!s) return "";
+        return s
+            .replace(/([a-z])([A-Z])/g, "$1 $2")
+            .replace(/^./, c => c.toUpperCase());
+    }
+
+    async function main() {
+        const code = qs("code");
+        const errorEl = document.getElementById("error");
+
+        if (!code) {
+            errorEl.style.display = "block";
+            errorEl.textContent = "Saknar code i URL:en. Exempel: /driver.html?code=ver";
+            return;
+        }
+
+        try {
+            // Anpassa om din endpoint heter något annat:
+            const res = await fetch(`/public/drivers/${encodeURIComponent(code)}`, {
+                headers: { "Accept": "application/json" }
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const d = await res.json();
+
+            // Titel + header
+            document.getElementById("page-title").textContent = d.name;
+            document.getElementById("driver-name").textContent = d.name;
+            document.getElementById("facts-title").textContent = d.name;
+
+            // Bild
+            const portrait = document.getElementById("portrait");
+            portrait.src = `/public/images/driver/${encodeURIComponent(d.code)}.png`;
+            portrait.alt = d.name;
+
+            // Nummer (styla om numberClass finns)
+            const numberEl = document.getElementById("number");
+            if (d.numberClass) numberEl.classList.add(d.numberClass);
+            numberEl.textContent = d.number;
+
+            // Flagga + nationalitet
+            const flag = document.getElementById("flag");
+            flag.src = d.flagImage;
+            flag.alt = d.nationality;
+
+            document.getElementById("nationality").textContent = titleCaseEnum(d.nationality);
+
+            // Född, ålder, längd
+            document.getElementById("born").textContent = formatBorn(d.born);
+            document.getElementById("age").textContent = calcAge(d.born) + " år";
+            document.getElementById("length").textContent = d.length + " cm";
+
+            // Code
+            document.getElementById("code").textContent = d.code;
+
+            document.getElementById("driver-layout").style.display = "grid";
+        } catch (e) {
+            errorEl.style.display = "block";
+            errorEl.textContent = "Kunde inte hämta förare: " + e.message;
+        }
+    }
+
+    main();
+</script>
+</body>
+</html>

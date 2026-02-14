@@ -3,6 +3,7 @@ package se.artcomputer.f1.bingo.domain;
 import org.springframework.stereotype.Service;
 import se.artcomputer.f1.bingo.controller.DriverDto;
 import se.artcomputer.f1.bingo.entity.DriverEntity;
+import se.artcomputer.f1.bingo.exception.NotFoundException;
 import se.artcomputer.f1.bingo.repository.DriverRepository;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public class DriverService {
 
     public List<DriverDto> findAll() {
         return driverRepository.findAll().stream().map(this::toDto).toList();
+    }
+
+    public DriverDto findByCode(String codeString) {
+        DriverCode code =  DriverCode.valueOf(codeString);
+        return toDto(driverRepository.findByCode(code).orElseThrow(() -> new NotFoundException("´Driver " + code)));
     }
 
     private DriverDto toDto(DriverEntity driverEntity) {

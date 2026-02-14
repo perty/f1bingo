@@ -158,7 +158,7 @@
           <td>
             <div class="namecell">
               ${flagHtml}
-              <span>${esc(d.name)}</span>
+              <a href="driver.html?code=${encodeURIComponent(d.code)}">${esc(d.name)}</a>
             </div>
           </td>
           <td class="num">${formatBorn(d.born)}</td>
