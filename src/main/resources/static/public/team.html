@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title id="page-title">Team</title>
+
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/team.css">
+    <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <div class="header">
+        <div class="logo">
+            <a href="/index.html" title="Gå till första sidan">
+                <img src="/public/images/logo.png" alt="logo" id="logo">
+            </a>
+        </div>
+        <div class="title shadow">
+            <p id="team-name">Team</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <div>
+            <img class="car" id="team-car" src="" alt="">
+        </div>
+
+        <!-- Tabell 1: motor + förare -->
+        <table id="drivers-table">
+            <thead>
+            <tr>
+                <th rowspan="2">Motorenhet</th>
+                <th colspan="3">Förare</th>
+            </tr>
+            <tr>
+                <th>Nr</th>
+                <th></th>
+                <th>Namn</th>
+            </tr>
+            </thead>
+            <tbody id="drivers-tbody">
+            </tbody>
+        </table>
+
+        <!-- Tabell 2: team info -->
+        <table id="teaminfo-table">
+            <thead>
+            <tr>
+                <th>Nationalitet</th>
+                <th>Namn</th>
+            </tr>
+            </thead>
+            <tbody id="teaminfo-tbody">
+            </tbody>
+        </table>
+
+        <p id="error" style="display:none;"></p>
+    </div>
+</div>
+
+<script>
+    function qs(name) {
+        return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function esc(s) {
+        // enkel XSS-säkring för textnoder
+        return (s ?? "").toString()
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    function renderTeam(team) {
+        // Titel + header
+        document.getElementById("page-title").textContent = team.displayName ?? "Team";
+        document.getElementById("team-name").textContent = team.displayName ?? "Team";
+
+        // Bilbild
+        const car = document.getElementById("team-car");
+        car.src = team.carImage;
+        car.alt = team.id;
+
+        // Förare-tabell
+        const tbody = document.getElementById("drivers-tbody");
+        tbody.innerHTML = "";
+
+        const drivers = team.drivers ?? [];
+        drivers.forEach((d, idx) => {
+            const tr = document.createElement("tr");
+
+            // motorenhet endast på första raden, rowspan = antal förare
+            if (idx === 0) {
+                const tdEngine = document.createElement("td");
+                tdEngine.rowSpan = Math.max(1, drivers.length);
+                tdEngine.textContent = team.engineUnit ?? "";
+                tr.appendChild(tdEngine);
+            }
+
+            const tdNo = document.createElement("td");
+            if (d.numberClass) tdNo.className = d.numberClass; // ex "yellow-cam"
+            tdNo.textContent = d.number ?? "";
+            tr.appendChild(tdNo);
+
+            const tdFlag = document.createElement("td");
+            tdFlag.innerHTML = `<img class="flag" src="${esc(d.flagImage)}" alt="${esc(d.nationality ?? "")}">`;
+            tr.appendChild(tdFlag);
+
+            const tdName = document.createElement("td");
+            tdName.textContent = d.name ?? "";
+            tr.appendChild(tdName);
+
+            tbody.appendChild(tr);
+        });
+
+        // Teaminfo-tabell
+        const infoBody = document.getElementById("teaminfo-tbody");
+        infoBody.innerHTML = `
+      <tr>
+        <td><img class="flag" src="${esc(team.teamNationalityFlag)}" alt="${esc(team.teamNationality ?? "")}"></td>
+        <td>${esc(team.officialName ?? "")}</td>
+      </tr>
+      <tr>
+        <td style="font-weight: bold">Stallchef</td>
+        <td>${esc(team.teamPrincipal ?? "")}</td>
+      </tr>
+    `;
+    }
+
+    async function main() {
+        const teamId = qs("id"); // /team.html?id=rb
+        const errorEl = document.getElementById("error");
+
+        if (!teamId) {
+            errorEl.style.display = "block";
+            errorEl.textContent = "Saknar id i URL:en. Exempel: /team.html?id=rb";
+            return;
+        }
+
+        try {
+            const res = await fetch(`/public/teams/${encodeURIComponent(teamId)}`, {
+                headers: {"Accept": "application/json"}
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const team = await res.json();
+            renderTeam(team);
+        } catch (e) {
+            errorEl.style.display = "block";
+            errorEl.textContent = "Kunde inte hämta team-data (" + e.message + ").";
+        }
+    }
+
+    main();
+</script>
+</body>
+</html>
