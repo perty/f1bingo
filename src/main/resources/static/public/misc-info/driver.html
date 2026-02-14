@@ -10,17 +10,20 @@
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
 
     <style>
-        .driver-layout {
+        .driver-layout{
             display: grid;
-            grid-template-columns: 340px 1fr;
+            grid-template-columns: 0.3fr 1fr;
             gap: 20px;
-            align-items: start;
         }
-        .portrait {
+
+        .driver-layout > *{
+            min-width: 0; /* viktigt i grid */
+        }
+
+        .portrait{
+            max-width: 100%;
             height: auto;
-            border-radius: 14px;
-            box-shadow: 0 8px 22px rgba(0,0,0,0.18);
-            background: rgba(255,255,255,0.03);
+            display: block;
         }
         .facts {
             border-radius: 14px;
@@ -31,23 +34,29 @@
         .facts h2 { margin: 0 0 8px 0; }
         .fact-row {
             display: grid;
-            grid-template-columns: 140px 1fr;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            grid-template-columns: 140px minmax(0, 1fr); /* viktigt */
+        }
+        .value {
+            min-width: 0; /* viktigt för grid/flex-nesting */
+        }
+        .inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;     /* så "Great-britain" kan gå ner */
+            min-width: 0;
+        }
+        .inline span {
+            min-width: 0;
+            overflow-wrap: anywhere;  /* sista utvägen: bryt om det behövs */
         }
         .fact-row:last-child { border-bottom: 0; }
         .label { opacity: 0.8; }
-        .value { font-weight: 600; }
-        .inline { display: inline-flex; align-items: center; gap: 8px; }
         .flag { width: 26px; height: auto; }
         .num { font-variant-numeric: tabular-nums; }
         .driver-number { display: inline-flex; align-items: baseline; gap: 10px; margin-top: 6px; }
         .driver-number .big { font-size: 34px; font-weight: 800; line-height: 1; }
 
-        @media (max-width: 820px) {
-            .driver-layout { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 
@@ -63,7 +72,15 @@
             <p id="driver-name">Förare</p>
         </div>
     </div>
-
+    <div class="header-bar">
+        <div>
+            <a class="shadow button-link" href="/public/points.html">Poäng</a>
+            <a class="shadow button-link" href="/private/weekend.html">Bingo</a>
+            <a class="shadow button-link" href="/private/chat.html">Chat</a>
+            <a class="shadow button-link" href="/public/calendar.html">Kalender</a>
+            <a class="shadow button-link" href="/public/misc-info.html">Info</a>
+        </div>
+    </div>
     <div class="content">
         <p id="error" style="display:none;"></p>
 
@@ -111,7 +128,7 @@
                 </div>
             </div>
         </div>
-
+        <h2><a href="/public/misc-info/drivers.html">Tillbaka till alla förare</a></h2>
     </div>
 </div>
 
