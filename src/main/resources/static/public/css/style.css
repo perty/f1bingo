@@ -32,6 +32,25 @@ input, select, button {
     }
 }
 
+a {
+    color: #252424;
+    text-decoration: underline;
+    transition: color 120ms ease, border-color 120ms ease;
+}
+
+a:visited {
+    color: #252424;
+}
+
+a:hover {
+    color: #e10600;
+}
+
+a:active {
+    color: #b00000;
+}
+
+
 .header-bar {
     position: fixed;
     top: 5px;
