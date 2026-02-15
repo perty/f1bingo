@@ -130,6 +130,12 @@
                 </div>
 
                 <div style="margin-top: 14px;">
+
+                    <div class="fact-row">
+                        <div class="label">Kod</div>
+                        <div class="value" id="code"></div>
+                    </div>
+
                     <div class="fact-row">
                         <div class="label">Nationalitet</div>
                         <div class="value inline">
@@ -153,10 +159,6 @@
                         <div class="value num" id="length"></div>
                     </div>
 
-                    <div class="fact-row">
-                        <div class="label">Kod</div>
-                        <div class="value" id="code"></div>
-                    </div>
                     <div class="fact-row" id="team-row" style="display:none;">
                         <div class="label">Team</div>
                         <div class="value">
@@ -252,7 +254,7 @@
             document.getElementById("length").textContent = d.length + " cm";
 
             // Code
-            document.getElementById("code").textContent = d.code;
+            document.getElementById("code").textContent = d.code.toUpperCase();
 
             const teamRow = document.getElementById("team-row");
             const teamLink = document.getElementById("team-link");
