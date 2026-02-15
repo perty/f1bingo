@@ -50,7 +50,8 @@ public class AuthController {
         Optional<Fan> optionalFan = users.findByName(dto.name());
 
         if (optionalFan.isEmpty() || !BCrypt.checkpw(dto.password(), optionalFan.get().getPassword())) {
-            servletResponse.sendRedirect("/login?error=1");
+            String nextQP = next == null ? "" : "&next=" + next;
+            servletResponse.sendRedirect("/f1login-form.html?error=1" + nextQP);
             return;
         }
 
