@@ -3,6 +3,7 @@ package se.artcomputer.f1.bingo.domain;
 public enum StatementCategory {
     ALP_OUT,
     AM_OUT,
+    CAD_OUT,
     BRYT,
     DRIVER_OF_THE_DAY,
     FASTEST_LAP,
