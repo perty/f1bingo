@@ -66,15 +66,17 @@ public class VerifyService {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, Calendar.JANUARY, 1, 0, 0, 0);
         Date startOfYear = calendar.getTime();
+        calendar.set(year, Calendar.DECEMBER, 31, 23, 59, 59);
+        Date endOfYear = calendar.getTime();
         return verifiedSessionRepository
                 .findAll()
                 .stream()
-                .filter(verifiedSession -> isAfter(verifiedSession, startOfYear))
+                .filter(verifiedSession -> isCorrectYear(verifiedSession, startOfYear, endOfYear))
                 .sorted(Comparator.comparing(VerifiedSession::getStartDate)).toList();
     }
 
-    private static boolean isAfter(VerifiedSession verifiedSession, Date startOfYear) {
+    private static boolean isCorrectYear(VerifiedSession verifiedSession, Date startOfYear, Date endOfYear) {
         Date startDate = verifiedSession.getRaceWeekend().getStartDate();
-        return startDate.after(startOfYear);
+        return startDate.after(startOfYear) && startDate.before(endOfYear);
     }
 }

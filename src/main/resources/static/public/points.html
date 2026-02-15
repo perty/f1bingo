@@ -34,6 +34,11 @@
         </div>
     </div>
     <div class="content">
+        <h2>
+            <label for="yearSelect">Säsong</label>
+            <select id="yearSelect"></select>
+        </h2>
+
         <table>
             <thead>
             <tr id="table-head-row">
@@ -54,6 +59,39 @@
     </div>
 </div>
 <script>
+    function qs(name) {
+        return new URLSearchParams(window.location.search).get(name);
+    }
+
+    // Lista över år du vill stödja
+    // (kan senare hämtas från API istället)
+    const availableYears = [2025, 2026];
+
+    const selectedYear = parseInt(qs('year')) || 2026;
+
+    const select = document.getElementById('yearSelect');
+
+    // Fyll dropdown
+    availableYears.forEach(y => {
+        const option = document.createElement('option');
+        option.value = y;
+        option.textContent = y;
+        if (y === selectedYear) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+
+    // När användaren byter år
+    select.addEventListener('change', () => {
+        const newYear = select.value;
+
+        const params = new URLSearchParams(window.location.search);
+        params.set('year', newYear);
+
+        window.location.search = params.toString();
+    });
+
     function displayResults(data) {
         const tableHeadRow = document.getElementById('table-head-row');
         const tableBody = document.getElementById('table-body');
@@ -87,7 +125,7 @@
     }
 
     function fetchResults() {
-        fetch('/points/results/2026')
+        fetch('/points/results/' + selectedYear)
             .then(function (response) {
                 return response.json();
             })
