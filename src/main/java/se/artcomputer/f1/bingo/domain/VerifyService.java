@@ -7,9 +7,7 @@ import se.artcomputer.f1.bingo.repository.StatementRepository;
 import se.artcomputer.f1.bingo.repository.VerifiedSessionRepository;
 import se.artcomputer.f1.bingo.repository.VerifiedStatementRepository;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class VerifyService {
@@ -64,7 +62,19 @@ public class VerifyService {
         verifiedStatementRepository.save(verifiedStatementEntity);
     }
 
-    public List<VerifiedSession> getVerifiedSessions() {
-        return verifiedSessionRepository.findAll().stream().sorted(Comparator.comparing(VerifiedSession::getStartDate)).toList();
+    public List<VerifiedSession> getVerifiedSessions(final int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, Calendar.JANUARY, 1, 0, 0, 0);
+        Date startOfYear = calendar.getTime();
+        return verifiedSessionRepository
+                .findAll()
+                .stream()
+                .filter(verifiedSession -> isAfter(verifiedSession, startOfYear))
+                .sorted(Comparator.comparing(VerifiedSession::getStartDate)).toList();
+    }
+
+    private static boolean isAfter(VerifiedSession verifiedSession, Date startOfYear) {
+        Date startDate = verifiedSession.getRaceWeekend().getStartDate();
+        return startDate.after(startOfYear);
     }
 }
