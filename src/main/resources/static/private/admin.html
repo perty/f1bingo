@@ -33,23 +33,7 @@
             <input type="text" name="text" id="text" maxlength="52" style="max-width: calc(52ch + 0.8em)">
             <label for="category">Kategori</label>
             <select name="category" id="category">
-                <option value="NONE">NONE</option>
-                <option value="FASTEST_LAP">FASTEST_LAP</option>
-                <option value="RACE_WINNER">RACE_WINNER</option>
-                <option value="DRIVER_OF_THE_DAY">DRIVER_OF_THE_DAY</option>
-                <option value="POLE_POSITION">POLE_POSITION</option>
-                <option value="BRYT">BRYT</option>
-                <option value="HAA_OUT">HAA_OUT</option>
-                <option value="FER_OUT">FER_OUT</option>
-                <option value="REB_OUT">REB_OUT</option>
-                <option value="SAB_OUT">SAB_OUT</option>
-                <option value="RAB_OUT">RAB_OUT</option>
-                <option value="AM_OUT">AM_OUT</option>
-                <option value="MCL_OUT">MCL_OUT</option>
-                <option value="ALP_OUT">ALP_OUT</option>
-                <option value="WIL_OUT">WIL_OUT</option>
-                <option value="PODIUM">PODIUM</option>
-                <option value="MER_OUT">MER_OUT</option>
+
             </select>
             <button id="addStatement">Lägg till</button>
         </form>
@@ -159,10 +143,37 @@
         return cell;
     }
 
+    const options =
+        "NONE," +
+        "ALP_OUT," +
+        "AM_OUT," +
+        "BRYT," +
+        "DRIVER_OF_THE_DAY," +
+        "FASTEST_LAP," +
+        "FER_OUT," +
+        "HAA_OUT," +
+        "MCL_OUT," +
+        "MER_OUT," +
+        "PODIUM," +
+        "POLE_POSITION," +
+        "RAB_OUT," +
+        "RACE_WINNER," +
+        "REB_OUT," +
+        "SAB_OUT," +
+        "WIL_OUT";
+
+    const categorySelectNwwStatement = document.getElementById('category');
+    options.split(',').forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categorySelectNwwStatement.appendChild(option);
+    });
+
     function categoryCell(text) {
         const cell = document.createElement('td');
         const select = document.createElement('select');
-        "NONE,POLE_POSITION,DRIVER_OF_THE_DAY,FASTEST_LAP,RACE_WINNER,QUALIFYING_LAST".split(',').forEach(category => {
+        options.split(',').forEach(category => {
             const option = document.createElement('option');
             option.value = category;
             option.textContent = category;
