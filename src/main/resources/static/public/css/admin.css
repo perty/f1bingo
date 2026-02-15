@@ -34,6 +34,10 @@
     cursor: pointer;
 }
 
+.admin-button-link:visited {
+    color: var(--secondary-color);
+}
+
 .statementsGrid {
     display: none;
     width: 100%;
