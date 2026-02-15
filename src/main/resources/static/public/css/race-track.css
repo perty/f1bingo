@@ -19,19 +19,28 @@
 }
 
 /* själva körningen */
-.race-car.drive{
-    animation: drive 3s linear forwards;
+.race-car.drive { animation: drive 3s cubic-bezier(.6,0,.9,.6) forwards; }
+
+@keyframes drive {
+    0%   { transform: translateX(0); }
+    15%   { transform: translateX(1%); }  /* tiny hesitation */
+    20%  { transform: translateX(10%); } /* explosion */
+    100% { transform: translateX(calc(100% + 600px)); }
+}
+
+.race-car img{
+    animation: vibrate 0.08s infinite alternate;
+}
+
+@keyframes vibrate{
+    from { transform: translateY(0px); }
+    to   { transform: translateY(-2px); }
 }
 
 /* en liten paus efter varje bil (valfri) */
 .race-car.pause{
     animation: none;
     transform: translateX(0);
-}
-
-@keyframes drive{
-    from { transform: translateX(0); }
-    to   { transform: translateX(calc(100% + 600px)); }
 }
 
 @media (prefers-reduced-motion: reduce){
