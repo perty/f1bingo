@@ -36,7 +36,7 @@ public class TeamService {
                 teamEntity.getNationality().name(),
                 flagImage(teamEntity.getNationality()),
                 teamEntity.getOfficialName(),
-                "Team Principal"
+                teamEntity.getTeamChief()
         );
     }
 

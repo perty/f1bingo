@@ -10,6 +10,6 @@ public record TeamDto(
         String teamNationality,
         String teamNationalityFlag,
         String officialName,
-        String teamPrincipal
+        String teamChief
 ) {
 }

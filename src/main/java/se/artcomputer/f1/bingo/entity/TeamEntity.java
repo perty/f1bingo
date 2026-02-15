@@ -30,6 +30,9 @@ public class TeamEntity {
     @Enumerated(EnumType.STRING)
     private Engine engine;
 
+    @Column(name = "team_chief")
+    private String teamChief;
+
     public long getId() {
         return id;
     }
@@ -76,5 +79,13 @@ public class TeamEntity {
 
     public void setEngine(Engine engineUnit) {
         this.engine = engineUnit;
+    }
+
+    public String getTeamChief() {
+        return teamChief;
+    }
+
+    public void setTeamChief(String teamChief) {
+        this.teamChief = teamChief;
     }
 }
