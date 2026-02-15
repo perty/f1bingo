@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>F1 Bingo</title>
     <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="public/css/race-track.css">
     <link href="https://fonts.googleapis.com/css?family=Syne&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
 </head>
@@ -68,19 +69,11 @@
             </div>
         </div>
     </div>
-    <h2>Gå till ett stall</h2>
-    <div class="midsection">
-        <div class="car"><a href="public/team.html?id=alpine"><img src="public/images/car/alpine.png" alt="rb"></a></div>
-        <div class="car"><a href="public/team.html?id=astonMartin"><img src="public/images/car/aston-martin.png" alt="haas"></a></div>
-        <div class="car"><a href="public/team.html?id=audi"><img src="public/images/car/audi.png" alt="audi"></a></div>
-        <div class="car"><a href="public/team.html?id=cadillac"><img src="public/images/car/cadillac.png" alt="cadillac"></a></div>
-        <div class="car"><a href="public/team.html?id=ferrari"><img src="public/images/car/ferrari.png" alt="ferrari"></a></div>
-        <div class="car"><a href="public/team.html?id=haas"><img src="public/images/car/haas.png" alt="alpine"></a></div>
-        <div class="car"><a href="public/team.html?id=mclaren"><img src="public/images/car/mclaren.png" alt="mclaren"></a></div>
-        <div class="car"><a href="public/team.html?id=mercedes"><img src="public/images/car/mercedes.png" alt="mercedes"></a></div>
-        <div class="car"><a href="public/team.html?id=racingBulls"><img src="public/images/car/racing-bulls.png" alt="racing-bulls"></a></div>
-        <div class="car"><a href="public/team.html?id=redBull"><img src="public/images/car/red-bull.png" alt="red-bull"></a></div>
-        <div class="car"><a href="public/team.html?id=williams"><img src="public/images/car/williams.png" alt="williams"></a></div>
+    <h2>Klicka bilen!</h2>
+    <div class="midsection race-track" id="race-track">
+        <a id="race-link" class="race-car" href="#">
+            <img id="race-img" src="" alt="">
+        </a>
     </div>
 </div>
 
@@ -135,6 +128,55 @@
         localStorage.setItem('selectedWeekend', this.value);
     };
 </script>
+<script>
+    const teams = [
+        { id: "alpine", img: "public/images/car/alpine.png", alt: "alpine" },
+        { id: "astonMartin", img: "public/images/car/aston-martin.png", alt: "aston-martin" },
+        { id: "audi", img: "public/images/car/audi.png", alt: "audi" },
+        { id: "cadillac", img: "public/images/car/cadillac.png", alt: "cadillac" },
+        { id: "ferrari", img: "public/images/car/ferrari.png", alt: "ferrari" },
+        { id: "haas", img: "public/images/car/haas.png", alt: "haas" },
+        { id: "mclaren", img: "public/images/car/mclaren.png", alt: "mclaren" },
+        { id: "mercedes", img: "public/images/car/mercedes.png", alt: "mercedes" },
+        { id: "racingBulls", img: "public/images/car/racing-bulls.png", alt: "racing-bulls" },
+        { id: "redBull", img: "public/images/car/red-bull.png", alt: "red-bull" },
+        { id: "williams", img: "public/images/car/williams.png", alt: "williams" }
+    ];
+
+    const link = document.getElementById("race-link");
+    const img = document.getElementById("race-img");
+
+    let idx = 0;
+    const driveMs = 3000;
+    const pauseMs = 50;
+
+    function showTeam(i) {
+        const t = teams[i];
+        link.href = `public/team.html?id=${encodeURIComponent(t.id)}`;
+        img.src = t.img;
+        img.alt = t.alt;
+    }
+
+    function runOne() {
+        showTeam(idx);
+
+        // restart animation cleanly
+        link.classList.remove("drive");
+        void link.offsetWidth;        // force reflow (restart)
+        link.classList.add("drive");
+
+        // när den är klar: pausa lite, byt bil, kör igen
+        setTimeout(() => {
+            link.classList.remove("drive");
+            idx = (idx + 1) % teams.length;
+            setTimeout(runOne, pauseMs);
+        }, driveMs);
+    }
+
+    // Start
+    runOne();
+</script>
+
 <script src="/public/js/chat-notification.js"></script>
 <script src="/public/js/news.js"></script>
 <script>

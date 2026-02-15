@@ -1,0 +1,39 @@
+.race-track{
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+}
+
+.race-car{
+    position: absolute;
+    left: -260px;          /* start utanför */
+    bottom: 20px;
+    display: block;
+    will-change: transform;
+}
+
+.race-car img{
+    height: 60px;
+    width: auto;
+    display: block;
+}
+
+/* själva körningen */
+.race-car.drive{
+    animation: drive 3s linear forwards;
+}
+
+/* en liten paus efter varje bil (valfri) */
+.race-car.pause{
+    animation: none;
+    transform: translateX(0);
+}
+
+@keyframes drive{
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(100% + 600px)); }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .race-car.drive{ animation: none; }
+}
