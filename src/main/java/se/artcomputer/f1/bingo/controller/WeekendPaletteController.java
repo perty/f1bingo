@@ -79,6 +79,7 @@ public class WeekendPaletteController {
             case "Silverstone Circuit" -> "silverstone";
             case "Red Bull Ring" -> "red-bull";
             case "Circuit de Barcelona-Catalunya" -> "barcelona";
+            case "Circuito de Madring" -> "madring";
             case "Circuit de Monaco" -> "monaco";
             case "Circuit Gilles Villeneuve" -> "montreal";
             case "Miami International Autodrome" -> "miami";
