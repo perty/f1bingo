@@ -24,16 +24,15 @@ public class SessionScheduleService {
 
     public Optional<Instant> findSessionStart(Long weekendId, Session session) {
         RaceWeekend raceWeekend = raceService.getRaceWeekend(weekendId);
-        String country = raceWeekend.getCountry();
+        Instant startDate = raceWeekend.getStartDate().toInstant();
         Instant endDate = (raceWeekend.getEndDate().toInstant().plus(1, ChronoUnit.DAYS));
-        List<SessionSchedule> byLocation = sessionScheduleRepository.findByLocationOrderByStartTime(country)
+        List<SessionSchedule> sessionSchedules = sessionScheduleRepository.findByStartTimeGreaterThan(startDate)
                 .stream()
-                .filter(sessionSchedule -> sessionSchedule.getStartTime().isBefore(endDate) &&
-                        sessionSchedule.getEndTime().isAfter(raceWeekend.getStartDate().toInstant()))
+                .filter(sessionSchedule -> sessionSchedule.getStartTime().isBefore(endDate))
                 .toList();
         int index = sessionIndex(session);
-        if (byLocation.size() > index) {
-            return Optional.of(byLocation.get(index).getStartTime());
+        if (sessionSchedules.size() > index) {
+            return Optional.of(sessionSchedules.get(index).getStartTime());
         }
         return Optional.empty();
     }

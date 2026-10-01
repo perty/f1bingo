@@ -7,7 +7,5 @@ import java.time.Instant;
 import java.util.List;
 
 public interface SessionScheduleRepository extends JpaRepository<SessionSchedule, Long> {
-    List<SessionSchedule> findByLocationOrderByStartTime(String country);
-
     List<SessionSchedule> findByStartTimeGreaterThan(Instant startTime);
 }
