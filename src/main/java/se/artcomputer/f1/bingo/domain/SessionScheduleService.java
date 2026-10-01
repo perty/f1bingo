@@ -51,9 +51,9 @@ public class SessionScheduleService {
             String summary = sessionSchedule.getSummary();
             String result;
             if (summary.contains("CALLED OFF")) {
-                result = summary.substring(24, summary.indexOf("-"));
+                result = summary.substring(24, summary.indexOf(" - "));
             } else {
-                result = summary.substring(12, summary.indexOf("-"));
+                result = summary.substring(12, summary.indexOf(" - "));
             }
             return result
                     .replace("GRAND PRIX", "GP")
