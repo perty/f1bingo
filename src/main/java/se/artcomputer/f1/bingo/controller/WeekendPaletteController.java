@@ -88,6 +88,7 @@ public class WeekendPaletteController {
             case "Suzuka Circuit" -> "suzuka";
             case "Shanghai International Circuit" -> "shanghai";
             case "Albert Park Circuit" -> "melbourne";
+            case "Sepang International Circuit"  -> "sepang";
             default -> track;
         };
     }
