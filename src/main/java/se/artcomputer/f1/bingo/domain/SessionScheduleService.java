@@ -25,7 +25,7 @@ public class SessionScheduleService {
     public Optional<Instant> findSessionStart(Long weekendId, Session session) {
         RaceWeekend raceWeekend = raceService.getRaceWeekend(weekendId);
         Instant startDate = raceWeekend.getStartDate().toInstant();
-        Instant endDate = (raceWeekend.getEndDate().toInstant().plus(1, ChronoUnit.DAYS));
+        Instant endDate = (raceWeekend.getEndDate().toInstant().plus(2, ChronoUnit.DAYS));
         List<SessionSchedule> sessionSchedules = sessionScheduleRepository.findByStartTimeGreaterThan(startDate)
                 .stream()
                 .filter(sessionSchedule -> sessionSchedule.getStartTime().isBefore(endDate))
