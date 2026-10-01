@@ -42,8 +42,7 @@ public class CalendarController {
 
     @GetMapping("/{year}")
     public List<CalendarDto> races(@PathVariable int year) {
-        List<RaceWeekend> races = raceService.getRaceWeekends(year);
-        return races.stream().map(this::toDto).toList();
+        return sessionScheduleService.toCalendar(year);
     }
 
     @GetMapping(value = "/calendar.ics", produces = "text/calendar")

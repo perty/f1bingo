@@ -1,13 +1,16 @@
 package se.artcomputer.f1.bingo.domain;
 
 import org.springframework.stereotype.Service;
+import se.artcomputer.f1.bingo.controller.publicapi.CalendarDto;
 import se.artcomputer.f1.bingo.entity.RaceWeekend;
 import se.artcomputer.f1.bingo.entity.SessionSchedule;
 import se.artcomputer.f1.bingo.repository.SessionScheduleRepository;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SessionScheduleService {
@@ -41,6 +44,101 @@ public class SessionScheduleService {
                 .map(this::toEvent)
                 .flatMap(Optional::stream)
                 .toList();
+    }
+
+    public record SessionScheduleEvent(SessionSchedule sessionSchedule) {
+        public String eventName() {
+            String summary = sessionSchedule.getSummary();
+            if (summary.contains("CALLED OFF")) {
+                return summary.substring(24, summary.indexOf("-"));
+            }
+            return summary.substring(12, summary.indexOf("-"));
+        }
+
+        public String eventSession() {
+            String summary = sessionSchedule.getSummary();
+            return summary.substring(summary.indexOf("-"));
+        }
+
+        public Instant eventStartTime() {
+            return sessionSchedule.getStartTime();
+        }
+
+        public Instant eventEndTime() {
+            return sessionSchedule.getStartTime();
+        }
+
+        public String location() {
+            return sessionSchedule.getLocation();
+        }
+    }
+
+    public List<CalendarDto> toCalendar(final int year) {
+        List<SessionScheduleEvent> sessionSchedules = sessionScheduleRepository.findByStartTimeGreaterThan(getFirstDay(year)).stream()
+                .map(SessionScheduleEvent::new)
+                .toList();
+        Map<String, List<SessionScheduleEvent>> weekends = sessionSchedules.stream()
+                .collect(Collectors.groupingBy(SessionScheduleEvent::eventName));
+        return weekends.values().stream()
+                .map(WeekendEvent::new)
+                .sorted(Comparator.comparing(WeekendEvent::startDate))
+                .map(this::toCalendarDto).toList();
+    }
+
+    private static Instant getFirstDay(int year) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.DAY_OF_YEAR, 1);
+        Date firstDay = cal.getTime();
+        return firstDay.toInstant();
+    }
+
+    record WeekendEvent(List<SessionScheduleEvent> sessionScheduleEvents) {
+        private static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM");
+        private static final SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
+
+        public String eventNameWithDates() {
+            return "%s %s - %s %s".formatted(
+                    sessionScheduleEvents().getFirst().location(),
+                    formatter.format(startDate()),
+                    formatter.format(endDate()),
+                    yearFormatter.format(startDate()));
+        }
+
+        public String location() {
+            return sessionScheduleEvents().getFirst().location();
+        }
+
+        public Date startDate() {
+            Instant instant = sessionScheduleEvents.stream().min(Comparator.comparing(SessionScheduleEvent::eventStartTime)).orElseThrow().eventStartTime();
+            return Date.from(instant);
+        }
+
+        private Date endDate() {
+            Instant instant = sessionScheduleEvents.stream().max(Comparator.comparing(SessionScheduleEvent::eventEndTime)).orElseThrow().eventEndTime();
+            return Date.from(instant);
+        }
+
+        public String type() {
+            if(sessionScheduleEvents.getFirst().sessionSchedule().getSummary().contains("CALLED OFF")) {
+                return "CALLED OFF";
+            }
+            if (isAnyMatch("TESTING")) {
+                return "TESTING";
+            }
+            if (isAnyMatch("Sprint Race")) {
+                return "SPRINT";
+            }
+            return "CLASSIC";
+        }
+
+        private boolean isAnyMatch(String testValue) {
+            return sessionScheduleEvents.stream().anyMatch(s -> s.eventSession().contains(testValue));
+        }
+    }
+
+    private CalendarDto toCalendarDto(WeekendEvent weekendEvent) {
+        return new CalendarDto(weekendEvent.eventNameWithDates(),weekendEvent.type(), weekendEvent.location());
     }
 
     private Optional<GpSessionEvent> toEvent(SessionSchedule sessionSchedule) {
