@@ -49,10 +49,16 @@ public class SessionScheduleService {
     public record SessionScheduleEvent(SessionSchedule sessionSchedule) {
         public String eventName() {
             String summary = sessionSchedule.getSummary();
+            String result;
             if (summary.contains("CALLED OFF")) {
-                return summary.substring(24, summary.indexOf("-"));
+                result = summary.substring(24, summary.indexOf("-"));
+            } else {
+                result = summary.substring(12, summary.indexOf("-"));
             }
-            return summary.substring(12, summary.indexOf("-"));
+            return result
+                    .replace("GRAND PRIX", "GP")
+                    .replace("GRANDE PRÊMIO", "GP")
+                    .replace("GRAN PREMIO", "GP");
         }
 
         public String eventSession() {
@@ -99,7 +105,7 @@ public class SessionScheduleService {
 
         public String eventNameWithDates() {
             return "%s %s - %s %s".formatted(
-                    sessionScheduleEvents().getFirst().location(),
+                    sessionScheduleEvents().getFirst().eventName(),
                     formatter.format(startDate()),
                     formatter.format(endDate()),
                     yearFormatter.format(startDate()));
